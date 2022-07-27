@@ -2,11 +2,9 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.Api.Dtos
+namespace AspNetRestApiSample.Api.Indentities
 {
-  using AspNetRestApiSample.Api.Indentities;
-
-  public sealed class UpdateTodoListRequestDto : ITodoListIdentity
+  public interface ITodoListIdentity
   {
     public Guid TodoListId { get; set; }
   }

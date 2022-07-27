@@ -5,9 +5,17 @@
 namespace AspNetRestApiSample.Api.Services
 {
   using AspNetRestApiSample.Api.Dtos;
+  using AspNetRestApiSample.Api.Entities;
+  using AspNetRestApiSample.Api.Indentities;
 
   public interface ITodoListService
   {
+    public Task<TodoListEntity> GetNotTrackingTodoListAsync(
+      ITodoListIdentity query, CancellationToken cancellationToken);
+
+    public Task<TodoListEntity> GetTrackingTodoListAsync(
+      ITodoListIdentity query, CancellationToken cancellationToken);
+
     public Task<GetTodoListResponseDto> GetTodoListAsync(
       GetTodoListRequestDto query, CancellationToken cancellationToken);
 
@@ -18,7 +26,9 @@ namespace AspNetRestApiSample.Api.Services
       AddTodoListRequestDto command, CancellationToken cancellationToken);
 
     public Task UpdateTodoListAsync(
-      UpdateTodoListRequestDto command, CancellationToken cancellationToken);
+      UpdateTodoListRequestDto command,
+      TodoListEntity todoListEntity,
+      CancellationToken cancellationToken);
 
     public Task DeleteTodoListAsync(
       DeleteTodoListRequestDto command, CancellationToken cancellationToken);

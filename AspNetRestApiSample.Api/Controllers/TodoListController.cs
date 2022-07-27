@@ -7,54 +7,74 @@ namespace AspNetRestApiSample.Api.Controllers
   using Microsoft.AspNetCore.Mvc;
 
   using AspNetRestApiSample.Api.Dtos;
+  using AspNetRestApiSample.Api.Services;
+  using System;
 
   [ApiController]
   [Route("api/todo-list")]
   public sealed class TodoListController : ControllerBase
   {
+    private readonly ITodoListService _todoListService;
+
+    public TodoListController(ITodoListService todoListService)
+    {
+      _todoListService = todoListService ??
+        throw new ArgumentNullException(nameof(todoListService));
+    }
+
     [HttpGet("{todoListId}", Name = nameof(TodoListController.GetTodoList))]
     [Consumes("application/json")]
-    public Task<GetTodoListResponseDto> GetTodoList(
+    public async Task<GetTodoListResponseDto> GetTodoList(
       [FromRoute] GetTodoListRequestDto query,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult(new GetTodoListResponseDto());
+      return await _todoListService.GetTodoListAsync(query, cancellationToken);
     }
 
     [HttpGet(Name = nameof(TodoListController.SearchTodoLists))]
     [Consumes("application/json")]
-    public Task<SearchTodoListsRecordResponseDto[]> SearchTodoLists(
+    public async Task<SearchTodoListsRecordResponseDto[]> SearchTodoLists(
       [FromRoute] SearchTodoListsRequestDto query,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult(new SearchTodoListsRecordResponseDto[0]);
+      return await _todoListService.SearchTodoListsAsync(query, cancellationToken);
     }
 
     [HttpPost("{todoListId}", Name = nameof(TodoListController.AddTodoList))]
     [Consumes("application/json")]
-    public Task<AddTodoListResponseDto> AddTodoList(
+    public async Task<AddTodoListResponseDto> AddTodoList(
       [FromBody] AddTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult(new AddTodoListResponseDto());
+      return await _todoListService.AddTodoListAsync(command, cancellationToken);
     }
 
     [HttpPut("{todoListId}", Name = nameof(TodoListController.UpdateTodoList))]
     [Consumes("application/json")]
-    public Task UpdateTodoList(
+    public async Task<IActionResult> UpdateTodoList(
       [FromBody] UpdateTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Task.CompletedTask;
+      var todoListEntity =
+        await _todoListService.GetTrackingTodoListAsync(command, cancellationToken);
+
+      if (todoListEntity == null)
+      {
+        return NotFound();
+      }
+
+      await _todoListService.UpdateTodoListAsync(command, todoListEntity, cancellationToken);
+
+      return NoContent();
     }
 
     [HttpDelete("{todoListId}", Name = nameof(TodoListController.DeleteTodoList))]
     [Consumes("application/json")]
-    public Task DeleteTodoList(
-      [FromRoute] DeleteTodoListRequestDto query,
+    public async Task DeleteTodoList(
+      [FromRoute] DeleteTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Task.CompletedTask;
+      await _todoListService.DeleteTodoListAsync(command, cancellationToken);
     }
   }
 }

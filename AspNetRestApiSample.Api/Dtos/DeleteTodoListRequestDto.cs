@@ -4,7 +4,10 @@
 
 namespace AspNetRestApiSample.Api.Dtos
 {
-  public sealed class DeleteTodoListRequestDto
+  using AspNetRestApiSample.Api.Indentities;
+
+  public sealed class DeleteTodoListRequestDto : ITodoListIdentity
   {
+    public Guid TodoListId { get; set; }
   }
 }
