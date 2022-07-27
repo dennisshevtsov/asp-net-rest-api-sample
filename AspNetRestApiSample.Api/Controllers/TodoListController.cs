@@ -9,7 +9,7 @@ namespace AspNetRestApiSample.Api.Controllers
   using AspNetRestApiSample.Api.Dtos;
 
   [ApiController]
-  [Route("todo-list")]
+  [Route("api/todo-list")]
   public sealed class TodoListController : ControllerBase
   {
     [HttpGet("{todoListId}", Name = nameof(TodoListController.GetTodoList))]

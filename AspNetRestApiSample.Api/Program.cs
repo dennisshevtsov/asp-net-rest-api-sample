@@ -2,10 +2,14 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
+using AspNetRestApiSample.Api.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ITodoListService, TodoListService>();
 
 var app = builder.Build();
 
