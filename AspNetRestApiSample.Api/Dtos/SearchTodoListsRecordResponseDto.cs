@@ -4,7 +4,14 @@
 
 namespace AspNetRestApiSample.Api.Dtos
 {
-  public sealed class SearchTodoListsRecordResponseDto
+  using AspNetRestApiSample.Api.Indentities;
+
+  public sealed class SearchTodoListsRecordResponseDto : ITodoListIdentity
   {
+    public Guid TodoListId { get; set; }
+
+    public string? Title { get; set; }
+
+    public string? Description { get; set; }
   }
 }

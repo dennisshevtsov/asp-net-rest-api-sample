@@ -24,11 +24,19 @@ namespace AspNetRestApiSample.Api.Controllers
 
     [HttpGet("{todoListId}", Name = nameof(TodoListController.GetTodoList))]
     [Consumes("application/json")]
-    public async Task<GetTodoListResponseDto> GetTodoList(
+    public async Task<IActionResult> GetTodoList(
       [FromRoute] GetTodoListRequestDto query,
       CancellationToken cancellationToken)
     {
-      return await _todoListService.GetTodoListAsync(query, cancellationToken);
+      var todoListEntity =
+        await _todoListService.GetDetachedTodoListAsync(query, cancellationToken);
+
+      if (todoListEntity == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(_todoListService.GetTodoList(todoListEntity));
     }
 
     [HttpGet(Name = nameof(TodoListController.SearchTodoLists))]
@@ -56,7 +64,7 @@ namespace AspNetRestApiSample.Api.Controllers
       CancellationToken cancellationToken)
     {
       var todoListEntity =
-        await _todoListService.GetTrackingTodoListAsync(command, cancellationToken);
+        await _todoListService.GetAttachedTodoListAsync(command, cancellationToken);
 
       if (todoListEntity == null)
       {

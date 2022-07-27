@@ -10,14 +10,13 @@ namespace AspNetRestApiSample.Api.Services
 
   public interface ITodoListService
   {
-    public Task<TodoListEntity> GetNotTrackingTodoListAsync(
+    public Task<TodoListEntity?> GetDetachedTodoListAsync(
       ITodoListIdentity query, CancellationToken cancellationToken);
 
-    public Task<TodoListEntity> GetTrackingTodoListAsync(
+    public Task<TodoListEntity?> GetAttachedTodoListAsync(
       ITodoListIdentity query, CancellationToken cancellationToken);
 
-    public Task<GetTodoListResponseDto> GetTodoListAsync(
-      GetTodoListRequestDto query, CancellationToken cancellationToken);
+    public GetTodoListResponseDto GetTodoList(TodoListEntity todoListEntity);
 
     public Task<SearchTodoListsRecordResponseDto[]> SearchTodoListsAsync(
       SearchTodoListsRequestDto query, CancellationToken cancellationToken);

@@ -9,5 +9,9 @@ namespace AspNetRestApiSample.Api.Entities
   public sealed class TodoListEntity : ITodoListIdentity
   {
     public Guid TodoListId { get; set; }
+
+    public string? Title { get; set; }
+
+    public string? Description { get; set; }
   }
 }

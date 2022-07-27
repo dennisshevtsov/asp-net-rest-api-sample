@@ -9,5 +9,9 @@ namespace AspNetRestApiSample.Api.Dtos
   public sealed class GetTodoListResponseDto : ITodoListIdentity
   {
     public Guid TodoListId { get; set; }
+
+    public string? Title { get; set; }
+
+    public string? Description { get; set; }
   }
 }
