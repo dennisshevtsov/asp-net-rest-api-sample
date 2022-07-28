@@ -33,7 +33,7 @@ namespace AspNetRestApiSample.Api.Services
                    .FirstOrDefaultAsync(cancellationToken);
 
     public GetTodoListResponseDto GetTodoList(TodoListEntity todoListEntity)
-      =>  new GetTodoListResponseDto
+      => new GetTodoListResponseDto
       {
         TodoListId = todoListEntity.TodoListId,
         Title = todoListEntity.Title,
@@ -46,21 +46,50 @@ namespace AspNetRestApiSample.Api.Services
                    .AsNoTracking()
                    .Select(entity => new SearchTodoListsRecordResponseDto
                    {
-                     TodoListId
+                     TodoListId = entity.TodoListId,
+                     Title = entity.Title,
+                     Description = entity.Description,
                    })
+                   .ToArrayAsync(cancellationToken);
 
-    public Task<AddTodoListResponseDto> AddTodoListAsync(
+    public async Task<AddTodoListResponseDto> AddTodoListAsync(
       AddTodoListRequestDto command, CancellationToken cancellationToken)
-      => throw new NotImplementedException();
+    {
+      var todoListEntity = new TodoListEntity();
+
+      _dbContext.Attach(todoListEntity)
+                .CurrentValues.SetValues(command);
+
+      await _dbContext.SaveChangesAsync(cancellationToken);
+
+      return new AddTodoListResponseDto
+      {
+        TodoListId = todoListEntity.TodoListId,
+      };
+    }
 
     public Task UpdateTodoListAsync(
       UpdateTodoListRequestDto command,
       TodoListEntity todoListEntity,
       CancellationToken cancellationToken)
-      => throw new NotImplementedException();
+    {
+      _dbContext.Entry(todoListEntity)
+                .CurrentValues.SetValues(command);
 
-    public Task DeleteTodoListAsync(
+      return _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task DeleteTodoListAsync(
       DeleteTodoListRequestDto command, CancellationToken cancellationToken)
-      => throw new NotImplementedException();
+    {
+      var todoListEntity = await GetAttachedTodoListAsync(command, cancellationToken);
+
+      if (todoListEntity != null)
+      {
+        _dbContext.Entry(todoListEntity).State = EntityState.Deleted;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+      }
+    }
   }
 }

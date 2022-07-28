@@ -6,12 +6,14 @@ namespace AspNetRestApiSample.Api.Entities
 {
   using AspNetRestApiSample.Api.Indentities;
 
-  public sealed class TodoListEntity : ITodoListIdentity
+  public sealed class TodoListEntity : ITodoListIdentity, IUserIdentity
   {
     public Guid TodoListId { get; set; }
 
     public string? Title { get; set; }
 
     public string? Description { get; set; }
+
+    public Guid UserId { get; set; }
   }
 }
