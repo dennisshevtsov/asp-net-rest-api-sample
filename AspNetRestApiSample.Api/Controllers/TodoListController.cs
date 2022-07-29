@@ -51,11 +51,11 @@ namespace AspNetRestApiSample.Api.Controllers
 
     [HttpPost("{todoListId}", Name = nameof(TodoListController.AddTodoList))]
     [Consumes("application/json")]
-    public async Task<AddTodoListResponseDto> AddTodoList(
+    public async Task<IActionResult> AddTodoList(
       [FromBody] AddTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
-      return await _todoListService.AddTodoListAsync(command, cancellationToken);
+      return Ok(await _todoListService.AddTodoListAsync(command, cancellationToken));
     }
 
     [HttpPut("{todoListId}", Name = nameof(TodoListController.UpdateTodoList))]

@@ -13,8 +13,10 @@ namespace AspNetRestApiSample.Api.Tests.Services
   [TestClass]
   public sealed class TodoListServiceTest
   {
+#pragma warning disable CS8618
     private DbContext _dbContext;
     private TodoListService _todoListService;
+#pragma warning restore CS8618
 
     [TestInitialize]
     public void Initialize()
