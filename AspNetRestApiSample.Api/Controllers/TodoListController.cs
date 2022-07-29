@@ -4,11 +4,12 @@
 
 namespace AspNetRestApiSample.Api.Controllers
 {
+  using System;
+
   using Microsoft.AspNetCore.Mvc;
 
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Services;
-  using System;
 
   [ApiController]
   [Route("api/todo-list")]
@@ -41,11 +42,11 @@ namespace AspNetRestApiSample.Api.Controllers
 
     [HttpGet(Name = nameof(TodoListController.SearchTodoLists))]
     [Consumes("application/json")]
-    public async Task<SearchTodoListsRecordResponseDto[]> SearchTodoLists(
+    public async Task<IActionResult> SearchTodoLists(
       [FromRoute] SearchTodoListsRequestDto query,
       CancellationToken cancellationToken)
     {
-      return await _todoListService.SearchTodoListsAsync(query, cancellationToken);
+      return Ok(await _todoListService.SearchTodoListsAsync(query, cancellationToken));
     }
 
     [HttpPost("{todoListId}", Name = nameof(TodoListController.AddTodoList))]
