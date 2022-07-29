@@ -183,7 +183,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task UpdateTodoListTest_Should_Return_Ok()
+    public async Task UpdateTodoListTest_Should_Return_No_Content()
     {
       var todoListId = Guid.NewGuid();
       var todoListEntity = new TodoListEntity
@@ -220,10 +220,56 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task DeleteTodoListTest()
+    public async Task DeleteTodoListTest_Should_Return_Not_Found()
     {
-      await _todoListController.DeleteTodoList(
-        new DeleteTodoListRequestDto(), CancellationToken.None);
+      _todoListServiceMock.Setup(service => service.GetAttachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(default(TodoListEntity))
+                          .Verifiable();
+
+      var command = new DeleteTodoListRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+      };
+
+      var actionResult = await _todoListController.DeleteTodoList(command, CancellationToken.None);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsTrue(actionResult is NotFoundResult);
+
+      _todoListServiceMock.Verify(service => service.GetAttachedTodoListAsync(command, CancellationToken.None));
+      _todoListServiceMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task DeleteTodoListTest_Should_Return_No_Content()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListEntity = new TodoListEntity
+      {
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _todoListServiceMock.Setup(service => service.GetAttachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(todoListEntity)
+                          .Verifiable();
+
+      _todoListServiceMock.Setup(service => service.DeleteTodoListAsync(It.IsAny<TodoListEntity>(), It.IsAny<CancellationToken>()))
+                          .Returns(Task.CompletedTask)
+                          .Verifiable();
+
+      var command = new DeleteTodoListRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+      };
+
+      var actionResult = await _todoListController.DeleteTodoList(command, CancellationToken.None);
+
+      _todoListServiceMock.Verify(service => service.GetAttachedTodoListAsync(command, CancellationToken.None));
+      _todoListServiceMock.Verify(service => service.DeleteTodoListAsync(todoListEntity, CancellationToken.None));
+
+      _todoListServiceMock.VerifyNoOtherCalls();
     }
   }
 }

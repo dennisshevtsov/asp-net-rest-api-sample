@@ -80,16 +80,11 @@ namespace AspNetRestApiSample.Api.Services
     }
 
     public async Task DeleteTodoListAsync(
-      DeleteTodoListRequestDto command, CancellationToken cancellationToken)
+      TodoListEntity todoListEntity, CancellationToken cancellationToken)
     {
-      var todoListEntity = await GetAttachedTodoListAsync(command, cancellationToken);
+      _dbContext.Entry(todoListEntity).State = EntityState.Deleted;
 
-      if (todoListEntity != null)
-      {
-        _dbContext.Entry(todoListEntity).State = EntityState.Deleted;
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-      }
+      await _dbContext.SaveChangesAsync(cancellationToken);
     }
   }
 }

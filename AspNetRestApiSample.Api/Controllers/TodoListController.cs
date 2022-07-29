@@ -79,11 +79,21 @@ namespace AspNetRestApiSample.Api.Controllers
 
     [HttpDelete("{todoListId}", Name = nameof(TodoListController.DeleteTodoList))]
     [Consumes("application/json")]
-    public async Task DeleteTodoList(
+    public async Task<ActionResult> DeleteTodoList(
       [FromRoute] DeleteTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
-      await _todoListService.DeleteTodoListAsync(command, cancellationToken);
+      var todoListEntity =
+        await _todoListService.GetAttachedTodoListAsync(command, cancellationToken);
+
+      if (todoListEntity == null)
+      {
+        return NotFound();
+      }
+
+      await _todoListService.DeleteTodoListAsync(todoListEntity, cancellationToken);
+
+      return NoContent();
     }
   }
 }

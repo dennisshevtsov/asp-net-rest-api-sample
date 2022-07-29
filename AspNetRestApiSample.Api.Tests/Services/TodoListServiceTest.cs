@@ -67,7 +67,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task DeleteTodoListAsync()
     {
-      await _todoListService.DeleteTodoListAsync(new DeleteTodoListRequestDto(), CancellationToken.None);
+      await _todoListService.DeleteTodoListAsync(new TodoListEntity(), CancellationToken.None);
     }
   }
 }

@@ -30,6 +30,6 @@ namespace AspNetRestApiSample.Api.Services
       CancellationToken cancellationToken);
 
     public Task DeleteTodoListAsync(
-      DeleteTodoListRequestDto command, CancellationToken cancellationToken);
+      TodoListEntity todoListEntity, CancellationToken cancellationToken);
   }
 }
