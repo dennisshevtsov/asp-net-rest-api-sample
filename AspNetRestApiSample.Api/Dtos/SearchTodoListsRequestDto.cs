@@ -6,8 +6,7 @@ namespace AspNetRestApiSample.Api.Dtos
 {
   using AspNetRestApiSample.Api.Indentities;
 
-  public sealed class SearchTodoListsRequestDto : ITodoListIdentity
+  public sealed class SearchTodoListsRequestDto
   {
-    public Guid TodoListId { get; set; }
   }
 }

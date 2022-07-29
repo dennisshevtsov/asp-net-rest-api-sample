@@ -9,6 +9,9 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
   using AspNetRestApiSample.Api.Controllers;
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Services;
+  using Microsoft.AspNetCore.Mvc;
+  using AspNetRestApiSample.Api.Indentities;
+  using AspNetRestApiSample.Api.Entities;
 
   [TestClass]
   public sealed class TodoListControllerTest
@@ -25,10 +28,61 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task GetTodoListTest()
+    public async Task GetTodoListTest_Should_Return_Not_Found()
     {
-      await _todoListController.GetTodoList(
+      _todoListServiceMock.Setup(service => service.GetDetachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(default(TodoListEntity))
+                          .Verifiable();
+
+      var actionResult = await _todoListController.GetTodoList(
         new GetTodoListRequestDto(), CancellationToken.None);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsTrue(actionResult is NotFoundResult);
+
+      _todoListServiceMock.Verify();
+      _todoListServiceMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task GetTodoListTest_Should_Retunr_Ok()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListEntity = new TodoListEntity
+      {
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _todoListServiceMock.Setup(service => service.GetDetachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(todoListEntity)
+                          .Verifiable();
+
+      var getTodoListResponseDto = new GetTodoListResponseDto
+      {
+        TodoListId = todoListEntity.TodoListId,
+        Title = todoListEntity.Title,
+        Description = todoListEntity.Description,
+      };
+
+      _todoListServiceMock.Setup(service => service.GetTodoList(It.IsAny<TodoListEntity>()))
+                          .Returns(getTodoListResponseDto)
+                          .Verifiable();
+
+      var actionResult = await _todoListController.GetTodoList(
+        new GetTodoListRequestDto(), CancellationToken.None);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsTrue(actionResult is OkObjectResult);
+
+      var okObjectResult = (OkObjectResult) actionResult;
+
+      Assert.IsNotNull(okObjectResult.Value);
+      Assert.AreEqual(getTodoListResponseDto, okObjectResult.Value);
+
+      _todoListServiceMock.Verify();
+      _todoListServiceMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]

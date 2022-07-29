@@ -8,6 +8,7 @@ namespace AspNetRestApiSample.Api.Dtos
 
   public sealed class AddTodoListResponseDto : ITodoListIdentity
   {
+    /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
     public Guid TodoListId { get; set; }
   }
 }

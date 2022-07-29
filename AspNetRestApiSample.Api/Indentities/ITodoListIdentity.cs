@@ -4,8 +4,10 @@
 
 namespace AspNetRestApiSample.Api.Indentities
 {
+  /// <summary>Represents an identity of a todo list.</summary>
   public interface ITodoListIdentity
   {
+    /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
     public Guid TodoListId { get; set; }
   }
 }

@@ -5,8 +5,10 @@ namespace AspNetRestApiSample.Api.Dtos
 {
   using AspNetRestApiSample.Api.Indentities;
 
+  /// <summary>Represents conditions to query a todo list.</summary>
   public sealed class GetTodoListRequestDto : ITodoListIdentity
   {
+    /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
     public Guid TodoListId { get; set; }
   }
 }
