@@ -11,20 +11,34 @@ namespace AspNetRestApiSample.Api.Controllers
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Services;
 
+  /// <summary>Provides a simple API to handle HTTP requests.</summary>
   [ApiController]
-  [Route("api/todo-list")]
+  [Route(TodoListController.TodoListRoute)]
   public sealed class TodoListController : ControllerBase
   {
+    private const string ContentType = "application/json";
+
+    private const string TodoListRoute = "api/todo-list";
+    private const string GetTodoListRoute = "{todoListId}";
+    private const string UpdateTodoListRoute = TodoListController.GetTodoListRoute;
+    private const string DeleteTodoListRoute = TodoListController.GetTodoListRoute;
+
     private readonly ITodoListService _todoListService;
 
+    /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Controllers.TodoListController"/> class.</summary>
+    /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Api.Entities.TodoListEntity"/> class.</param>
     public TodoListController(ITodoListService todoListService)
     {
       _todoListService = todoListService ??
         throw new ArgumentNullException(nameof(todoListService));
     }
 
-    [HttpGet("{todoListId}", Name = nameof(TodoListController.GetTodoList))]
-    [Consumes("application/json")]
+    /// <summary>Handles the get todo list query request.</summary>
+    /// <param name="query">An object that represents conditions to query a todo list.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpGet(TodoListController.GetTodoListRoute, Name = nameof(TodoListController.GetTodoList))]
+    [Consumes(TodoListController.ContentType)]
     public async Task<IActionResult> GetTodoList(
       [FromRoute] GetTodoListRequestDto query,
       CancellationToken cancellationToken)
@@ -40,8 +54,12 @@ namespace AspNetRestApiSample.Api.Controllers
       return Ok(_todoListService.GetTodoList(todoListEntity));
     }
 
+    /// <summary>Handles the search todo lists query request.</summary>
+    /// <param name="query">An object that represents conditions to query todo lists.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet(Name = nameof(TodoListController.SearchTodoLists))]
-    [Consumes("application/json")]
+    [Consumes(TodoListController.ContentType)]
     public async Task<IActionResult> SearchTodoLists(
       [FromRoute] SearchTodoListsRequestDto query,
       CancellationToken cancellationToken)
@@ -49,8 +67,12 @@ namespace AspNetRestApiSample.Api.Controllers
       return Ok(await _todoListService.SearchTodoListsAsync(query, cancellationToken));
     }
 
-    [HttpPost("{todoListId}", Name = nameof(TodoListController.AddTodoList))]
-    [Consumes("application/json")]
+    /// <summary>Handles the add todo list command request.</summary>
+    /// <param name="command">An object that represents data to create a new todo list.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpPost(Name = nameof(TodoListController.AddTodoList))]
+    [Consumes(TodoListController.ContentType)]
     public async Task<IActionResult> AddTodoList(
       [FromBody] AddTodoListRequestDto command,
       CancellationToken cancellationToken)
@@ -58,8 +80,12 @@ namespace AspNetRestApiSample.Api.Controllers
       return Ok(await _todoListService.AddTodoListAsync(command, cancellationToken));
     }
 
-    [HttpPut("{todoListId}", Name = nameof(TodoListController.UpdateTodoList))]
-    [Consumes("application/json")]
+    /// <summary>Handles the update todo list command request.</summary>
+    /// <param name="command">An object that represents data to update a todo list.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpPut(TodoListController.UpdateTodoListRoute, Name = nameof(TodoListController.UpdateTodoList))]
+    [Consumes(TodoListController.ContentType)]
     public async Task<IActionResult> UpdateTodoList(
       [FromBody] UpdateTodoListRequestDto command,
       CancellationToken cancellationToken)
@@ -77,8 +103,12 @@ namespace AspNetRestApiSample.Api.Controllers
       return NoContent();
     }
 
-    [HttpDelete("{todoListId}", Name = nameof(TodoListController.DeleteTodoList))]
-    [Consumes("application/json")]
+    /// <summary>Handles the delete todo list command request.</summary>
+    /// <param name="command">An object that represents data to delete a todo list.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpDelete(TodoListController.DeleteTodoListRoute, Name = nameof(TodoListController.DeleteTodoList))]
+    [Consumes(TodoListController.ContentType)]
     public async Task<ActionResult> DeleteTodoList(
       [FromRoute] DeleteTodoListRequestDto command,
       CancellationToken cancellationToken)

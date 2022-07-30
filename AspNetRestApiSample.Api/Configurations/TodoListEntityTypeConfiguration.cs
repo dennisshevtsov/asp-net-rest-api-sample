@@ -9,20 +9,15 @@ namespace AspNetRestApiSample.Api.Configurations
 
   using AspNetRestApiSample.Api.Entities;
 
-  public sealed class TodoListEntityConfiguration : IEntityTypeConfiguration<TodoListEntity>
+  public sealed class TodoListEntityTypeConfiguration
+    : EntityTypeConfigurationBase<TodoListEntity>
   {
-    public void Configure(EntityTypeBuilder<TodoListEntity> builder)
+    public override void Configure(EntityTypeBuilder<TodoListEntity> builder)
     {
-      builder.ToContainer("todo-list-container");
-      builder.HasNoDiscriminator();
+      base.Configure(builder);
 
-      builder.HasKey(entity => entity.TodoListId);
-      builder.HasPartitionKey(entity => entity.UserId);
-
-      builder.Property(entity => entity.TodoListId).ToJsonProperty("id");
       builder.Property(entity => entity.Title).ToJsonProperty("title");
       builder.Property(entity => entity.Description).ToJsonProperty("description");
-      builder.Property(entity => entity.UserId).ToJsonProperty("userId");
     }
   }
 }

@@ -10,6 +10,7 @@ namespace AspNetRestApiSample.Api.Services
   using AspNetRestApiSample.Api.Entities;
   using AspNetRestApiSample.Api.Indentities;
 
+  /// <summary>Provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Api.Entities.TodoListEntity"/> class.</summary>
   public sealed class TodoListService : ITodoListService
   {
     private readonly DbContext _dbContext;

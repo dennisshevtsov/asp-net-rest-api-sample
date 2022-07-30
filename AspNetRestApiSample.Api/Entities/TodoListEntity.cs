@@ -4,17 +4,13 @@
 
 namespace AspNetRestApiSample.Api.Entities
 {
-  using AspNetRestApiSample.Api.Indentities;
-
-  public sealed class TodoListEntity : ITodoListIdentity, IUserIdentity
+  /// <summary>Represents data of a todo list.</summary>
+  public sealed class TodoListEntity : EntityBase
   {
-    /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
-    public Guid TodoListId { get; set; }
-
+    /// <summary>Gets/sets an object that represents a title of a todo list.</summary>
     public string? Title { get; set; }
 
+    /// <summary>Gets/sets an object that represents a description of a todo list.</summary>
     public string? Description { get; set; }
-
-    public Guid UserId { get; set; }
   }
 }

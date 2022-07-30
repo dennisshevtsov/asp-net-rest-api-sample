@@ -6,10 +6,6 @@ namespace AspNetRestApiSample.Api.Tests.Services
 {
   using Microsoft.EntityFrameworkCore;
 
-  using AspNetRestApiSample.Api.Dtos;
-  using AspNetRestApiSample.Api.Entities;
-  using AspNetRestApiSample.Api.Services;
-
   [TestClass]
   public sealed class TodoListServiceTest
   {

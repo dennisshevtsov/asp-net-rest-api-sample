@@ -6,9 +6,14 @@ namespace AspNetRestApiSample.Api.Storage
 {
   using Microsoft.EntityFrameworkCore;
 
+  using AspNetRestApiSample.Api.Configurations;
+
   public sealed class AspNetRestApiSampleDbContext : DbContext
   {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-      => modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+    {
+      modelBuilder.ApplyConfiguration(new TodoListEntityTypeConfiguration());
+      modelBuilder.ApplyConfiguration(new TodoListTaskEntityTypeConfiguration());
+    }
   }
 }

@@ -8,10 +8,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
   using Moq;
 
   using AspNetRestApiSample.Api.Controllers;
-  using AspNetRestApiSample.Api.Dtos;
-  using AspNetRestApiSample.Api.Entities;
   using AspNetRestApiSample.Api.Indentities;
-  using AspNetRestApiSample.Api.Services;
 
   [TestClass]
   public sealed class TodoListControllerTest
