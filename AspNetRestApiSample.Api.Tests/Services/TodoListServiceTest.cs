@@ -6,6 +6,8 @@ namespace AspNetRestApiSample.Api.Tests.Services
 {
   using Microsoft.EntityFrameworkCore;
 
+  using AspNetRestApiSample.Api.Storage;
+
   [TestClass]
   public sealed class TodoListServiceTest
   {
@@ -17,7 +19,8 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestInitialize]
     public void Initialize()
     {
-      _dbContext = new DbContext(new DbContextOptionsBuilder().UseInMemoryDatabase("test").Options);
+      _dbContext = new AspNetRestApiSampleDbContext(
+        new DbContextOptionsBuilder().UseInMemoryDatabase("test").Options);
       _todoListService = new TodoListService(_dbContext);
     }
 
