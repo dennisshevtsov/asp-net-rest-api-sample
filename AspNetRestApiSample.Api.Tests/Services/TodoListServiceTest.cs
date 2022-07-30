@@ -40,9 +40,24 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public void GetTodoList()
+    public void GetTodoList_Should_Return_Filled_Dto()
     {
-      _todoListService.GetTodoList(new TodoListEntity());
+      var todoListId = Guid.NewGuid();
+      var todoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var todoListResponseDto = _todoListService.GetTodoList(todoListEntity);
+
+      Assert.IsNotNull(todoListResponseDto);
+
+      Assert.AreEqual(todoListEntity.Id, todoListResponseDto.TodoListId);
+      Assert.AreEqual(todoListEntity.Title, todoListResponseDto.Title);
+      Assert.AreEqual(todoListEntity.Description, todoListResponseDto.Description);
     }
 
     [TestMethod]
