@@ -53,6 +53,40 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
+    public async Task GetDetachedTodoListAsync_Should_Return_Detached_Entity()
+    {
+      var todoListId = Guid.NewGuid();
+      var testTodoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Set<TodoListEntity>().Add(testTodoListEntity);
+      await _dbContext.SaveChangesAsync();
+
+      var query = new GetTodoListRequestDto
+      {
+        TodoListId = todoListId,
+      };
+
+      var actualTodoListEntity = await _todoListService.GetDetachedTodoListAsync(query, CancellationToken.None);
+
+      Assert.IsNotNull(actualTodoListEntity);
+
+      Assert.AreEqual(testTodoListEntity.Id, actualTodoListEntity.Id);
+      Assert.AreEqual(testTodoListEntity.TodoListId, actualTodoListEntity.TodoListId);
+      Assert.AreEqual(testTodoListEntity.Title, actualTodoListEntity.Title);
+      Assert.AreEqual(testTodoListEntity.Description, actualTodoListEntity.Description);
+
+      var actualTodoListEntityEntry = _dbContext.Entry(actualTodoListEntity);
+
+      Assert.AreEqual(EntityState.Detached, actualTodoListEntityEntry.State);
+    }
+
+    [TestMethod]
     public async Task GetAttachedTodoListAsync_Should_Return_Null()
     {
       var todoListId = Guid.NewGuid();
