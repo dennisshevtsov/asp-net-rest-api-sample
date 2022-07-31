@@ -34,6 +34,31 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
+    public async Task GetAttachedTodoListAsync_Should_Return_Null()
+    {
+      var todoListId = Guid.NewGuid();
+      var testTodoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Set<TodoListEntity>().Add(testTodoListEntity);
+      await _dbContext.SaveChangesAsync();
+
+      var query = new GetTodoListRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+      };
+
+      var actualTodoListEntity = await _todoListService.GetAttachedTodoListAsync(query, CancellationToken.None);
+
+      Assert.IsNull(actualTodoListEntity);
+    }
+
+    [TestMethod]
     public async Task GetAttachedTodoListAsync_Should_Return_Attached_Entity()
     {
       var todoListId = Guid.NewGuid();
