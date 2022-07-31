@@ -28,9 +28,28 @@ namespace AspNetRestApiSample.Api.Tests.Services
     public void Cleanup() => _dbContext.Dispose();
 
     [TestMethod]
-    public async Task GetDetachedTodoListAsync()
+    public async Task GetDetachedTodoListAsync_Should_Return_Null()
     {
-      await _todoListService.GetDetachedTodoListAsync(null, CancellationToken.None);
+      var todoListId = Guid.NewGuid();
+      var testTodoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Set<TodoListEntity>().Add(testTodoListEntity);
+      await _dbContext.SaveChangesAsync();
+
+      var query = new GetTodoListRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+      };
+
+      var actualTodoListEntity = await _todoListService.GetDetachedTodoListAsync(query, CancellationToken.None);
+
+      Assert.IsNull(actualTodoListEntity);
     }
 
     [TestMethod]
