@@ -141,8 +141,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
         Description = Guid.NewGuid().ToString(),
       };
 
-      var actionResult = await _todoListController.AddTodoList(
-        command, CancellationToken.None);
+      var actionResult = await _todoListController.AddTodoList(command, CancellationToken.None);
 
       Assert.IsNotNull(actionResult);
       Assert.IsTrue(actionResult is OkObjectResult);

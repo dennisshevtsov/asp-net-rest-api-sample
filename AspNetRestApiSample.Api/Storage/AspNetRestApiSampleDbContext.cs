@@ -12,13 +12,13 @@ namespace AspNetRestApiSample.Api.Storage
   public sealed class AspNetRestApiSampleDbContext : DbContext
   {
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Storage.AspNetRestApiSampleDbContext"/> class.</summary>
-    /// <param name="options">An object that represents the options to be used by a <see cref="DbContext" />.</param>
+    /// <param name="options">An object that represents the options to be used by a <see cref="Microsoft.EntityFrameworkCore.DbContext" />.</param>
     public AspNetRestApiSampleDbContext(DbContextOptions options) : base(options)
     {
     }
 
     /// <summary>Configure the model that was discovered by convention from the entity types.</summary>
-    /// <param name="modelBuilder">Provides a simple API surface for configuring a <see cref="IMutableModel" /> that defines the shape of your entities, the relationships between them, and how they map to the database.</param>
+    /// <param name="modelBuilder">Provides a simple API surface for configuring a <see cref="Microsoft.EntityFrameworkCore.Metadata.IMutableModel" /> that defines the shape of your entities, the relationships between them, and how they map to the database.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.ApplyConfiguration(new TodoListEntityTypeConfiguration());
