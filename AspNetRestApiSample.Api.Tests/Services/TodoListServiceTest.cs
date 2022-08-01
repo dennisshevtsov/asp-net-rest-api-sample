@@ -25,7 +25,11 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestCleanup]
-    public void Cleanup() => _dbContext.Dispose();
+    public void Cleanup()
+    {
+      _dbContext.Database.EnsureDeleted();
+      _dbContext.Dispose();
+    }
 
     [TestMethod]
     public async Task GetDetachedTodoListAsync_Should_Return_Null()
