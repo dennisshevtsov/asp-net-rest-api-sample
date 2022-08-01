@@ -167,9 +167,71 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task SearchTodoListsAsync()
+    public async Task SearchTodoListsAsync_Should_Return_Entity_Collection()
     {
-      await _todoListService.SearchTodoListsAsync(new SearchTodoListsRequestDto(), CancellationToken.None);
+      var todoListId0 = Guid.NewGuid();
+      var todoListEntity0 = new TodoListEntity
+      {
+        Id = todoListId0,
+        TodoListId = todoListId0,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Set<TodoListEntity>().Add(todoListEntity0);
+
+      var todoListId1 = Guid.NewGuid();
+      var todoListEntity1 = new TodoListEntity
+      {
+        Id = todoListId1,
+        TodoListId = todoListId1,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Set<TodoListEntity>().Add(todoListEntity1);
+
+      var todoListId2 = Guid.NewGuid();
+      var todoListEntity2 = new TodoListEntity
+      {
+        Id = todoListId2,
+        TodoListId = todoListId2,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Set<TodoListEntity>().Add(todoListEntity2);
+
+      await _dbContext.SaveChangesAsync();
+
+      var searchTodoListRecordRequestDtos = await _todoListService.SearchTodoListsAsync(new SearchTodoListsRequestDto(), CancellationToken.None);
+
+      Assert.IsNotNull(searchTodoListRecordRequestDtos);
+      Assert.AreEqual(3, searchTodoListRecordRequestDtos.Length);
+
+      var searchTodoListRecordRequestDto0 = searchTodoListRecordRequestDtos.FirstOrDefault(dto => dto.TodoListId == todoListId0);
+
+      Assert.IsNotNull(searchTodoListRecordRequestDto0);
+
+      Assert.AreEqual(todoListEntity0.TodoListId, searchTodoListRecordRequestDto0.TodoListId);
+      Assert.AreEqual(todoListEntity0.Title, searchTodoListRecordRequestDto0.Title);
+      Assert.AreEqual(todoListEntity0.Description, searchTodoListRecordRequestDto0.Description);
+
+      var searchTodoListRecordRequestDto1 = searchTodoListRecordRequestDtos.FirstOrDefault(dto => dto.TodoListId == todoListId1);
+
+      Assert.IsNotNull(searchTodoListRecordRequestDto1);
+
+      Assert.AreEqual(todoListEntity1.TodoListId, searchTodoListRecordRequestDto1.TodoListId);
+      Assert.AreEqual(todoListEntity1.Title, searchTodoListRecordRequestDto1.Title);
+      Assert.AreEqual(todoListEntity1.Description, searchTodoListRecordRequestDto1.Description);
+
+      var searchTodoListRecordRequestDto2 = searchTodoListRecordRequestDtos.FirstOrDefault(dto => dto.TodoListId == todoListId2);
+
+      Assert.IsNotNull(searchTodoListRecordRequestDto2);
+
+      Assert.AreEqual(todoListEntity2.TodoListId, searchTodoListRecordRequestDto2.TodoListId);
+      Assert.AreEqual(todoListEntity2.Title, searchTodoListRecordRequestDto2.Title);
+      Assert.AreEqual(todoListEntity2.Description, searchTodoListRecordRequestDto2.Description);
     }
 
     [TestMethod]
