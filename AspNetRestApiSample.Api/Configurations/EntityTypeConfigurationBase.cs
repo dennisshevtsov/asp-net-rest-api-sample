@@ -6,6 +6,7 @@ namespace AspNetRestApiSample.Api.Configurations
 {
   using Microsoft.EntityFrameworkCore;
   using Microsoft.EntityFrameworkCore.Metadata.Builders;
+  using Microsoft.EntityFrameworkCore.ValueGeneration;
 
   using AspNetRestApiSample.Api.Entities;
 
@@ -20,8 +21,8 @@ namespace AspNetRestApiSample.Api.Configurations
       builder.HasKey(entity => entity.Id);
       builder.HasPartitionKey(entity => entity.TodoListId);
 
-      builder.Property(entity => entity.Id).ToJsonProperty("id");
-      builder.Property(entity => entity.TodoListId).ToJsonProperty("todoListId");
+      builder.Property(entity => entity.Id).ToJsonProperty("id").HasValueGenerator<GuidValueGenerator>();
+      builder.Property(entity => entity.TodoListId).ToJsonProperty("todoListId").HasValueGenerator<PartitionKeyValueGenerator>();
     }
   }
 }
