@@ -235,9 +235,29 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task AddTodoListAsync()
+    public async Task AddTodoListAsync_Should_Create_New_Todo_List()
     {
-      await _todoListService.AddTodoListAsync(new AddTodoListRequestDto(), CancellationToken.None);
+      var addTodoListRequestDto = new AddTodoListRequestDto
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var addTodoListResponseDto = await _todoListService.AddTodoListAsync(addTodoListRequestDto, CancellationToken.None);
+
+      Assert.IsNotNull(addTodoListResponseDto);
+      Assert.IsTrue(addTodoListResponseDto.TodoListId != default);
+
+      var todoListEntity =
+        await _dbContext.Set<TodoListEntity>()
+                        .AsNoTracking()
+                        .Where(entity => entity.TodoListId == addTodoListResponseDto.TodoListId)
+                        .Where(entity => entity.Id == addTodoListResponseDto.TodoListId)
+                        .FirstOrDefaultAsync(CancellationToken.None);
+
+      Assert.IsNotNull(todoListEntity);
+      Assert.AreEqual(addTodoListRequestDto.Title, todoListEntity.Title);
+      Assert.AreEqual(addTodoListRequestDto.Description, todoListEntity.Description);
     }
 
     [TestMethod]
