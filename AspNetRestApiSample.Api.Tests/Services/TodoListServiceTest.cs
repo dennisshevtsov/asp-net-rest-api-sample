@@ -335,9 +335,40 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task DeleteTodoListAsync()
+    public async Task DeleteTodoListAsync_Should_Remove_Entity()
     {
-      await _todoListService.DeleteTodoListAsync(new TodoListEntity(), CancellationToken.None);
+      var todoListEntity = new TodoListEntity
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Add(todoListEntity);
+      await _dbContext.SaveChangesAsync();
+
+      var todoListId = todoListEntity.Id;
+
+      var actualTodoListEntity0 =
+        await _dbContext.Set<TodoListEntity>()
+                        .AsNoTracking()
+                        .Where(entity => entity.TodoListId == todoListId)
+                        .Where(entity => entity.Id == todoListId)
+                        .FirstOrDefaultAsync();
+
+      Assert.IsNotNull(actualTodoListEntity0);
+      Assert.AreEqual(todoListEntity.Title, actualTodoListEntity0.Title);
+      Assert.AreEqual(todoListEntity.Description, actualTodoListEntity0.Description);
+
+      await _todoListService.DeleteTodoListAsync(todoListEntity, CancellationToken.None);
+
+      var actualTodoListEntity1 =
+        await _dbContext.Set<TodoListEntity>()
+                        .AsNoTracking()
+                        .Where(entity => entity.TodoListId == todoListId)
+                        .Where(entity => entity.Id == todoListId)
+                        .FirstOrDefaultAsync();
+
+      Assert.IsNull(actualTodoListEntity1);
     }
   }
 }
