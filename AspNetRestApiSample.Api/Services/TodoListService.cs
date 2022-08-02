@@ -100,8 +100,14 @@ namespace AspNetRestApiSample.Api.Services
       TodoListEntity todoListEntity,
       CancellationToken cancellationToken)
     {
-      _dbContext.Entry(todoListEntity)
-                .CurrentValues.SetValues(command);
+      var entry = _dbContext.Entry(todoListEntity);
+
+      if (entry.State == EntityState.Detached)
+      {
+        entry.State = EntityState.Unchanged;
+      }
+
+      entry.CurrentValues.SetValues(command);
 
       return _dbContext.SaveChangesAsync(cancellationToken);
     }

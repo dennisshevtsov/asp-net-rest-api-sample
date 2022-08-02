@@ -299,6 +299,42 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
+    public async Task UpdateTodoListAsync_Should_Update_Detached_Entity()
+    {
+      var todoListEntity = new TodoListEntity
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var entry = _dbContext.Add(todoListEntity);
+      await _dbContext.SaveChangesAsync();
+
+      entry.State = EntityState.Detached;
+
+      var todoListId = todoListEntity.Id;
+      var command = new UpdateTodoListRequestDto
+      {
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
+
+      var actualTodoListEntity =
+        await _dbContext.Set<TodoListEntity>()
+                        .AsNoTracking()
+                        .Where(entity => entity.TodoListId == todoListId)
+                        .Where(entity => entity.Id == todoListId)
+                        .FirstOrDefaultAsync();
+
+      Assert.IsNotNull(actualTodoListEntity);
+      Assert.AreEqual(command.Title, actualTodoListEntity.Title);
+      Assert.AreEqual(command.Description, actualTodoListEntity.Description);
+    }
+
+    [TestMethod]
     public async Task DeleteTodoListAsync()
     {
       await _todoListService.DeleteTodoListAsync(new TodoListEntity(), CancellationToken.None);
