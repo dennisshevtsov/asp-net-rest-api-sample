@@ -265,9 +265,37 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task UpdateTodoListAsync()
+    public async Task UpdateTodoListAsync_Should_Update_Attached_Entity()
     {
-      await _todoListService.UpdateTodoListAsync(new UpdateTodoListRequestDto(), new TodoListEntity(), CancellationToken.None);
+      var todoListEntity = new TodoListEntity
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Add(todoListEntity);
+      await _dbContext.SaveChangesAsync();
+
+      var todoListId = todoListEntity.Id;
+      var command = new UpdateTodoListRequestDto
+      {
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
+
+      var actualTodoListEntity =
+        await _dbContext.Set<TodoListEntity>()
+                        .AsNoTracking()
+                        .Where(entity => entity.TodoListId == todoListId)
+                        .Where(entity => entity.Id == todoListId)
+                        .FirstOrDefaultAsync();
+
+      Assert.IsNotNull(actualTodoListEntity);
+      Assert.AreEqual(command.Title, actualTodoListEntity.Title);
+      Assert.AreEqual(command.Description, actualTodoListEntity.Description);
     }
 
     [TestMethod]
