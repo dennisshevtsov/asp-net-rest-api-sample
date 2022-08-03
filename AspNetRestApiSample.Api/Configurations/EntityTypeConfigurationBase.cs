@@ -14,12 +14,17 @@ namespace AspNetRestApiSample.Api.Configurations
     : IEntityTypeConfiguration<TEntity>
     where TEntity : EntityBase
   {
+    private const string DescriminatorPropertyName = "__type";
+
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
       builder.ToContainer("todo-list-container");
 
       builder.HasKey(entity => entity.Id);
       builder.HasPartitionKey(entity => entity.TodoListId);
+
+      builder.Property(typeof(string), EntityTypeConfigurationBase<TEntity>.DescriminatorPropertyName).HasValueGenerator<DescriminatorValueGenerator>();
+      builder.HasDiscriminator(EntityTypeConfigurationBase<TEntity>.DescriminatorPropertyName, typeof(string));
 
       builder.Property(entity => entity.Id).ToJsonProperty("id").HasValueGenerator<GuidValueGenerator>();
       builder.Property(entity => entity.TodoListId).ToJsonProperty("todoListId").HasValueGenerator<PartitionKeyValueGenerator>();
