@@ -2,22 +2,15 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.Api.Configurations
+namespace AspNetRestApiSample.Api.ValueGeneration
 {
   using Microsoft.EntityFrameworkCore.ChangeTracking;
   using Microsoft.EntityFrameworkCore.ValueGeneration;
 
-  using AspNetRestApiSample.Api.Entities;
-
-  public sealed class PartitionKeyValueGenerator : ValueGenerator
+  public sealed class DescriminatorValueGenerator : ValueGenerator
   {
     public override bool GeneratesTemporaryValues => false;
 
-    protected override object? NextValue(EntityEntry entry)
-    {
-      var todoListEntity = (TodoListEntity)entry.Entity;
-
-      return todoListEntity.Id;
-    }
+    protected override object? NextValue(EntityEntry entry) => entry.Entity.GetType().Name;
   }
 }

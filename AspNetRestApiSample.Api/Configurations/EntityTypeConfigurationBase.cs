@@ -4,21 +4,37 @@
 
 namespace AspNetRestApiSample.Api.Configurations
 {
+  using System;
+
   using Microsoft.EntityFrameworkCore;
   using Microsoft.EntityFrameworkCore.Metadata.Builders;
   using Microsoft.EntityFrameworkCore.ValueGeneration;
 
   using AspNetRestApiSample.Api.Entities;
+  using AspNetRestApiSample.Api.ValueGeneration;
 
+  /// <summary>Allows configuration for an entity type.</summary>
+  /// <typeparam name="TEntity">The entity type to be configured.</typeparam>
   public abstract class EntityTypeConfigurationBase<TEntity>
     : IEntityTypeConfiguration<TEntity>
     where TEntity : EntityBase
   {
     private const string DescriminatorPropertyName = "__type";
 
+    private readonly string _containerName;
+
+    /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Configurations.EntityTypeConfigurationBase{TEntity}"/> class.</summary>
+    /// <param name="containerName">An object that represents a name of a container.</param>
+    protected EntityTypeConfigurationBase(string containerName)
+    {
+      _containerName = containerName ?? throw new ArgumentNullException(nameof(containerName));
+    }
+
+    /// <summary>Configures the entity of type <typeparamref name="TEntity" />.</summary>
+    /// <param name="builder">An object that provides a simple API to configure the entity type.</param>
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-      builder.ToContainer("todo-list-container");
+      builder.ToContainer(_containerName);
 
       builder.HasKey(entity => entity.Id);
       builder.HasPartitionKey(entity => entity.TodoListId);
