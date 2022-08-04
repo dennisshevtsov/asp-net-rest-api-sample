@@ -51,6 +51,12 @@ namespace AspNetRestApiSample.Api.Controllers
       return Task.FromResult<IActionResult>(Ok());
     }
 
+    /// <summary>Handles the update a todo list task command request.</summary>
+    /// <param name="command">An object that represents data to add a task to a todo list.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpPost("task/{todoListTaskId}", Name = nameof(TodoListTaskController.UpdateTodoListTask))]
+    [Consumes("application/json")]
     public Task<IActionResult> UpdateTodoListTask(
       [FromBody] UpdateTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
