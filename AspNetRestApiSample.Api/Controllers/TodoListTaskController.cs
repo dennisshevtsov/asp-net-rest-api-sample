@@ -12,6 +12,11 @@ namespace AspNetRestApiSample.Api.Controllers
   [Route("api/todo-list/{todoListId}")]
   public sealed class TodoListTaskController : ControllerBase
   {
+    /// <summary>Handles the get todo list task query request.</summary>
+    /// <param name="query">An object that represents conditions to query a TODO list task.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpGet("task/{todoListTaskId}", Name = nameof(TodoListTaskController.GetTodoListTask))]
     public Task<IActionResult> GetTodoListTask(
       [FromRoute] GetTodoListTaskRequestDto query,
       CancellationToken cancellationToken)
