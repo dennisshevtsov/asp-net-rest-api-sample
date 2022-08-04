@@ -52,10 +52,10 @@ namespace AspNetRestApiSample.Api.Controllers
     }
 
     /// <summary>Handles the update a todo list task command request.</summary>
-    /// <param name="command">An object that represents data to add a task to a todo list.</param>
+    /// <param name="command">An object that represents data to update todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    [HttpPost("task/{todoListTaskId}", Name = nameof(TodoListTaskController.UpdateTodoListTask))]
+    [HttpPut("task/{todoListTaskId}", Name = nameof(TodoListTaskController.UpdateTodoListTask))]
     [Consumes("application/json")]
     public Task<IActionResult> UpdateTodoListTask(
       [FromBody] UpdateTodoListTaskRequestDto command,
@@ -64,6 +64,12 @@ namespace AspNetRestApiSample.Api.Controllers
       return Task.FromResult<IActionResult>(Ok());
     }
 
+    /// <summary>Handles the delete a todo list task command request.</summary>
+    /// <param name="command">An object that represents data to delete a todo list task.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpDelete("task/{todoListTaskId}", Name = nameof(TodoListTaskController.DeleteTodoListTask))]
+    [Consumes("application/json")]
     public Task<IActionResult> DeleteTodoListTask(
       [FromRoute] DeleteTodoListTaskRequestDto command,
       CancellationToken cancellationToken)

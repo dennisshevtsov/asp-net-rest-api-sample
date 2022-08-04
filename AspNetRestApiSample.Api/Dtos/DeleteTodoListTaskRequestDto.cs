@@ -4,7 +4,15 @@
 
 namespace AspNetRestApiSample.Api.Dtos
 {
-  public sealed class DeleteTodoListTaskRequestDto
+  using AspNetRestApiSample.Api.Indentities;
+
+  /// <summary>Represents data to delete a todo list task.</summary>
+  public sealed class DeleteTodoListTaskRequestDto : ITodoListIdentity, ITodoListTaskIdentity
   {
+    /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
+    public Guid TodoListId { get; set; }
+
+    /// <summary>Gets/sets an object that represents an ID of a todo list task.</summary>
+    public Guid TodoListTaskId { get; set; }
   }
 }
