@@ -17,6 +17,7 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet("task/{todoListTaskId}", Name = nameof(TodoListTaskController.GetTodoListTask))]
+    [Consumes("application/json")]
     public Task<IActionResult> GetTodoListTask(
       [FromRoute] GetTodoListTaskRequestDto query,
       CancellationToken cancellationToken)
@@ -24,6 +25,12 @@ namespace AspNetRestApiSample.Api.Controllers
       return Task.FromResult<IActionResult>(Ok());
     }
 
+    /// <summary>Handles the search todo list tasks query request.</summary>
+    /// <param name="query">An object that represents conditions to query todo list tasks.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpGet("task", Name = nameof(TodoListTaskController.SearchTodoListTasks))]
+    [Consumes("application/json")]
     public Task<IActionResult> SearchTodoListTasks(
       [FromRoute] SearchTodoListTasksRequestDto query,
       CancellationToken cancellationToken)
