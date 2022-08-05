@@ -26,7 +26,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task GetTodoListTest_Should_Return_Not_Found()
+    public async Task GetTodoList_Should_Return_Not_Found()
     {
       _todoListServiceMock.Setup(service => service.GetDetachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
                           .ReturnsAsync(default(TodoListEntity))
@@ -47,7 +47,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task GetTodoListTest_Should_Return_Ok()
+    public async Task GetTodoList_Should_Return_Ok()
     {
       var todoListId = Guid.NewGuid();
       var todoListEntity = new TodoListEntity
@@ -94,7 +94,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task SearchTodoListsTest_Should_Return_Ok()
+    public async Task SearchTodoLists_Should_Return_Ok()
     {
       var searchTodoListsRecordResponseDtos = new[]
       {
@@ -124,7 +124,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task AddTodoListTest_Should_Return_Ok()
+    public async Task AddTodoList_Should_Return_Ok()
     {
       var addTodoListResponseDto = new AddTodoListResponseDto
       {
@@ -156,7 +156,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task UpdateTodoListTest_Should_Return_Not_Found()
+    public async Task UpdateTodoList_Should_Return_Not_Found()
     {
       _todoListServiceMock.Setup(service => service.GetAttachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
                           .ReturnsAsync(default(TodoListEntity))
@@ -179,7 +179,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task UpdateTodoListTest_Should_Return_No_Content()
+    public async Task UpdateTodoList_Should_Return_No_Content()
     {
       var todoListId = Guid.NewGuid();
       var todoListEntity = new TodoListEntity
@@ -216,7 +216,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task DeleteTodoListTest_Should_Return_Not_Found()
+    public async Task DeleteTodoList_Should_Return_Not_Found()
     {
       _todoListServiceMock.Setup(service => service.GetAttachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
                           .ReturnsAsync(default(TodoListEntity))
@@ -237,7 +237,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task DeleteTodoListTest_Should_Return_No_Content()
+    public async Task DeleteTodoList_Should_Return_No_Content()
     {
       var todoListId = Guid.NewGuid();
       var todoListEntity = new TodoListEntity

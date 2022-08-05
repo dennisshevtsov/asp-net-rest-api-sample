@@ -10,12 +10,12 @@ namespace AspNetRestApiSample.Api.Controllers
 
   /// <summary>Provides a simple API to handle HTTP requests.</summary>
   [ApiController]
-  [Route("api/todo-list/{todoListId}")]
+  [Route(TodoListTaskController.TodoListTaskRoute)]
   public sealed class TodoListTaskController : ControllerBase
   {
     private const string ContentType = "application/json";
 
-    private const string TodoListRoute = "api/todo-list/{todoListId}/task";
+    private const string TodoListTaskRoute = "api/todo-list/{todoListId}/task";
     private const string GetTodoListTaskRoute = "{todoListTaskId}";
     private const string UpdateTodoListTaskRoute = TodoListTaskController.GetTodoListTaskRoute;
     private const string DeleteTodoListTaskRoute = TodoListTaskController.GetTodoListTaskRoute;
