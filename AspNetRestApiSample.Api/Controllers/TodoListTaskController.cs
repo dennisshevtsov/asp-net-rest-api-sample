@@ -77,6 +77,12 @@ namespace AspNetRestApiSample.Api.Controllers
       return Task.FromResult<IActionResult>(Ok());
     }
 
+    /// <summary>Handles the delete a todo list task command request.</summary>
+    /// <param name="command">An object that represents data to complete a todo list task.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    [HttpPost("task/{todoListTaskId}/complete", Name = nameof(TodoListTaskController.CompleteTodoListTask))]
+    [Consumes("application/json")]
     public Task<IActionResult> CompleteTodoListTask(
       [FromRoute] CompleteTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
