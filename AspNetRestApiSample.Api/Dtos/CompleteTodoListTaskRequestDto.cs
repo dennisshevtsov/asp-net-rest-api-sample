@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-using AspNetRestApiSample.Api.Indentities;
-
 namespace AspNetRestApiSample.Api.Dtos
 {
+  using AspNetRestApiSample.Api.Indentities;
+
   /// <summary>Represents data to complete a todo list task.</summary>
   public sealed class CompleteTodoListTaskRequestDto : ITodoListIdentity, ITodoListTaskIdentity
   {
