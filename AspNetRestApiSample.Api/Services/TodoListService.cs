@@ -29,8 +29,9 @@ namespace AspNetRestApiSample.Api.Services
     public Task<TodoListEntity?> GetDetachedTodoListAsync(
       ITodoListIdentity query, CancellationToken cancellationToken)
       => _dbContext.Set<TodoListEntity>()
+                   .WithPartitionKey(query.TodoListId.ToString())
                    .AsNoTracking()
-                   .Where(entity => entity.TodoListId == query.TodoListId)
+                   .Where(entity => entity.Id == query.TodoListId)
                    .FirstOrDefaultAsync(cancellationToken);
 
     /// <summary>Gets an attached todo list entity.</summary>
@@ -40,7 +41,8 @@ namespace AspNetRestApiSample.Api.Services
     public Task<TodoListEntity?> GetAttachedTodoListAsync(
       ITodoListIdentity query, CancellationToken cancellationToken)
       => _dbContext.Set<TodoListEntity>()
-                   .Where(entity => entity.TodoListId == query.TodoListId)
+                   .WithPartitionKey(query.TodoListId.ToString())
+                   .Where(entity => entity.Id == query.TodoListId)
                    .FirstOrDefaultAsync(cancellationToken);
 
     /// <summary>Gets a todo list response DTO.</summary>
