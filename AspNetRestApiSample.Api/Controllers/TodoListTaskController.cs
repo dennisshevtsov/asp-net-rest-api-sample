@@ -4,9 +4,12 @@
 
 namespace AspNetRestApiSample.Api.Controllers
 {
+  using System;
+
   using Microsoft.AspNetCore.Mvc;
 
   using AspNetRestApiSample.Api.Dtos;
+  using AspNetRestApiSample.Api.Services;
 
   /// <summary>Provides a simple API to handle HTTP requests.</summary>
   [ApiController]
@@ -22,17 +25,34 @@ namespace AspNetRestApiSample.Api.Controllers
     private const string CompleteTodoListTaskRoute = TodoListTaskController.GetTodoListTaskRoute + "/complete";
     private const string UncompleteTodoListTaskRoute = TodoListTaskController.GetTodoListTaskRoute + "/uncomplete";
 
+    private readonly ITodoListTaskService _todoListTaskService;
+
+    /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Controllers.TodoListTaskController"/> class.</summary>
+    /// <param name="todoListTaskService">An object that provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</param>
+    public TodoListTaskController(ITodoListTaskService todoListTaskService)
+    {
+      _todoListTaskService = todoListTaskService ?? throw new ArgumentNullException(nameof(todoListTaskService));
+    }
+
     /// <summary>Handles the get todo list task query request.</summary>
     /// <param name="query">An object that represents conditions to query a TODO list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet(TodoListTaskController.GetTodoListTaskRoute, Name = nameof(TodoListTaskController.GetTodoListTask))]
     [Consumes(TodoListTaskController.ContentType)]
-    public Task<IActionResult> GetTodoListTask(
+    public async Task<IActionResult> GetTodoListTask(
       [FromRoute] GetTodoListTaskRequestDto query,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult<IActionResult>(Ok());
+      var todoListTaskEntity = await _todoListTaskService.GetDetachedTodoListTaskEntityAsync(
+        query, cancellationToken);
+
+      if (todoListTaskEntity == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(_todoListTaskService.GetTodoListTask(todoListTaskEntity));
     }
 
     /// <summary>Handles the search todo list tasks query request.</summary>
