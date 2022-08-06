@@ -39,7 +39,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="query">An object that represents conditions to query TODO list tasks.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public Task<SearchTodoListTasksRecordRequestDto[]> SearchTodoListTasksAsync(
+    public Task<SearchTodoListTasksRecordResponseDto[]> SearchTodoListTasksAsync(
       SearchTodoListTasksRequestDto query, CancellationToken cancellationToken);
   }
 }
