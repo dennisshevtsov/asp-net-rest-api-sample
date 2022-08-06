@@ -5,47 +5,83 @@
 namespace AspNetRestApiSample.Api.Tests.Controllers
 {
   using Microsoft.AspNetCore.Mvc;
+  using Moq;
 
   using AspNetRestApiSample.Api.Controllers;
 
   [TestClass]
   public sealed class TodoListTaskControllerTest
   {
+    private CancellationToken _cancellationToken;
+
 #pragma warning disable CS8618
+    private Mock<ITodoListTaskService> _todoListTaskServiceMock;
     private TodoListTaskController _todoListTaskController;
 #pragma warning restore CS8618
 
     [TestInitialize]
     public void Initialize()
     {
-      _todoListTaskController = new TodoListTaskController();
+      _cancellationToken = CancellationToken.None;
+
+      _todoListTaskServiceMock = new Mock<ITodoListTaskService>();
+      _todoListTaskController = new TodoListTaskController(_todoListTaskServiceMock.Object);
     }
 
     [TestMethod]
     public async Task GetTodoListTask_Should_Return_Not_Found()
     {
+      _todoListTaskServiceMock.Setup(service => service.GetDetachedTodoListTaskEntityAsync(It.IsAny<GetTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .Verifiable();
+
       var query = new GetTodoListTaskRequestDto
       {
         TodoListId = Guid.NewGuid(),
         TodoListTaskId = Guid.NewGuid(),
       };
 
-      var actionResult = await _todoListTaskController.GetTodoListTask(query, CancellationToken.None);
+      var actionResult = await _todoListTaskController.GetTodoListTask(query, _cancellationToken);
 
       Assert.IsNotNull(actionResult);
       Assert.IsTrue(actionResult is NotFoundResult);
+
+      _todoListTaskServiceMock.Verify(service => service.GetDetachedTodoListTaskEntityAsync(query, _cancellationToken));
+      _todoListTaskServiceMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
     public async Task GetTodoListTask_Should_Return_Ok()
     {
-      var query = new GetTodoListTaskRequestDto
+      var todoListTaskId = Guid.NewGuid();
+      var todoListId = Guid.NewGuid();
+      var todoListTaskEntity = new TodoListTaskEntity
       {
-        TodoListId = Guid.NewGuid(),
-        TodoListTaskId = Guid.NewGuid(),
+        Id = todoListTaskId,
+        TodoListId = todoListId,
       };
 
-      var actionResult = await _todoListTaskController.GetTodoListTask(query, CancellationToken.None);
+      _todoListTaskServiceMock.Setup(service => service.GetDetachedTodoListTaskEntityAsync(It.IsAny<GetTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(todoListTaskEntity)
+                              .Verifiable();
+
+      var getTodoListTaskResponseDto = new GetTodoListTaskResponseDto
+      {
+        TodoListId = todoListId,
+        TodoListTaskId = todoListTaskId,
+      };
+
+      _todoListTaskServiceMock.Setup(service => service.GetTodoListTask(It.IsAny<TodoListTaskEntity>()))
+                              .Returns(getTodoListTaskResponseDto)
+                              .Verifiable();
+
+      var query = new GetTodoListTaskRequestDto
+      {
+        TodoListId = todoListId,
+        TodoListTaskId = todoListTaskId,
+      };
+
+      var actionResult = await _todoListTaskController.GetTodoListTask(query, _cancellationToken);
 
       Assert.IsNotNull(actionResult);
       Assert.IsTrue(actionResult is OkObjectResult);
@@ -53,6 +89,11 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       var okObjectResult = (OkObjectResult)actionResult;
 
       Assert.IsNotNull(okObjectResult.Value);
+      Assert.AreEqual(getTodoListTaskResponseDto, okObjectResult.Value);
+
+      _todoListTaskServiceMock.Verify(service => service.GetDetachedTodoListTaskEntityAsync(query, _cancellationToken));
+      _todoListTaskServiceMock.Verify(service => service.GetTodoListTask(todoListTaskEntity));
+      _todoListTaskServiceMock.VerifyNoOtherCalls();
     }
   }
 }
