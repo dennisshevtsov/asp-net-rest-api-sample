@@ -61,11 +61,11 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet(Name = nameof(TodoListTaskController.SearchTodoListTasks))]
     [Consumes(TodoListTaskController.ContentType)]
-    public Task<IActionResult> SearchTodoListTasks(
+    public async Task<IActionResult> SearchTodoListTasks(
       [FromRoute] SearchTodoListTasksRequestDto query,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult<IActionResult>(Ok());
+      return Ok(await _todoListTaskService.SearchTodoListTasksAsync(query, cancellationToken));
     }
 
     /// <summary>Handles the add a task to a todo list command request.</summary>

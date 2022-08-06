@@ -4,7 +4,6 @@
 
 namespace AspNetRestApiSample.Api.Dtos
 {
-
   /// <summary>Represents conditions to query todo lists.</summary>
   public sealed class SearchTodoListsRequestDto
   {
