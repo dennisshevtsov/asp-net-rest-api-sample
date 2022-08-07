@@ -8,6 +8,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
   using Moq;
 
   using AspNetRestApiSample.Api.Controllers;
+  using AspNetRestApiSample.Api.Indentities;
 
   [TestClass]
   public sealed class TodoListTaskControllerTest
@@ -15,6 +16,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     private CancellationToken _cancellationToken;
 
 #pragma warning disable CS8618
+    private Mock<ITodoListService> _todoListServiceMock;
     private Mock<ITodoListTaskService> _todoListTaskServiceMock;
     private TodoListTaskController _todoListTaskController;
 #pragma warning restore CS8618
@@ -24,8 +26,12 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     {
       _cancellationToken = CancellationToken.None;
 
+      _todoListServiceMock = new Mock<ITodoListService>();
       _todoListTaskServiceMock = new Mock<ITodoListTaskService>();
-      _todoListTaskController = new TodoListTaskController(_todoListTaskServiceMock.Object);
+
+      _todoListTaskController = new TodoListTaskController(
+        _todoListServiceMock.Object,
+        _todoListTaskServiceMock.Object);
     }
 
     [TestMethod]
@@ -125,6 +131,26 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
 
       _todoListTaskServiceMock.Verify(service => service.SearchTodoListTasksAsync(query, CancellationToken.None));
       _todoListTaskServiceMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task AddTodoListTask_Should_Return_Not_Found()
+    {
+      _todoListServiceMock.Setup(service => service.GetDetachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(default(TodoListEntity))
+                          .Verifiable();
+
+      var command = new AddTodoListTaskRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var actionResult = await _todoListTaskController.AddTodoListTask(command, _cancellationToken);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
     }
   }
 }
