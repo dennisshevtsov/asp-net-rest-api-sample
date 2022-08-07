@@ -25,12 +25,15 @@ namespace AspNetRestApiSample.Api.Controllers
     private const string CompleteTodoListTaskRoute = TodoListTaskController.GetTodoListTaskRoute + "/complete";
     private const string UncompleteTodoListTaskRoute = TodoListTaskController.GetTodoListTaskRoute + "/uncomplete";
 
+    private readonly ITodoListService _todoListService;
     private readonly ITodoListTaskService _todoListTaskService;
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Controllers.TodoListTaskController"/> class.</summary>
+    /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Api.Entities.TodoListEntity"/> class.</param>
     /// <param name="todoListTaskService">An object that provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</param>
-    public TodoListTaskController(ITodoListTaskService todoListTaskService)
+    public TodoListTaskController(ITodoListService todoListService, ITodoListTaskService todoListTaskService)
     {
+      _todoListService = todoListService ?? throw new ArgumentNullException(nameof(todoListService));
       _todoListTaskService = todoListTaskService ?? throw new ArgumentNullException(nameof(todoListTaskService));
     }
 
@@ -74,11 +77,18 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpPost(Name = nameof(TodoListTaskController.AddTodoListTask))]
     [Consumes(TodoListTaskController.ContentType)]
-    public Task<IActionResult> AddTodoListTask(
+    public async Task<IActionResult> AddTodoListTask(
       [FromBody] AddTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult<IActionResult>(Ok());
+      var todoListEntity = await _todoListService.GetDetachedTodoListAsync(command, cancellationToken);
+
+      if (todoListEntity == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(await _todoListTaskService.AddTodoListTask(command, cancellationToken));
     }
 
     /// <summary>Handles the update a todo list task command request.</summary>
