@@ -152,5 +152,51 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       Assert.IsNotNull(actionResult);
       Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
     }
+
+    [TestMethod]
+    public async Task AddTodoListTask_Should_Return_Ok()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+      };
+
+      _todoListServiceMock.Setup(service => service.GetDetachedTodoListAsync(It.IsAny<ITodoListIdentity>(), It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(todoListEntity)
+                          .Verifiable();
+
+      var todoListTaskId = Guid.NewGuid();
+
+      _todoListTaskServiceMock.Setup(service => service.AddTodoListTask(It.IsAny<AddTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(new AddTodoListTaskResponseDto
+                              {
+                                TodoListId = todoListId,
+                                TodoListTaskId = todoListTaskId,
+                              })
+                              .Verifiable();
+
+      var command = new AddTodoListTaskRequestDto
+      {
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var actionResult = await _todoListTaskController.AddTodoListTask(command, _cancellationToken);
+
+      Assert.IsNotNull(actionResult);
+
+      var okObjectResult = actionResult as OkObjectResult;
+
+      Assert.IsNotNull(okObjectResult);
+      Assert.IsNotNull(okObjectResult.Value);
+
+      var addTodoListTaskResponseDto = okObjectResult.Value as AddTodoListTaskResponseDto;
+
+      Assert.IsNotNull(addTodoListTaskResponseDto);
+      Assert.AreEqual(todoListId, addTodoListTaskResponseDto.TodoListId);
+      Assert.AreEqual(todoListTaskId, addTodoListTaskResponseDto.TodoListTaskId);
+    }
   }
 }
