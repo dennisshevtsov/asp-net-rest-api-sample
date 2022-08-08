@@ -198,5 +198,31 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       Assert.AreEqual(todoListId, addTodoListTaskResponseDto.TodoListId);
       Assert.AreEqual(todoListTaskId, addTodoListTaskResponseDto.TodoListTaskId);
     }
+
+    [TestMethod]
+    public async Task UpdateTodoListTask_Should_Return_Not_Found()
+    {
+      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .Verifiable();
+
+      var command = new UpdateTodoListTaskRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+        TodoListTaskId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var actionResult = await _todoListTaskController.UpdateTodoListTask(command, _cancellationToken);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
+
+      _todoListTaskServiceMock.Verify(service => service.GetAttachedTodoListTaskEntityAsync(command, _cancellationToken));
+      _todoListTaskServiceMock.VerifyNoOtherCalls();
+
+      _todoListServiceMock.VerifyNoOtherCalls();
+    }
   }
 }
