@@ -10,7 +10,7 @@ namespace AspNetRestApiSample.Api.Configurations
   using AspNetRestApiSample.Api.Entities;
 
   /// <summary>Allows configuration for an entity type.</summary>
-  public sealed class TodoListEntityTypeConfiguration : EntityTypeConfigurationBase<TodoListEntity>
+  public sealed class TodoListEntityTypeConfiguration : TodoListEntityTypeConfigurationBase<TodoListEntity>
   {
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Configurations.TodoListEntityTypeConfiguration"/> class.</summary>
     /// <param name="containerName">An object that represents a name of a container.</param>
@@ -23,9 +23,6 @@ namespace AspNetRestApiSample.Api.Configurations
     public override void Configure(EntityTypeBuilder<TodoListEntity> builder)
     {
       base.Configure(builder);
-
-      builder.Property(entity => entity.Title).ToJsonProperty("title");
-      builder.Property(entity => entity.Description).ToJsonProperty("description");
 
       builder.HasMany(entity => entity.Tasks)
              .WithOne(entity => entity.TodoList)

@@ -15,17 +15,17 @@ namespace AspNetRestApiSample.Api.Configurations
 
   /// <summary>Allows configuration for an entity type.</summary>
   /// <typeparam name="TEntity">The entity type to be configured.</typeparam>
-  public abstract class EntityTypeConfigurationBase<TEntity>
+  public abstract class TodoListEntityTypeConfigurationBase<TEntity>
     : IEntityTypeConfiguration<TEntity>
-    where TEntity : EntityBase
+    where TEntity : TodoListEntityBase
   {
     private const string DescriminatorPropertyName = "__type";
 
     private readonly string _containerName;
 
-    /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Configurations.EntityTypeConfigurationBase{TEntity}"/> class.</summary>
+    /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Configurations.TodoListEntityTypeConfigurationBase{TEntity}"/> class.</summary>
     /// <param name="containerName">An object that represents a name of a container.</param>
-    protected EntityTypeConfigurationBase(string containerName)
+    protected TodoListEntityTypeConfigurationBase(string containerName)
     {
       _containerName = containerName ?? throw new ArgumentNullException(nameof(containerName));
     }
@@ -39,11 +39,14 @@ namespace AspNetRestApiSample.Api.Configurations
       builder.HasKey(entity => entity.Id);
       builder.HasPartitionKey(entity => entity.TodoListId);
 
-      builder.Property(typeof(string), EntityTypeConfigurationBase<TEntity>.DescriminatorPropertyName).HasValueGenerator<DescriminatorValueGenerator>();
-      builder.HasDiscriminator(EntityTypeConfigurationBase<TEntity>.DescriminatorPropertyName, typeof(string));
+      builder.Property(typeof(string), TodoListEntityTypeConfigurationBase<TEntity>.DescriminatorPropertyName).HasValueGenerator<DescriminatorValueGenerator>();
+      builder.HasDiscriminator(TodoListEntityTypeConfigurationBase<TEntity>.DescriminatorPropertyName, typeof(string));
 
       builder.Property(entity => entity.Id).ToJsonProperty("id").HasValueGenerator<GuidValueGenerator>();
       builder.Property(entity => entity.TodoListId).ToJsonProperty("todoListId").HasValueGenerator<PartitionKeyValueGenerator>();
+
+      builder.Property(entity => entity.Title).ToJsonProperty("title");
+      builder.Property(entity => entity.Description).ToJsonProperty("description");
     }
   }
 }

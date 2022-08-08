@@ -7,12 +7,18 @@ namespace AspNetRestApiSample.Api.Entities
   using AspNetRestApiSample.Api.Indentities;
 
   /// <summary>Represents a base of an entity.</summary>
-  public abstract class EntityBase : ITodoListIdentity
+  public abstract class TodoListEntityBase : ITodoListIdentity
   {
     /// <summary>Gets/sets an object that represents a primary key of an entity.</summary>
     public Guid Id { get; set; }
 
     /// <summary>Gets/sets an object that represents a partition key of an entity.</summary>
     public Guid TodoListId { get; set; }
+
+    /// <summary>Gets/sets an object that represents a title of a todo list.</summary>
+    public string? Title { get; set; }
+
+    /// <summary>Gets/sets an object that represents a description of a todo list.</summary>
+    public string? Description { get; set; }
   }
 }

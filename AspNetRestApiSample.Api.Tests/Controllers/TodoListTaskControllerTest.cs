@@ -224,5 +224,48 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
 
       _todoListServiceMock.VerifyNoOtherCalls();
     }
+
+    [TestMethod]
+    public async Task UpdateTodoListTask_Should_Return_Ok()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListTaskId = Guid.NewGuid();
+
+      var todoListTaskEntity = new TodoListTaskEntity
+      {
+        Id = todoListTaskId,
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+
+      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(todoListTaskEntity)
+                              .Verifiable();
+
+      _todoListTaskServiceMock.Setup(service => service.UpdateTodoListTaskAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntity>(), It.IsAny<CancellationToken>()))
+                              .Returns(Task.CompletedTask)
+                              .Verifiable();
+
+      var command = new UpdateTodoListTaskRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+        TodoListTaskId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var actionResult = await _todoListTaskController.UpdateTodoListTask(command, _cancellationToken);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsInstanceOfType(actionResult, typeof(OkResult));
+
+      _todoListTaskServiceMock.Verify(service => service.GetAttachedTodoListTaskEntityAsync(command, _cancellationToken));
+      _todoListTaskServiceMock.Verify(service => service.UpdateTodoListTaskAsync(command, todoListTaskEntity, _cancellationToken));
+      _todoListTaskServiceMock.VerifyNoOtherCalls();
+
+      _todoListServiceMock.VerifyNoOtherCalls();
+    }
   }
 }

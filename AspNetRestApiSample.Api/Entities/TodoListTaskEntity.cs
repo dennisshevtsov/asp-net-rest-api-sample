@@ -5,7 +5,7 @@
 namespace AspNetRestApiSample.Api.Entities
 {
   /// <summary>Represents data of a todo list task.</summary>
-  public sealed class TodoListTaskEntity : EntityBase
+  public sealed class TodoListTaskEntity : TodoListEntityBase
   {
     /// <summary>Gets/sets an object that represents data of a TODO list.</summary>
     public TodoListEntity? TodoList { get; set; }
