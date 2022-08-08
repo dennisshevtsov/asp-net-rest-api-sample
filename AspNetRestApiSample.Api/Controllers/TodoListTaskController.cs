@@ -97,11 +97,20 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpPut(TodoListTaskController.UpdateTodoListTaskRoute, Name = nameof(TodoListTaskController.UpdateTodoListTask))]
     [Consumes(TodoListTaskController.ContentType)]
-    public Task<IActionResult> UpdateTodoListTask(
+    public async Task<IActionResult> UpdateTodoListTask(
       [FromBody] UpdateTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult<IActionResult>(Ok());
+      var todoListTaskEntity = await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(command, cancellationToken);
+
+      if (todoListTaskEntity == null)
+      {
+        return NotFound();
+      }
+
+      await _todoListTaskService.UpdateTodoListTaskAsync(command, todoListTaskEntity, cancellationToken);
+
+      return Ok();
     }
 
     /// <summary>Handles the delete a todo list task command request.</summary>
