@@ -53,10 +53,16 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="command">An object that represents data to update todo list task.</param>
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
-    /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
+    /// <returns>An object that represents an asynchronous operation.</returns>
     public Task UpdateTodoListTaskAsync(
       UpdateTodoListTaskRequestDto command,
       TodoListTaskEntity todoListTaskEntity,
       CancellationToken cancellationToken);
+
+    /// <summary>Deletes a task from a TODO list.</summary>
+    /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
+    /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
+    /// <returns>An object that represents an asynchronous operation.</returns>
+    public Task DeleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken);
   }
 }
