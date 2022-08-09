@@ -267,5 +267,29 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
 
       _todoListServiceMock.VerifyNoOtherCalls();
     }
+
+    [TestMethod]
+    public async Task DeleteTodoListTask_Should_Return_Not_Found()
+    {
+      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<DeleteTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .Verifiable();
+
+      var command = new DeleteTodoListTaskRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+        TodoListTaskId = Guid.NewGuid(),
+      };
+
+      var actionResult = await _todoListTaskController.DeleteTodoListTask(command, _cancellationToken);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
+
+      _todoListTaskServiceMock.Verify(service => service.GetAttachedTodoListTaskEntityAsync(command, _cancellationToken));
+      _todoListTaskServiceMock.VerifyNoOtherCalls();
+
+      _todoListServiceMock.Verify();
+    }
   }
 }
