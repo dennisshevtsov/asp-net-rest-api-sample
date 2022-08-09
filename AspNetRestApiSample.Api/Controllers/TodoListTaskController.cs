@@ -110,7 +110,7 @@ namespace AspNetRestApiSample.Api.Controllers
 
       await _todoListTaskService.UpdateTodoListTaskAsync(command, todoListTaskEntity, cancellationToken);
 
-      return Ok();
+      return NoContent();
     }
 
     /// <summary>Handles the delete a todo list task command request.</summary>

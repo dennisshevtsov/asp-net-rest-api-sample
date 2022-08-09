@@ -226,7 +226,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     }
 
     [TestMethod]
-    public async Task UpdateTodoListTask_Should_Return_Ok()
+    public async Task UpdateTodoListTask_Should_Return_No_Content()
     {
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
@@ -259,7 +259,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       var actionResult = await _todoListTaskController.UpdateTodoListTask(command, _cancellationToken);
 
       Assert.IsNotNull(actionResult);
-      Assert.IsInstanceOfType(actionResult, typeof(OkResult));
+      Assert.IsInstanceOfType(actionResult, typeof(NoContentResult));
 
       _todoListTaskServiceMock.Verify(service => service.GetAttachedTodoListTaskEntityAsync(command, _cancellationToken));
       _todoListTaskServiceMock.Verify(service => service.UpdateTodoListTaskAsync(command, todoListTaskEntity, _cancellationToken));
