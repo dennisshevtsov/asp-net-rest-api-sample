@@ -329,5 +329,67 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
 
       _todoListServiceMock.Verify();
     }
+
+    [TestMethod]
+    public async Task CompleteTodoListTask_Should_Return_Not_Found()
+    {
+      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<CompleteTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .Verifiable();
+
+      var command = new CompleteTodoListTaskRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+        TodoListTaskId = Guid.NewGuid(),
+      };
+
+      var actionResult = await _todoListTaskController.CompleteTodoListTask(command, _cancellationToken);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
+
+      _todoListTaskServiceMock.Verify(service => service.GetAttachedTodoListTaskEntityAsync(command, _cancellationToken));
+      _todoListTaskServiceMock.VerifyNoOtherCalls();
+
+      _todoListServiceMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task CompleteTodoListTask_Should_Return_No_Content()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListTaskId = Guid.NewGuid();
+
+      var todoListTaskEntity = new TodoListTaskEntity
+      {
+        Id = todoListTaskId,
+        TodoListId = todoListId,
+      };
+
+      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<CompleteTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(todoListTaskEntity)
+                              .Verifiable();
+
+      _todoListTaskServiceMock.Setup(service => service.CompleteTodoListTaskAsync(It.IsAny<TodoListTaskEntity>(), It.IsAny<CancellationToken>()))
+                              .Returns(Task.CompletedTask)
+                              .Verifiable();
+
+      var command = new CompleteTodoListTaskRequestDto
+      {
+        TodoListId = todoListId,
+        TodoListTaskId = todoListTaskId,
+      };
+
+      var actionResult = await _todoListTaskController.CompleteTodoListTask(command, _cancellationToken);
+
+      Assert.IsNotNull(actionResult);
+      Assert.IsInstanceOfType(actionResult, typeof(NoContentResult));
+
+      _todoListTaskServiceMock.Verify(service => service.GetAttachedTodoListTaskEntityAsync(command, _cancellationToken));
+      _todoListTaskServiceMock.Verify(service => service.CompleteTodoListTaskAsync(todoListTaskEntity, _cancellationToken));
+      _todoListTaskServiceMock.VerifyNoOtherCalls();
+
+      _todoListServiceMock.VerifyNoOtherCalls();
+    }
   }
 }
