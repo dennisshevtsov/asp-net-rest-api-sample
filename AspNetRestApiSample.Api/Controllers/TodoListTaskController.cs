@@ -135,7 +135,7 @@ namespace AspNetRestApiSample.Api.Controllers
       return NoContent();
     }
 
-    /// <summary>Handles the delete a todo list task command request.</summary>
+    /// <summary>Handles the complete a todo list task command request.</summary>
     /// <param name="command">An object that represents data to complete a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
@@ -157,7 +157,7 @@ namespace AspNetRestApiSample.Api.Controllers
       return NoContent();
     }
 
-    /// <summary>Handles the delete a todo list task command request.</summary>
+    /// <summary>Handles the uncomplete a todo list task command request.</summary>
     /// <param name="command">An object that represents data to uncomplete a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
