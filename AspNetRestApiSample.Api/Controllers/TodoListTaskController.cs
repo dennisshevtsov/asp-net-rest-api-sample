@@ -163,11 +163,20 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpPost(TodoListTaskController.UncompleteTodoListTaskRoute, Name = nameof(TodoListTaskController.UncompleteTodoListTask))]
     [Consumes(TodoListTaskController.ContentType)]
-    public Task<IActionResult> UncompleteTodoListTask(
+    public async Task<IActionResult> UncompleteTodoListTask(
       [FromRoute] UncompleteTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult<IActionResult>(NoContent());
+      var todoListTaskEntity = await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(command, cancellationToken);
+
+      if (todoListTaskEntity == null)
+      {
+        return NotFound();
+      }
+
+      await _todoListTaskService.UncompleteTodoListTaskAsync(todoListTaskEntity, cancellationToken);
+
+      return NoContent();
     }
   }
 }
