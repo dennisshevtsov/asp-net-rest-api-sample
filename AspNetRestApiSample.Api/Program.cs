@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITodoListService, TodoListService>();
+builder.Services.AddScoped<ITodoListTaskService, TodoListTaskService>();
 
 var app = builder.Build();
 

@@ -88,7 +88,7 @@ namespace AspNetRestApiSample.Api.Controllers
         return NotFound();
       }
 
-      return Ok(await _todoListTaskService.AddTodoListTask(command, cancellationToken));
+      return Ok(await _todoListTaskService.AddTodoListTaskAsync(command, cancellationToken));
     }
 
     /// <summary>Handles the update a todo list task command request.</summary>

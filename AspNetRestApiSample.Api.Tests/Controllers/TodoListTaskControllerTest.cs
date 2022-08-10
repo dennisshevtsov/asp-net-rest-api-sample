@@ -168,7 +168,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
 
       var todoListTaskId = Guid.NewGuid();
 
-      _todoListTaskServiceMock.Setup(service => service.AddTodoListTask(It.IsAny<AddTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.AddTodoListTaskAsync(It.IsAny<AddTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
                               .ReturnsAsync(new AddTodoListTaskResponseDto
                               {
                                 TodoListId = todoListId,
