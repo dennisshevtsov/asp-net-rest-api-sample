@@ -141,11 +141,20 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpPost(TodoListTaskController.CompleteTodoListTaskRoute, Name = nameof(TodoListTaskController.CompleteTodoListTask))]
     [Consumes(TodoListTaskController.ContentType)]
-    public Task<IActionResult> CompleteTodoListTask(
+    public async Task<IActionResult> CompleteTodoListTask(
       [FromRoute] CompleteTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult<IActionResult>(Ok());
+      var todoListTaskEntity = await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(command, cancellationToken);
+
+      if (todoListTaskEntity == null)
+      {
+        return NotFound();
+      }
+
+      await _todoListTaskService.CompleteTodoListTaskAsync(todoListTaskEntity, cancellationToken);
+
+      return NoContent();
     }
 
     /// <summary>Handles the delete a todo list task command request.</summary>
@@ -158,7 +167,7 @@ namespace AspNetRestApiSample.Api.Controllers
       [FromRoute] UncompleteTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Task.FromResult<IActionResult>(Ok());
+      return Task.FromResult<IActionResult>(NoContent());
     }
   }
 }
