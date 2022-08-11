@@ -54,9 +54,13 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public GetTodoListTaskResponseDto GetTodoListTask(TodoListTaskEntity todoListTaskEntity)
-    {
-      throw new NotImplementedException();
-    }
+      => new GetTodoListTaskResponseDto
+      {
+        TodoListTaskId = todoListTaskEntity.Id,
+        TodoListId = todoListTaskEntity.TodoListId,
+        Title = todoListTaskEntity.Title,
+        Description = todoListTaskEntity.Description,
+      };
 
     /// <summary>Gets a collection of TODO list tasks.</summary>
     /// <param name="query">An object that represents conditions to query TODO list tasks.</param>
