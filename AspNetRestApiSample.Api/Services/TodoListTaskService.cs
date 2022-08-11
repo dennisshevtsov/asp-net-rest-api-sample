@@ -4,6 +4,8 @@
 
 namespace AspNetRestApiSample.Api.Services
 {
+  using Microsoft.EntityFrameworkCore;
+
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Entities;
   using AspNetRestApiSample.Api.Indentities;
@@ -11,6 +13,15 @@ namespace AspNetRestApiSample.Api.Services
   /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</summary>
   public sealed class TodoListTaskService : ITodoListTaskService
   {
+    private readonly DbContext _dbContext;
+
+    /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Services.TodoListTaskService"/> class.</summary>
+    /// <param name="dbContext">An object that represents a session with the database and can be used to query and save instances of your entities.</param>
+    public TodoListTaskService(DbContext dbContext)
+    {
+      _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+    }
+
     /// <summary>Gets a attached todo list task entity.</summary>
     /// <typeparam name="TQuery">A type of a query.</typeparam>
     /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</param>
@@ -19,9 +30,10 @@ namespace AspNetRestApiSample.Api.Services
     public Task<TodoListTaskEntity?> GetAttachedTodoListTaskEntityAsync<TQuery>(
       TQuery query, CancellationToken cancellationToken)
       where TQuery : ITodoListIdentity, ITodoListTaskIdentity
-    {
-      throw new NotImplementedException();
-    }
+      => _dbContext.Set<TodoListTaskEntity>()
+                   .WithPartitionKey(query.TodoListId.ToString())
+                   .Where(entity => entity.Id == query.TodoListTaskId)
+                   .FirstOrDefaultAsync(cancellationToken);
 
     /// <summary>Gets a detached todo list task entity.</summary>
     /// <typeparam name="TQuery">A type of a query.</typeparam>
