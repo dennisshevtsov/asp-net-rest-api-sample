@@ -43,9 +43,11 @@ namespace AspNetRestApiSample.Api.Services
     public Task<TodoListTaskEntity?> GetDetachedTodoListTaskEntityAsync<TQuery>(
       TQuery query, CancellationToken cancellationToken)
       where TQuery : ITodoListIdentity, ITodoListTaskIdentity
-    {
-      throw new NotImplementedException();
-    }
+      => _dbContext.Set<TodoListTaskEntity>()
+                   .AsNoTracking()
+                   .WithPartitionKey(query.TodoListId.ToString())
+                   .Where(entity => entity.Id == query.TodoListTaskId)
+                   .FirstOrDefaultAsync(cancellationToken);
 
     /// <summary>Gets a todo list task response DTO.</summary>
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
