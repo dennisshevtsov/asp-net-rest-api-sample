@@ -56,5 +56,37 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       Assert.IsNotNull(todoListTaskEntity);
     }
+
+    [TestMethod]
+    public async Task GetDetachedTodoListTaskEntityAsync_Should_Return_Detached_Entity()
+    {
+      var asyncQueryProviderMock = new Mock<IAsyncQueryProvider>();
+
+      var queryableMock = new Mock<IQueryable<TodoListTaskEntity>>();
+      queryableMock.SetupGet(queryable => queryable.Provider)
+                   .Returns(asyncQueryProviderMock.Object);
+      queryableMock.SetupGet(queryable => queryable.Expression)
+                   .Returns(Expression.Constant(new EnumerableQuery<TodoListTaskEntity>(new TodoListTaskEntity[0])));
+
+      asyncQueryProviderMock.Setup(provider => provider.CreateQuery<TodoListTaskEntity>(It.IsAny<Expression>()))
+                            .Returns(queryableMock.Object);
+      asyncQueryProviderMock.Setup(provider => provider.ExecuteAsync<Task<TodoListTaskEntity>>(It.IsAny<Expression>(), It.IsAny<CancellationToken>()))
+                            .Returns(Task.FromResult(new TodoListTaskEntity()));
+
+      var dbSetMock = new Mock<DbSet<TodoListTaskEntity>>();
+      dbSetMock.As<IQueryable<TodoListTaskEntity>>()
+               .SetupGet(queryable => queryable.Provider)
+               .Returns(asyncQueryProviderMock.Object);
+      dbSetMock.As<IQueryable<TodoListTaskEntity>>()
+               .SetupGet(queryable => queryable.Expression)
+               .Returns(queryableMock.Object.Expression);
+
+      _dbContextMock.Setup(context => context.Set<TodoListTaskEntity>())
+                    .Returns(dbSetMock.Object);
+
+      var todoListTaskEntity = await _todoListTaskService.GetDetachedTodoListTaskEntityAsync(new GetTodoListTaskRequestDto(), CancellationToken.None);
+
+      Assert.IsNotNull(todoListTaskEntity);
+    }
   }
 }
