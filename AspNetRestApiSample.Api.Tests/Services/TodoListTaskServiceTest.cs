@@ -55,7 +55,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task GetAttachedTodoListTaskEntityAsync_Should_Return_Attached_Entity()
+    public async Task GetAttachedTodoListTaskEntityAsync_Should_Return_Entity()
     {
       _asyncQueryProviderMock.Setup(provider => provider.ExecuteAsync<Task<TodoListTaskEntity>>(It.IsAny<Expression>(), It.IsAny<CancellationToken>()))
                              .Returns(Task.FromResult(new TodoListTaskEntity()));
@@ -66,7 +66,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task GetDetachedTodoListTaskEntityAsync_Should_Return_Detached_Entity()
+    public async Task GetDetachedTodoListTaskEntityAsync_Should_Return_Entity()
     {
       _asyncQueryProviderMock.Setup(provider => provider.ExecuteAsync<Task<TodoListTaskEntity>>(It.IsAny<Expression>(), It.IsAny<CancellationToken>()))
                              .Returns(Task.FromResult(new TodoListTaskEntity()));
@@ -74,6 +74,27 @@ namespace AspNetRestApiSample.Api.Tests.Services
       var todoListTaskEntity = await _todoListTaskService.GetDetachedTodoListTaskEntityAsync(new GetTodoListTaskRequestDto(), CancellationToken.None);
 
       Assert.IsNotNull(todoListTaskEntity);
+    }
+
+    [TestMethod]
+    public void GetTodoListTask_Should_Return_Populated_Dto()
+    {
+      var todoListTaskEntity = new TodoListTaskEntity
+      {
+        Id = Guid.NewGuid(),
+        TodoListId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var getTodoListTaskResponseDto = _todoListTaskService.GetTodoListTask(todoListTaskEntity);
+
+      Assert.IsNotNull(getTodoListTaskResponseDto);
+
+      Assert.AreEqual(todoListTaskEntity.Id, getTodoListTaskResponseDto.TodoListTaskId);
+      Assert.AreEqual(todoListTaskEntity.TodoListId, getTodoListTaskResponseDto.TodoListId);
+      Assert.AreEqual(todoListTaskEntity.Title, getTodoListTaskResponseDto.Title);
+      Assert.AreEqual(todoListTaskEntity.Description, getTodoListTaskResponseDto.Description);
     }
   }
 }
