@@ -66,10 +66,32 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="query">An object that represents conditions to query TODO list tasks.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public Task<SearchTodoListTasksRecordResponseDto[]> SearchTodoListTasksAsync(
+    public async Task<SearchTodoListTasksRecordResponseDto[]> SearchTodoListTasksAsync(
       SearchTodoListTasksRequestDto query, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      var todoListTaskEntityCollection =
+        await _dbContext.Set<TodoListTaskEntity>()
+                        .AsNoTracking()
+                        .WithPartitionKey(query.TodoListId.ToString())
+                        .ToArrayAsync(cancellationToken);
+
+      var searchTodoListTasksRecordResponseDtoCollection =
+        new SearchTodoListTasksRecordResponseDto[todoListTaskEntityCollection.Length];
+
+      for (int i = 0; i < todoListTaskEntityCollection.Length; ++i)
+      {
+        var todoListTaskEntity = todoListTaskEntityCollection[i];
+
+        searchTodoListTasksRecordResponseDtoCollection[i] = new SearchTodoListTasksRecordResponseDto
+        {
+          TodoListId = todoListTaskEntity.TodoListId,
+          TodoListTaskId = todoListTaskEntity.Id,
+          Title = todoListTaskEntity.Title,
+          Description = todoListTaskEntity.Description,
+        };
+      }
+
+      return searchTodoListTasksRecordResponseDtoCollection;
     }
 
     /// <summary>Adds a new task for a TODO list.</summary>
