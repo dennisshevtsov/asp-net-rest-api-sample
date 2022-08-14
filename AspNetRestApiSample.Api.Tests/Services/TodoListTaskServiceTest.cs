@@ -119,6 +119,57 @@ namespace AspNetRestApiSample.Api.Tests.Services
       Assert.AreEqual(todoListTaskEntity.Description, getTodoListTaskResponseDto.Description);
     }
 
+    [TestMethod]
+    public async Task SearchTodoListTasksAsync_Should_Return_Populated_Dtos()
+    {
+      var todoListTaskEntityCollection = new[]
+      {
+        new TodoListTaskEntity
+        {
+          Id = Guid.NewGuid(),
+          TodoListId = Guid.NewGuid(),
+          Title = Guid.NewGuid().ToString(),
+          Description = Guid.NewGuid().ToString(),
+        },
+        new TodoListTaskEntity
+        {
+          Id = Guid.NewGuid(),
+          TodoListId = Guid.NewGuid(),
+          Title = Guid.NewGuid().ToString(),
+          Description = Guid.NewGuid().ToString(),
+        },
+        new TodoListTaskEntity
+        {
+          Id = Guid.NewGuid(),
+          TodoListId = Guid.NewGuid(),
+          Title = Guid.NewGuid().ToString(),
+          Description = Guid.NewGuid().ToString(),
+        },
+      };
+
+      SetupDbContext(todoListTaskEntityCollection);
+
+      var query = new SearchTodoListTasksRequestDto();
+
+      var searchTodoListTaskRecordResponseDtos = await _todoListTaskService.SearchTodoListTasksAsync(
+        query, CancellationToken.None);
+
+      Assert.IsNotNull(searchTodoListTaskRecordResponseDtos);
+      Assert.AreEqual(todoListTaskEntityCollection.Length, searchTodoListTaskRecordResponseDtos.Length);
+
+      for (int i = 0; i < todoListTaskEntityCollection.Length; i++)
+      {
+        var todoListTaskEntity = todoListTaskEntityCollection[i];
+        var searchTodoListTaskRecordResponseDto = searchTodoListTaskRecordResponseDtos.FirstOrDefault(dto => dto.TodoListTaskId == todoListTaskEntity.Id);
+
+        Assert.IsNotNull(searchTodoListTaskRecordResponseDto);
+
+        Assert.AreEqual(todoListTaskEntity.TodoListId, searchTodoListTaskRecordResponseDto.TodoListId);
+        Assert.AreEqual(todoListTaskEntity.Title, searchTodoListTaskRecordResponseDto.Title);
+        Assert.AreEqual(todoListTaskEntity.Description, searchTodoListTaskRecordResponseDto.Description);
+      }
+    }
+
     private void SetupDbContext<TEntity>(IEnumerable<TEntity> collection) where TEntity : class
     {
       var queryable = collection.AsQueryable();
