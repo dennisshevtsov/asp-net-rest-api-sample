@@ -98,10 +98,21 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="command">An object that represents data to add a task to a todo list.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public Task<AddTodoListTaskResponseDto> AddTodoListTaskAsync(
+    public async Task<AddTodoListTaskResponseDto> AddTodoListTaskAsync(
       AddTodoListTaskRequestDto command, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      var todoListTaskEntity = new TodoListTaskEntity();
+
+      _dbContext.Attach(todoListTaskEntity)
+                .CurrentValues.SetValues(command);
+
+      await _dbContext.SaveChangesAsync(cancellationToken);
+
+      return new AddTodoListTaskResponseDto
+      {
+        TodoListId = todoListTaskEntity.TodoListId,
+        TodoListTaskId = todoListTaskEntity.Id,
+      };
     }
 
     /// <summary>Updates an existing TODO list task.</summary>
