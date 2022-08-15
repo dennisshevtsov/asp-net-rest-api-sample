@@ -10,6 +10,8 @@ namespace AspNetRestApiSample.Api.Tests.Services
   [TestClass]
   public sealed class TodoListTaskServiceTest
   {
+    private CancellationToken _cancellationToken;
+
 #pragma warning disable CS8618
     private Mock<DbContext> _dbContextMock;
     private TodoListTaskService _todoListTaskService;
@@ -18,6 +20,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestInitialize]
     public void Initialize()
     {
+      _cancellationToken = CancellationToken.None;
       _dbContextMock = new Mock<DbContext>();
       _todoListTaskService = new TodoListTaskService(_dbContextMock.Object);
     }
@@ -50,7 +53,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       };
 
       var actulalTodoListTaskEntity =
-        await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(query, CancellationToken.None);
+        await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(query, _cancellationToken);
 
       Assert.IsNotNull(actulalTodoListTaskEntity);
 
@@ -88,7 +91,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       };
 
       var actulalTodoListTaskEntity =
-        await _todoListTaskService.GetDetachedTodoListTaskEntityAsync(query, CancellationToken.None);
+        await _todoListTaskService.GetDetachedTodoListTaskEntityAsync(query, _cancellationToken);
 
       Assert.IsNotNull(actulalTodoListTaskEntity);
 
@@ -152,7 +155,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       var query = new SearchTodoListTasksRequestDto();
 
       var searchTodoListTaskRecordResponseDtos = await _todoListTaskService.SearchTodoListTasksAsync(
-        query, CancellationToken.None);
+        query, _cancellationToken);
 
       Assert.IsNotNull(searchTodoListTaskRecordResponseDtos);
       Assert.AreEqual(todoListTaskEntityCollection.Length, searchTodoListTaskRecordResponseDtos.Length);
