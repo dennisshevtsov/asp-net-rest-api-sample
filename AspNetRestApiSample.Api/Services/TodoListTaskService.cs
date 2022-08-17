@@ -29,7 +29,7 @@ namespace AspNetRestApiSample.Api.Services
     public Task<TodoListTaskEntity?> GetAttachedTodoListTaskEntityAsync<TQuery>(
       TQuery query, CancellationToken cancellationToken)
       where TQuery : ITodoListIdentity, ITodoListTaskIdentity
-      => _entityContainer.TodoListTasks.GetDetachedAsync(
+      => _entityContainer.TodoListTasks.GetAttachedAsync(
         query.TodoListTaskId, query.TodoListId, cancellationToken);
 
     /// <summary>Gets a detached todo list task entity.</summary>
@@ -40,7 +40,7 @@ namespace AspNetRestApiSample.Api.Services
     public Task<TodoListTaskEntity?> GetDetachedTodoListTaskEntityAsync<TQuery>(
       TQuery query, CancellationToken cancellationToken)
       where TQuery : ITodoListIdentity, ITodoListTaskIdentity
-      => _entityContainer.TodoListTasks.GetAttachedAsync(
+      => _entityContainer.TodoListTasks.GetDetachedAsync(
         query.TodoListTaskId, query.TodoListId, cancellationToken);
 
     /// <summary>Gets a todo list task response DTO.</summary>
