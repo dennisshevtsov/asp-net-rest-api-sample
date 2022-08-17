@@ -8,9 +8,9 @@ namespace AspNetRestApiSample.Api.Storage
 
   using AspNetRestApiSample.Api.Entities;
 
-  public sealed class TodoListTaskContainer : ContainerBase<TodoListTaskEntity>, ITodoListTaskContainer
+  public sealed class TodoListEntityCollection : EntityCollectionBase<TodoListEntity>, ITodoListEntityCollection
   {
-    public TodoListTaskContainer(DbContext dbContext) : base(dbContext)
+    public TodoListEntityCollection(DbContext dbContext) : base(dbContext)
     {
     }
   }

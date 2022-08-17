@@ -4,12 +4,9 @@
 
 namespace AspNetRestApiSample.Api.Storage
 {
-  public interface IDatabase
+  using AspNetRestApiSample.Api.Entities;
+
+  public interface ITodoListEntityCollection : IEntityCollection<TodoListEntity>
   {
-    public ITodoListContainer TodoLists { get; }
-
-    public ITodoListTaskContainer TodoListTasks { get; }
-
-    public Task CommitAsync(CancellationToken cancellationToken);
   }
 }

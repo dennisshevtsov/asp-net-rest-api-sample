@@ -6,15 +6,15 @@ namespace AspNetRestApiSample.Api.Storage
 {
   using AspNetRestApiSample.Api.Entities;
 
-  public interface IContainer<TEntity> where TEntity : TodoListEntityBase
+  public interface IEntityCollection<TEntity> where TEntity : TodoListEntityBase
   {
-    public Task<TEntity?> GetAttachedEntityAsync(
+    public Task<TEntity?> GetAttachedAsync(
       Guid id, Guid todoListId, CancellationToken cancellationToken);
 
-    public Task<TEntity?> GetDetachedEntityAsync(
+    public Task<TEntity?> GetDetachedAsync(
       Guid id, Guid todoListId, CancellationToken cancellationToken);
 
-    public TEntity Create(object command);
+    public TEntity Add(object command);
 
     public void Delete(TEntity entity);
   }

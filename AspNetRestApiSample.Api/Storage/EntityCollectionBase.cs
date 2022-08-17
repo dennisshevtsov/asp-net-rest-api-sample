@@ -8,23 +8,23 @@ namespace AspNetRestApiSample.Api.Storage
 
   using AspNetRestApiSample.Api.Entities;
 
-  public abstract class ContainerBase<TEntity> : IContainer<TEntity> where TEntity : TodoListEntityBase
+  public abstract class EntityCollectionBase<TEntity> : IEntityCollection<TEntity> where TEntity : TodoListEntityBase
   {
     private readonly DbContext _dbContext;
 
-    protected ContainerBase(DbContext dbContext)
+    protected EntityCollectionBase(DbContext dbContext)
     {
       _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
-    public Task<TEntity?> GetAttachedEntityAsync(
+    public Task<TEntity?> GetAttachedAsync(
       Guid id, Guid todoListId, CancellationToken cancellationToken)
       => _dbContext.Set<TEntity>()
                    .WithPartitionKey(todoListId.ToString())
                    .Where(entity => entity.Id == id)
                    .FirstOrDefaultAsync(cancellationToken);
 
-    public Task<TEntity?> GetDetachedEntityAsync(
+    public Task<TEntity?> GetDetachedAsync(
       Guid id, Guid todoListId, CancellationToken cancellationToken)
       => _dbContext.Set<TEntity>()
                    .AsNoTracking()
@@ -32,11 +32,11 @@ namespace AspNetRestApiSample.Api.Storage
                    .Where(entity => entity.Id == id)
                    .FirstOrDefaultAsync(cancellationToken);
 
-    public TEntity Create(object command)
+    public TEntity Add(object command)
     {
       var entity = Activator.CreateInstance<TEntity>();
 
-      _dbContext.Attach(entity)
+      _dbContext.Entry(entity)
                 .CurrentValues
                 .SetValues(command);
 
