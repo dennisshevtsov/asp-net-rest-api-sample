@@ -44,5 +44,7 @@ namespace AspNetRestApiSample.Api.Storage
     }
 
     public void Delete(TEntity entity) => _dbContext.Entry(entity).State = EntityState.Deleted;
+
+    protected IQueryable<TEntity> AsQueryable() => _dbContext.Set<TEntity>();
   }
 }

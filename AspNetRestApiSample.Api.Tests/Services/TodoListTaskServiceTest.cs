@@ -4,6 +4,7 @@
 
 namespace AspNetRestApiSample.Api.Tests.Services
 {
+  using AspNetRestApiSample.Api.Storage;
   using Microsoft.EntityFrameworkCore;
   using Moq;
 
@@ -13,7 +14,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     private CancellationToken _cancellationToken;
 
 #pragma warning disable CS8618
-    private Mock<DbContext> _dbContextMock;
+    private Mock<IEntityContainer> _entityContainer;
     private TodoListTaskService _todoListTaskService;
 #pragma warning restore CS8618
 
@@ -21,8 +22,9 @@ namespace AspNetRestApiSample.Api.Tests.Services
     public void Initialize()
     {
       _cancellationToken = CancellationToken.None;
-      _dbContextMock = new Mock<DbContext>();
-      _todoListTaskService = new TodoListTaskService(_dbContextMock.Object);
+
+      _entityContainer = new Mock<IEntityContainer>();
+      _todoListTaskService = new TodoListTaskService(_entityContainer.Object);
     }
 
     [TestMethod]
@@ -43,8 +45,6 @@ namespace AspNetRestApiSample.Api.Tests.Services
       {
         testTodoListTaskEntity,
       };
-
-      SetupDbContext(todoListTaskEntityCollection);
 
       var query = new GetTodoListTaskRequestDto
       {
@@ -81,8 +81,6 @@ namespace AspNetRestApiSample.Api.Tests.Services
       {
         testTodoListTaskEntity,
       };
-
-      SetupDbContext(todoListTaskEntityCollection);
 
       var query = new GetTodoListTaskRequestDto
       {
@@ -150,8 +148,6 @@ namespace AspNetRestApiSample.Api.Tests.Services
         },
       };
 
-      SetupDbContext(todoListTaskEntityCollection);
-
       var query = new SearchTodoListTasksRequestDto();
 
       var searchTodoListTaskRecordResponseDtos = await _todoListTaskService.SearchTodoListTasksAsync(
@@ -171,33 +167,6 @@ namespace AspNetRestApiSample.Api.Tests.Services
         Assert.AreEqual(todoListTaskEntity.Title, searchTodoListTaskRecordResponseDto.Title);
         Assert.AreEqual(todoListTaskEntity.Description, searchTodoListTaskRecordResponseDto.Description);
       }
-    }
-
-    private void SetupDbContext<TEntity>(IEnumerable<TEntity> collection) where TEntity : class
-    {
-      var queryable = collection.AsQueryable();
-
-      var dbSetMock = new Mock<DbSet<TEntity>>();
-
-      dbSetMock.As<IAsyncEnumerable<TEntity>>()
-               .Setup(enumerable => enumerable.GetAsyncEnumerator(default))
-               .Returns(new AsyncEnumeratorMock<TEntity>(queryable.GetEnumerator()));
-
-      dbSetMock.As<IQueryable<TEntity>>()
-               .Setup(queryable => queryable.Provider)
-               .Returns(new AsyncQueryProviderMock<TEntity>(queryable.Provider));
-
-      dbSetMock.As<IQueryable<TEntity>>()
-               .Setup(queryable => queryable.Expression).Returns(queryable.Expression);
-
-      dbSetMock.As<IQueryable<TEntity>>()
-               .Setup(queryable => queryable.ElementType).Returns(queryable.ElementType);
-
-      dbSetMock.As<IQueryable<TEntity>>()
-               .Setup(queryable => queryable.GetEnumerator()).Returns(queryable.GetEnumerator());
-
-      _dbContextMock.Setup(context => context.Set<TEntity>())
-                    .Returns(dbSetMock.Object);
     }
   }
 }

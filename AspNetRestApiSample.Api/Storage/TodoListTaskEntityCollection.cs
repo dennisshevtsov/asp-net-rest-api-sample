@@ -13,5 +13,11 @@ namespace AspNetRestApiSample.Api.Storage
     public TodoListTaskEntityCollection(DbContext dbContext) : base(dbContext)
     {
     }
+
+    public Task<TodoListTaskEntity[]> GetDetachedTodoListTasksAsync(
+      Guid todoListId, CancellationToken cancellationToken)
+      => AsQueryable().AsNoTracking()
+                      .WithPartitionKey(todoListId.ToString())
+                      .ToArrayAsync(cancellationToken);
   }
 }

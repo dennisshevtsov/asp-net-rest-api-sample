@@ -4,22 +4,21 @@
 
 namespace AspNetRestApiSample.Api.Services
 {
-  using Microsoft.EntityFrameworkCore;
-
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Entities;
   using AspNetRestApiSample.Api.Indentities;
+  using AspNetRestApiSample.Api.Storage;
 
   /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</summary>
   public sealed class TodoListTaskService : ITodoListTaskService
   {
-    private readonly DbContext _dbContext;
+    private readonly IEntityContainer _entityContainer;
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Services.TodoListTaskService"/> class.</summary>
-    /// <param name="dbContext">An object that represents a session with the database and can be used to query and save instances of your entities.</param>
-    public TodoListTaskService(DbContext dbContext)
+    /// <param name="entityContainer">An object that rrovides a simple API to query entities from the database and to commit changes.</param>
+    public TodoListTaskService(IEntityContainer entityContainer)
     {
-      _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+      _entityContainer = entityContainer ?? throw new ArgumentNullException(nameof(entityContainer));
     }
 
     /// <summary>Gets a attached todo list task entity.</summary>
@@ -30,10 +29,8 @@ namespace AspNetRestApiSample.Api.Services
     public Task<TodoListTaskEntity?> GetAttachedTodoListTaskEntityAsync<TQuery>(
       TQuery query, CancellationToken cancellationToken)
       where TQuery : ITodoListIdentity, ITodoListTaskIdentity
-      => _dbContext.Set<TodoListTaskEntity>()
-                   .WithPartitionKey(query.TodoListId.ToString())
-                   .Where(entity => entity.Id == query.TodoListTaskId)
-                   .FirstOrDefaultAsync(cancellationToken);
+      => _entityContainer.TodoListTasks.GetDetachedAsync(
+        query.TodoListTaskId, query.TodoListId, cancellationToken);
 
     /// <summary>Gets a detached todo list task entity.</summary>
     /// <typeparam name="TQuery">A type of a query.</typeparam>
@@ -43,11 +40,8 @@ namespace AspNetRestApiSample.Api.Services
     public Task<TodoListTaskEntity?> GetDetachedTodoListTaskEntityAsync<TQuery>(
       TQuery query, CancellationToken cancellationToken)
       where TQuery : ITodoListIdentity, ITodoListTaskIdentity
-      => _dbContext.Set<TodoListTaskEntity>()
-                   .AsNoTracking()
-                   .WithPartitionKey(query.TodoListId.ToString())
-                   .Where(entity => entity.Id == query.TodoListTaskId)
-                   .FirstOrDefaultAsync(cancellationToken);
+      => _entityContainer.TodoListTasks.GetAttachedAsync(
+        query.TodoListTaskId, query.TodoListId, cancellationToken);
 
     /// <summary>Gets a todo list task response DTO.</summary>
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
@@ -70,10 +64,8 @@ namespace AspNetRestApiSample.Api.Services
       SearchTodoListTasksRequestDto query, CancellationToken cancellationToken)
     {
       var todoListTaskEntityCollection =
-        await _dbContext.Set<TodoListTaskEntity>()
-                        .AsNoTracking()
-                        .WithPartitionKey(query.TodoListId.ToString())
-                        .ToArrayAsync(cancellationToken);
+        await _entityContainer.TodoListTasks.GetDetachedTodoListTasksAsync(
+          query.TodoListId, cancellationToken);
 
       var searchTodoListTasksRecordResponseDtoCollection =
         new SearchTodoListTasksRecordResponseDto[todoListTaskEntityCollection.Length];
@@ -101,12 +93,9 @@ namespace AspNetRestApiSample.Api.Services
     public async Task<AddTodoListTaskResponseDto> AddTodoListTaskAsync(
       AddTodoListTaskRequestDto command, CancellationToken cancellationToken)
     {
-      var todoListTaskEntity = new TodoListTaskEntity();
+      var todoListTaskEntity = _entityContainer.TodoListTasks.Add(command);
 
-      _dbContext.Attach(todoListTaskEntity)
-                .CurrentValues.SetValues(command);
-
-      await _dbContext.SaveChangesAsync(cancellationToken);
+      await _entityContainer.CommitAsync(cancellationToken);
 
       return new AddTodoListTaskResponseDto
       {

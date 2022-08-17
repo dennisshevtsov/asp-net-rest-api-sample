@@ -8,5 +8,7 @@ namespace AspNetRestApiSample.Api.Storage
 
   public interface ITodoListTaskEntityCollection : IEntityCollection<TodoListTaskEntity>
   {
+    public Task<TodoListTaskEntity[]> GetDetachedTodoListTasksAsync(
+      Guid todoListId, CancellationToken cancellationToken);
   }
 }

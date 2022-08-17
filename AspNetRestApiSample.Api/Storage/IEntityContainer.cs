@@ -4,6 +4,7 @@
 
 namespace AspNetRestApiSample.Api.Storage
 {
+  /// <summary>Provides a simple API to query entities from the database and to commit changes.</summary>
   public interface IEntityContainer
   {
     public ITodoListEntityCollection TodoLists { get; }
