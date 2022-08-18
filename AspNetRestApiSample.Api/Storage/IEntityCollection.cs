@@ -16,6 +16,8 @@ namespace AspNetRestApiSample.Api.Storage
 
     public TEntity Add(object command);
 
+    public void Update(TEntity entity, object command);
+
     public void Delete(TEntity entity);
   }
 }

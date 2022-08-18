@@ -36,12 +36,13 @@ namespace AspNetRestApiSample.Api.Storage
     {
       var entity = Activator.CreateInstance<TEntity>();
 
-      _dbContext.Entry(entity)
-                .CurrentValues
-                .SetValues(command);
+      _dbContext.Entry(entity).CurrentValues.SetValues(command);
 
       return entity;
     }
+
+    public void Update(TEntity entity, object command)
+      => _dbContext.Entry(entity).CurrentValues.SetValues(command);
 
     public void Delete(TEntity entity) => _dbContext.Entry(entity).State = EntityState.Deleted;
 
