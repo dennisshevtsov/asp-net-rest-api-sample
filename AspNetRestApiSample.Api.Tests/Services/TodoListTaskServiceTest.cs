@@ -7,6 +7,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
   using Moq;
 
   using AspNetRestApiSample.Api.Storage;
+  using Microsoft.Azure.Cosmos.Linq;
 
   [TestClass]
   public sealed class TodoListTaskServiceTest
@@ -138,7 +139,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     public async Task SearchTodoListTasksAsync_Should_Return_Populated_Dtos()
     {
       var todoListId = Guid.NewGuid();
-      
+
       var todoListTaskEntityCollection = new[]
       {
         new TodoListTaskEntity
@@ -232,6 +233,38 @@ namespace AspNetRestApiSample.Api.Tests.Services
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
       _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(command));
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityContainerMock.Verify(container => container.CommitAsync(_cancellationToken));
+      _entityContainerMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task UpdateTodoListTaskAsync_Should_Save_Todo_List_Task()
+    {
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntity>()))
+                                       .Verifiable();
+
+      _entityContainerMock.Setup(container => container.CommitAsync(It.IsAny<CancellationToken>()))
+                          .Returns(Task.CompletedTask)
+                          .Verifiable();
+
+      var todoListId = Guid.NewGuid();
+      var todoListTaskId = Guid.NewGuid();
+
+      var todoListTaskEntity = new TodoListTaskEntity
+      {
+        Id = todoListTaskId,
+        TodoListId = todoListId,
+      };
+
+      var command = new UpdateTodoListTaskRequestDto();
+
+      await _todoListTaskService.UpdateTodoListTaskAsync(command, todoListTaskEntity, _cancellationToken);
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Update(command, todoListTaskEntity));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _entityContainerMock.Verify(container => container.CommitAsync(_cancellationToken));

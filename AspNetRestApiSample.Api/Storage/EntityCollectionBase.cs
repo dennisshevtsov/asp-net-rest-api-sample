@@ -41,7 +41,7 @@ namespace AspNetRestApiSample.Api.Storage
       return entity;
     }
 
-    public void Update(TEntity entity, object command)
+    public void Update(object command, TEntity entity)
       => _dbContext.Entry(entity).CurrentValues.SetValues(command);
 
     public void Delete(TEntity entity) => _dbContext.Entry(entity).State = EntityState.Deleted;
