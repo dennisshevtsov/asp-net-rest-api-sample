@@ -109,12 +109,14 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
-    public Task UpdateTodoListTaskAsync(
+    public async Task UpdateTodoListTaskAsync(
       UpdateTodoListTaskRequestDto command,
       TodoListTaskEntity todoListTaskEntity,
       CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      _entityContainer.TodoListTasks.Update(command, todoListTaskEntity);
+
+      await _entityContainer.CommitAsync(cancellationToken);
     }
 
     /// <summary>Deletes a task from a TODO list.</summary>
