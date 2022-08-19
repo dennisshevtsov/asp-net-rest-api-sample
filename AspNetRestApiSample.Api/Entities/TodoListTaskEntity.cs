@@ -9,5 +9,8 @@ namespace AspNetRestApiSample.Api.Entities
   {
     /// <summary>Gets/sets an object that represents data of a TODO list.</summary>
     public TodoListEntity? TodoList { get; set; }
+
+    /// <summary>Gets/sets an object that indicates if a TODO list task is completed.</summary>
+    public bool Completed { get; set; }
   }
 }

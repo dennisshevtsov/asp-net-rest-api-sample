@@ -4,6 +4,7 @@
 
 namespace AspNetRestApiSample.Api.Configurations
 {
+  using Microsoft.EntityFrameworkCore;
   using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
   using AspNetRestApiSample.Api.Entities;
@@ -22,6 +23,8 @@ namespace AspNetRestApiSample.Api.Configurations
     public override void Configure(EntityTypeBuilder<TodoListTaskEntity> builder)
     {
       base.Configure(builder);
+
+      builder.Property(entity => entity.Completed).ToJsonProperty("completed");
 
       builder.HasOne(entity => entity.TodoList)
              .WithMany(entity => entity.Tasks)
