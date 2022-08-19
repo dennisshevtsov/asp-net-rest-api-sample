@@ -270,5 +270,28 @@ namespace AspNetRestApiSample.Api.Tests.Services
       _entityContainerMock.Verify(container => container.CommitAsync(_cancellationToken));
       _entityContainerMock.VerifyNoOtherCalls();
     }
+
+    [TestMethod]
+    public async Task DeleteTodoListTaskAsync_Should_Delete_Todo_List_Task()
+    {
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Delete(It.IsAny<TodoListTaskEntity>()))
+                                       .Verifiable();
+
+      _entityContainerMock.Setup(container => container.CommitAsync(It.IsAny<CancellationToken>()))
+                          .Returns(Task.CompletedTask)
+                          .Verifiable();
+
+      var todoListTaskEntity = new TodoListTaskEntity();
+
+      await _todoListTaskService.DeleteTodoListTaskAsync(todoListTaskEntity, _cancellationToken);
+
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Delete(todoListTaskEntity));
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityContainerMock.Verify(container => container.CommitAsync(_cancellationToken));
+      _entityContainerMock.VerifyNoOtherCalls();
+    }
   }
 }
