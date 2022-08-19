@@ -137,7 +137,14 @@ namespace AspNetRestApiSample.Api.Services
     /// <returns>An object that represents an asynchronous operation.</returns>
     public Task CompleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      if (todoListTaskEntity.Completed)
+      {
+        return Task.CompletedTask;
+      }
+
+      todoListTaskEntity.Completed = true;
+
+      return _entityContainer.CommitAsync(cancellationToken);
     }
 
     /// <summary>Marks a task as uncompleted.</summary>
