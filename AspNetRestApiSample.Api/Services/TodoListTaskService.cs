@@ -8,6 +8,7 @@ namespace AspNetRestApiSample.Api.Services
   using AspNetRestApiSample.Api.Entities;
   using AspNetRestApiSample.Api.Indentities;
   using AspNetRestApiSample.Api.Storage;
+  using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
   /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</summary>
   public sealed class TodoListTaskService : ITodoListTaskService
@@ -123,9 +124,11 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
-    public Task DeleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken)
+    public async Task DeleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      _entityContainer.TodoListTasks.Delete(todoListTaskEntity);
+
+      await _entityContainer.CommitAsync(cancellationToken);
     }
 
     /// <summary>Marks a task as completed.</summary>
