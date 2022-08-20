@@ -333,5 +333,46 @@ namespace AspNetRestApiSample.Api.Tests.Services
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
       _entityContainerMock.VerifyNoOtherCalls();
     }
+
+    [TestMethod]
+    public async Task UncompleteTodoListTaskAsync_Should_Update_Todo_List_Task()
+    {
+      _entityContainerMock.Setup(container => container.CommitAsync(It.IsAny<CancellationToken>()))
+                          .Returns(Task.CompletedTask)
+                          .Verifiable();
+
+      var todoListTaskEntity = new TodoListTaskEntity
+      {
+        Completed = true,
+      };
+
+      await _todoListTaskService.UncompleteTodoListTaskAsync(todoListTaskEntity, _cancellationToken);
+
+      Assert.IsFalse(todoListTaskEntity.Completed);
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityContainerMock.Verify(container => container.CommitAsync(_cancellationToken));
+      _entityContainerMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task UncompleteTodoListTaskAsync_Should_Not_Update_Todo_List_Task()
+    {
+      var todoListTaskEntity = new TodoListTaskEntity
+      {
+        Completed = false,
+      };
+
+      await _todoListTaskService.UncompleteTodoListTaskAsync(todoListTaskEntity, _cancellationToken);
+
+      Assert.IsFalse(todoListTaskEntity.Completed);
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+      _entityContainerMock.VerifyNoOtherCalls();
+    }
   }
 }

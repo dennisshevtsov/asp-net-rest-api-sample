@@ -130,7 +130,7 @@ namespace AspNetRestApiSample.Api.Services
       await _entityContainer.CommitAsync(cancellationToken);
     }
 
-    /// <summary>Marks a task as completed.</summary>
+    /// <summary>Makes a task completed.</summary>
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
@@ -146,7 +146,7 @@ namespace AspNetRestApiSample.Api.Services
       return _entityContainer.CommitAsync(cancellationToken);
     }
 
-    /// <summary>Marks a task as uncompleted.</summary>
+    /// <summary>Makes a task uncompleted.</summary>
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
