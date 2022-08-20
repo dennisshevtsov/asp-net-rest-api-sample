@@ -30,7 +30,7 @@ namespace AspNetRestApiSample.Api.Controllers
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Controllers.TodoListTaskController"/> class.</summary>
     /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Api.Entities.TodoListEntity"/> class.</param>
-    /// <param name="todoListTaskService">An object that provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</param>
+    /// <param name="todoListTaskService">An object that provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntityBase"/> class.</param>
     public TodoListTaskController(ITodoListService todoListService, ITodoListTaskService todoListTaskService)
     {
       _todoListService = todoListService ?? throw new ArgumentNullException(nameof(todoListService));

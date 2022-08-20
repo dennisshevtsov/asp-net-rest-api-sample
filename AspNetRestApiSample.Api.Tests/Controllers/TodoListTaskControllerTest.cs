@@ -38,7 +38,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     public async Task GetTodoListTask_Should_Return_Not_Found()
     {
       _todoListTaskServiceMock.Setup(service => service.GetDetachedTodoListTaskEntityAsync(It.IsAny<GetTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
-                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .ReturnsAsync(default(TodoListTaskEntityBase))
                               .Verifiable();
 
       var query = new GetTodoListTaskRequestDto
@@ -61,7 +61,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     {
       var todoListTaskId = Guid.NewGuid();
       var todoListId = Guid.NewGuid();
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -77,7 +77,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
         TodoListTaskId = todoListTaskId,
       };
 
-      _todoListTaskServiceMock.Setup(service => service.GetTodoListTask(It.IsAny<TodoListTaskEntity>()))
+      _todoListTaskServiceMock.Setup(service => service.GetTodoListTask(It.IsAny<TodoListTaskEntityBase>()))
                               .Returns(getTodoListTaskResponseDto)
                               .Verifiable();
 
@@ -203,7 +203,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     public async Task UpdateTodoListTask_Should_Return_Not_Found()
     {
       _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
-                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .ReturnsAsync(default(TodoListTaskEntityBase))
                               .Verifiable();
 
       var command = new UpdateTodoListTaskRequestDto
@@ -231,7 +231,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
 
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -244,7 +244,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
                               .ReturnsAsync(todoListTaskEntity)
                               .Verifiable();
 
-      _todoListTaskServiceMock.Setup(service => service.UpdateTodoListTaskAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntity>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.UpdateTodoListTaskAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntityBase>(), It.IsAny<CancellationToken>()))
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
@@ -272,7 +272,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     public async Task DeleteTodoListTask_Should_Return_Not_Found()
     {
       _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<DeleteTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
-                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .ReturnsAsync(default(TodoListTaskEntityBase))
                               .Verifiable();
 
       var command = new DeleteTodoListTaskRequestDto
@@ -298,7 +298,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
 
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -308,7 +308,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
                               .ReturnsAsync(todoListTaskEntity)
                               .Verifiable();
 
-      _todoListTaskServiceMock.Setup(service => service.DeleteTodoListTaskAsync(It.IsAny<TodoListTaskEntity>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.DeleteTodoListTaskAsync(It.IsAny<TodoListTaskEntityBase>(), It.IsAny<CancellationToken>()))
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
@@ -334,7 +334,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     public async Task CompleteTodoListTask_Should_Return_Not_Found()
     {
       _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<CompleteTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
-                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .ReturnsAsync(default(TodoListTaskEntityBase))
                               .Verifiable();
 
       var command = new CompleteTodoListTaskRequestDto
@@ -360,7 +360,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
 
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -370,7 +370,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
                               .ReturnsAsync(todoListTaskEntity)
                               .Verifiable();
 
-      _todoListTaskServiceMock.Setup(service => service.CompleteTodoListTaskAsync(It.IsAny<TodoListTaskEntity>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.CompleteTodoListTaskAsync(It.IsAny<TodoListTaskEntityBase>(), It.IsAny<CancellationToken>()))
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
@@ -396,7 +396,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     public async Task UncompleteTodoListTask_Should_Return_Not_Found()
     {
       _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<UncompleteTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
-                              .ReturnsAsync(default(TodoListTaskEntity))
+                              .ReturnsAsync(default(TodoListTaskEntityBase))
                               .Verifiable();
 
       var command = new UncompleteTodoListTaskRequestDto
@@ -422,7 +422,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
 
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -432,7 +432,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
                               .ReturnsAsync(todoListTaskEntity)
                               .Verifiable();
 
-      _todoListTaskServiceMock.Setup(service => service.CompleteTodoListTaskAsync(It.IsAny<TodoListTaskEntity>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.CompleteTodoListTaskAsync(It.IsAny<TodoListTaskEntityBase>(), It.IsAny<CancellationToken>()))
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 

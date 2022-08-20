@@ -45,7 +45,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
 
-      var testTodoListTaskEntity = new TodoListTaskEntity
+      var testTodoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -82,7 +82,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
 
-      var testTodoListTaskEntity = new TodoListTaskEntity
+      var testTodoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -116,7 +116,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public void GetTodoListTask_Should_Return_Populated_Dto()
     {
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = Guid.NewGuid(),
         TodoListId = Guid.NewGuid(),
@@ -141,21 +141,21 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       var todoListTaskEntityCollection = new[]
       {
-        new TodoListTaskEntity
+        new TodoListDayTaskEntity
         {
           Id = Guid.NewGuid(),
           TodoListId = todoListId,
           Title = Guid.NewGuid().ToString(),
           Description = Guid.NewGuid().ToString(),
         },
-        new TodoListTaskEntity
+        new TodoListDayTaskEntity
         {
           Id = Guid.NewGuid(),
           TodoListId = todoListId,
           Title = Guid.NewGuid().ToString(),
           Description = Guid.NewGuid().ToString(),
         },
-        new TodoListTaskEntity
+        new TodoListDayTaskEntity
         {
           Id = Guid.NewGuid(),
           TodoListId = todoListId,
@@ -205,7 +205,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
 
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -241,7 +241,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task UpdateTodoListTaskAsync_Should_Save_Todo_List_Task()
     {
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntity>()))
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntityBase>()))
                                        .Verifiable();
 
       _entityContainerMock.Setup(container => container.CommitAsync(It.IsAny<CancellationToken>()))
@@ -251,7 +251,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       var todoListId = Guid.NewGuid();
       var todoListTaskId = Guid.NewGuid();
 
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Id = todoListTaskId,
         TodoListId = todoListId,
@@ -273,14 +273,14 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task DeleteTodoListTaskAsync_Should_Delete_Todo_List_Task()
     {
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.Delete(It.IsAny<TodoListTaskEntity>()))
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Delete(It.IsAny<TodoListTaskEntityBase>()))
                                        .Verifiable();
 
       _entityContainerMock.Setup(container => container.CommitAsync(It.IsAny<CancellationToken>()))
                           .Returns(Task.CompletedTask)
                           .Verifiable();
 
-      var todoListTaskEntity = new TodoListTaskEntity();
+      var todoListTaskEntity = new TodoListDayTaskEntity();
 
       await _todoListTaskService.DeleteTodoListTaskAsync(todoListTaskEntity, _cancellationToken);
 
@@ -300,7 +300,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
                           .Returns(Task.CompletedTask)
                           .Verifiable();
 
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Completed = false,
       };
@@ -320,7 +320,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task CompleteTodoListTaskAsync_Should_Not_Update_Todo_List_Task()
     {
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Completed = true,
       };
@@ -341,7 +341,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
                           .Returns(Task.CompletedTask)
                           .Verifiable();
 
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Completed = true,
       };
@@ -361,7 +361,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task UncompleteTodoListTaskAsync_Should_Not_Update_Todo_List_Task()
     {
-      var todoListTaskEntity = new TodoListTaskEntity
+      var todoListTaskEntity = new TodoListDayTaskEntity
       {
         Completed = false,
       };

@@ -20,7 +20,7 @@ namespace AspNetRestApiSample.Api.ValueGeneration
         return todoListEntity.Id;
       }
 
-      if (entry.Entity is TodoListTaskEntity todoListTaskEntity)
+      if (entry.Entity is TodoListTaskEntityBase todoListTaskEntity)
       {
         if (todoListTaskEntity.TodoListId != default)
         {

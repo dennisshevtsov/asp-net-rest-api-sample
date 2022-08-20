@@ -9,7 +9,7 @@ namespace AspNetRestApiSample.Api.Services
   using AspNetRestApiSample.Api.Indentities;
   using AspNetRestApiSample.Api.Storage;
 
-  /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</summary>
+  /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntityBase"/> class.</summary>
   public sealed class TodoListTaskService : ITodoListTaskService
   {
     private readonly IEntityContainer _entityContainer;
@@ -23,10 +23,10 @@ namespace AspNetRestApiSample.Api.Services
 
     /// <summary>Gets a attached todo list task entity.</summary>
     /// <typeparam name="TQuery">A type of a query.</typeparam>
-    /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</param>
+    /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntityBase"/> class.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public Task<TodoListTaskEntity?> GetAttachedTodoListTaskEntityAsync<TQuery>(
+    public Task<TodoListTaskEntityBase?> GetAttachedTodoListTaskEntityAsync<TQuery>(
       TQuery query, CancellationToken cancellationToken)
       where TQuery : ITodoListIdentity, ITodoListTaskIdentity
       => _entityContainer.TodoListTasks.GetAttachedAsync(
@@ -34,10 +34,10 @@ namespace AspNetRestApiSample.Api.Services
 
     /// <summary>Gets a detached todo list task entity.</summary>
     /// <typeparam name="TQuery">A type of a query.</typeparam>
-    /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</param>
+    /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntityBase"/> class.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public Task<TodoListTaskEntity?> GetDetachedTodoListTaskEntityAsync<TQuery>(
+    public Task<TodoListTaskEntityBase?> GetDetachedTodoListTaskEntityAsync<TQuery>(
       TQuery query, CancellationToken cancellationToken)
       where TQuery : ITodoListIdentity, ITodoListTaskIdentity
       => _entityContainer.TodoListTasks.GetDetachedAsync(
@@ -47,7 +47,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public GetTodoListTaskResponseDto GetTodoListTask(TodoListTaskEntity todoListTaskEntity)
+    public GetTodoListTaskResponseDto GetTodoListTask(TodoListTaskEntityBase todoListTaskEntity)
       => new GetTodoListTaskResponseDto
       {
         TodoListTaskId = todoListTaskEntity.Id,
@@ -111,7 +111,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <returns>An object that represents an asynchronous operation.</returns>
     public async Task UpdateTodoListTaskAsync(
       UpdateTodoListTaskRequestDto command,
-      TodoListTaskEntity todoListTaskEntity,
+      TodoListTaskEntityBase todoListTaskEntity,
       CancellationToken cancellationToken)
     {
       _entityContainer.TodoListTasks.Update(command, todoListTaskEntity);
@@ -123,7 +123,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
-    public async Task DeleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken)
+    public async Task DeleteTodoListTaskAsync(TodoListTaskEntityBase todoListTaskEntity, CancellationToken cancellationToken)
     {
       _entityContainer.TodoListTasks.Delete(todoListTaskEntity);
 
@@ -134,7 +134,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
-    public Task CompleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken)
+    public Task CompleteTodoListTaskAsync(TodoListTaskEntityBase todoListTaskEntity, CancellationToken cancellationToken)
     {
       if (todoListTaskEntity.Completed)
       {
@@ -150,7 +150,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
-    public async Task UncompleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken)
+    public async Task UncompleteTodoListTaskAsync(TodoListTaskEntityBase todoListTaskEntity, CancellationToken cancellationToken)
     {
       if (!todoListTaskEntity.Completed)
       {

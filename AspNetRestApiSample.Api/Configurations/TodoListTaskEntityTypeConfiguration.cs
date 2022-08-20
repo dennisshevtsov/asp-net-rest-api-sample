@@ -10,7 +10,7 @@ namespace AspNetRestApiSample.Api.Configurations
   using AspNetRestApiSample.Api.Entities;
 
   /// <summary>Allows configuration for an entity type.</summary>
-  public sealed class TodoListTaskEntityTypeConfiguration : TodoListEntityTypeConfigurationBase<TodoListTaskEntity>
+  public sealed class TodoListTaskEntityTypeConfiguration : TodoListEntityTypeConfigurationBase<TodoListTaskEntityBase>
   {
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Configurations.TodoListTaskEntityTypeConfiguration"/> class.</summary>
     /// <param name="containerName">An object that represents a name of a container.</param>
@@ -18,9 +18,9 @@ namespace AspNetRestApiSample.Api.Configurations
     {
     }
 
-    /// <summary>Configures the entity of type <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/>.</summary>
+    /// <summary>Configures the entity of type <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntityBase"/>.</summary>
     /// <param name="builder">An object that provides a simple API to configure the entity type.</param>
-    public override void Configure(EntityTypeBuilder<TodoListTaskEntity> builder)
+    public override void Configure(EntityTypeBuilder<TodoListTaskEntityBase> builder)
     {
       base.Configure(builder);
 

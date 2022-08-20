@@ -8,13 +8,13 @@ namespace AspNetRestApiSample.Api.Storage
 
   using AspNetRestApiSample.Api.Entities;
 
-  public sealed class TodoListTaskEntityCollection : EntityCollectionBase<TodoListTaskEntity>, ITodoListTaskEntityCollection
+  public sealed class TodoListTaskEntityCollection : EntityCollectionBase<TodoListTaskEntityBase>, ITodoListTaskEntityCollection
   {
     public TodoListTaskEntityCollection(DbContext dbContext) : base(dbContext)
     {
     }
 
-    public Task<TodoListTaskEntity[]> GetDetachedTodoListTasksAsync(
+    public Task<TodoListTaskEntityBase[]> GetDetachedTodoListTasksAsync(
       Guid todoListId, CancellationToken cancellationToken)
       => AsQueryable().AsNoTracking()
                       .WithPartitionKey(todoListId.ToString())

@@ -6,9 +6,9 @@ namespace AspNetRestApiSample.Api.Storage
 {
   using AspNetRestApiSample.Api.Entities;
 
-  public interface ITodoListTaskEntityCollection : IEntityCollection<TodoListTaskEntity>
+  public interface ITodoListTaskEntityCollection : IEntityCollection<TodoListTaskEntityBase>
   {
-    public Task<TodoListTaskEntity[]> GetDetachedTodoListTasksAsync(
+    public Task<TodoListTaskEntityBase[]> GetDetachedTodoListTasksAsync(
       Guid todoListId, CancellationToken cancellationToken);
   }
 }
