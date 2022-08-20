@@ -150,9 +150,16 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
-    public Task UncompleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken)
+    public async Task UncompleteTodoListTaskAsync(TodoListTaskEntity todoListTaskEntity, CancellationToken cancellationToken)
     {
-      throw new NotImplementedException();
+      if (!todoListTaskEntity.Completed)
+      {
+        return;
+      }
+
+      todoListTaskEntity.Completed = false;
+
+      await _entityContainer.CommitAsync(cancellationToken);
     }
   }
 }
