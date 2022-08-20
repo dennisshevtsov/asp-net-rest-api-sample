@@ -7,7 +7,6 @@ namespace AspNetRestApiSample.Api.Tests.Services
   using Moq;
 
   using AspNetRestApiSample.Api.Storage;
-  using Microsoft.Azure.Cosmos.Linq;
 
   [TestClass]
   public sealed class TodoListTaskServiceTest
@@ -315,6 +314,23 @@ namespace AspNetRestApiSample.Api.Tests.Services
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
       _entityContainerMock.Verify(container => container.CommitAsync(_cancellationToken));
+      _entityContainerMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task CompleteTodoListTaskAsync_Should_Not_Update_Todo_List_Task()
+    {
+      var todoListTaskEntity = new TodoListTaskEntity
+      {
+        Completed = true,
+      };
+
+      await _todoListTaskService.CompleteTodoListTaskAsync(todoListTaskEntity, _cancellationToken);
+
+      Assert.IsTrue(todoListTaskEntity.Completed);
+
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
       _entityContainerMock.VerifyNoOtherCalls();
     }
   }

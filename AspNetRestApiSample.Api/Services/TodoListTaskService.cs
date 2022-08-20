@@ -8,7 +8,6 @@ namespace AspNetRestApiSample.Api.Services
   using AspNetRestApiSample.Api.Entities;
   using AspNetRestApiSample.Api.Indentities;
   using AspNetRestApiSample.Api.Storage;
-  using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
   /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntity"/> class.</summary>
   public sealed class TodoListTaskService : ITodoListTaskService
