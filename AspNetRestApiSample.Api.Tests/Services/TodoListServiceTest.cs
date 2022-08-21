@@ -43,26 +43,27 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task GetDetachedTodoListAsync_Should_Return_Null()
     {
-      //var todoListId = Guid.NewGuid();
-      //var testTodoListEntity = new TodoListEntity
-      //{
-      //  Id = todoListId,
-      //  TodoListId = todoListId,
-      //  Title = Guid.NewGuid().ToString(),
-      //  Description = Guid.NewGuid().ToString(),
-      //};
+      var testTodoListEntity = new TodoListEntity();
 
-      //_dbContext.Set<TodoListEntity>().Add(testTodoListEntity);
-      //await _dbContext.SaveChangesAsync();
+      _todoListEntityCollectionMock.Setup(collection => collection.GetDetachedAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                                   .ReturnsAsync(testTodoListEntity)
+                                   .Verifiable();
 
-      //var query = new GetTodoListRequestDto
-      //{
-      //  TodoListId = Guid.NewGuid(),
-      //};
+      var query = new GetTodoListRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+      };
 
-      //var actualTodoListEntity = await _todoListService.GetDetachedTodoListAsync(query, CancellationToken.None);
+      var actualTodoListEntity = await _todoListService.GetDetachedTodoListAsync(query, CancellationToken.None);
 
-      //Assert.IsNull(actualTodoListEntity);
+      Assert.AreEqual(testTodoListEntity, actualTodoListEntity);
+
+      _todoListEntityCollectionMock.Verify(collection => collection.GetDetachedAsync(query.TodoListId, query.TodoListId, _cancellationToken));
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityContainerMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
