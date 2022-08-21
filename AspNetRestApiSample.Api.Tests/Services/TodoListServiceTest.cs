@@ -240,27 +240,39 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task AddTodoListAsync_Should_Create_New_Todo_List()
     {
-      //var addTodoListRequestDto = new AddTodoListRequestDto
-      //{
-      //  Title = Guid.NewGuid().ToString(),
-      //  Description = Guid.NewGuid().ToString(),
-      //};
+      var todoListId = Guid.NewGuid();
+      var todoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+        TodoListId = todoListId,
+      };
 
-      //var addTodoListResponseDto = await _todoListService.AddTodoListAsync(addTodoListRequestDto, CancellationToken.None);
+      _todoListEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<AddTodoListRequestDto>()))
+                                   .Returns(todoListEntity)
+                                   .Verifiable();
 
-      //Assert.IsNotNull(addTodoListResponseDto);
-      //Assert.IsTrue(addTodoListResponseDto.TodoListId != default);
+      _entityContainerMock.Setup(container => container.CommitAsync(It.IsAny<CancellationToken>()))
+                          .Returns(Task.CompletedTask)
+                          .Verifiable();
 
-      //var todoListEntity =
-      //  await _dbContext.Set<TodoListEntity>()
-      //                  .AsNoTracking()
-      //                  .Where(entity => entity.TodoListId == addTodoListResponseDto.TodoListId)
-      //                  .Where(entity => entity.Id == addTodoListResponseDto.TodoListId)
-      //                  .FirstOrDefaultAsync(CancellationToken.None);
+      var command = new AddTodoListRequestDto
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
 
-      //Assert.IsNotNull(todoListEntity);
-      //Assert.AreEqual(addTodoListRequestDto.Title, todoListEntity.Title);
-      //Assert.AreEqual(addTodoListRequestDto.Description, todoListEntity.Description);
+      var addTodoListResponseDto = await _todoListService.AddTodoListAsync(command, CancellationToken.None);
+
+      Assert.IsNotNull(addTodoListResponseDto);
+      Assert.AreEqual(todoListId, addTodoListResponseDto.TodoListId);
+
+      _todoListEntityCollectionMock.Verify(collection => collection.Add(command));
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityContainerMock.Verify(container => container.CommitAsync(_cancellationToken));
+      _entityContainerMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
