@@ -4,7 +4,6 @@
 
 namespace AspNetRestApiSample.Api.Configurations
 {
-  using Microsoft.EntityFrameworkCore;
   using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
   using AspNetRestApiSample.Api.Entities;
