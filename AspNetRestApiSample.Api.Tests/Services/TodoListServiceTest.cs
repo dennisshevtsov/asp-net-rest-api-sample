@@ -7,6 +7,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
   using Moq;
 
   using AspNetRestApiSample.Api.Storage;
+  using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
   [TestClass]
   public sealed class TodoListServiceTest
@@ -275,7 +276,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task UpdateTodoListAsync_Should_Update_Attached_Entity()
+    public async Task UpdateTodoListAsync_Should_Update_Entity()
     {
       _todoListEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
                                    .Verifiable();
@@ -299,76 +300,26 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task UpdateTodoListAsync_Should_Update_Detached_Entity()
-    {
-      //var todoListEntity = new TodoListEntity
-      //{
-      //  Title = Guid.NewGuid().ToString(),
-      //  Description = Guid.NewGuid().ToString(),
-      //};
-
-      //var entry = _dbContext.Add(todoListEntity);
-      //await _dbContext.SaveChangesAsync();
-
-      //entry.State = EntityState.Detached;
-
-      //var todoListId = todoListEntity.Id;
-      //var command = new UpdateTodoListRequestDto
-      //{
-      //  TodoListId = todoListId,
-      //  Title = Guid.NewGuid().ToString(),
-      //  Description = Guid.NewGuid().ToString(),
-      //};
-
-      //await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
-
-      //var actualTodoListEntity =
-      //  await _dbContext.Set<TodoListEntity>()
-      //                  .AsNoTracking()
-      //                  .Where(entity => entity.TodoListId == todoListId)
-      //                  .Where(entity => entity.Id == todoListId)
-      //                  .FirstOrDefaultAsync();
-
-      //Assert.IsNotNull(actualTodoListEntity);
-      //Assert.AreEqual(command.Title, actualTodoListEntity.Title);
-      //Assert.AreEqual(command.Description, actualTodoListEntity.Description);
-    }
-
-    [TestMethod]
     public async Task DeleteTodoListAsync_Should_Remove_Entity()
     {
-      //var todoListEntity = new TodoListEntity
-      //{
-      //  Title = Guid.NewGuid().ToString(),
-      //  Description = Guid.NewGuid().ToString(),
-      //};
+      _todoListEntityCollectionMock.Setup(collection => collection.Delete(It.IsAny<TodoListEntity>()))
+                                   .Verifiable();
 
-      //_dbContext.Add(todoListEntity);
-      //await _dbContext.SaveChangesAsync();
+      _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
+                         .Returns(Task.CompletedTask)
+                         .Verifiable();
 
-      //var todoListId = todoListEntity.Id;
+      var todoListEntity = new TodoListEntity();
 
-      //var actualTodoListEntity0 =
-      //  await _dbContext.Set<TodoListEntity>()
-      //                  .AsNoTracking()
-      //                  .Where(entity => entity.TodoListId == todoListId)
-      //                  .Where(entity => entity.Id == todoListId)
-      //                  .FirstOrDefaultAsync();
+      await _todoListService.DeleteTodoListAsync(todoListEntity, CancellationToken.None);
 
-      //Assert.IsNotNull(actualTodoListEntity0);
-      //Assert.AreEqual(todoListEntity.Title, actualTodoListEntity0.Title);
-      //Assert.AreEqual(todoListEntity.Description, actualTodoListEntity0.Description);
+      _todoListEntityCollectionMock.Verify(collection => collection.Delete(todoListEntity));
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
-      //await _todoListService.DeleteTodoListAsync(todoListEntity, CancellationToken.None);
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
-      //var actualTodoListEntity1 =
-      //  await _dbContext.Set<TodoListEntity>()
-      //                  .AsNoTracking()
-      //                  .Where(entity => entity.TodoListId == todoListId)
-      //                  .Where(entity => entity.Id == todoListId)
-      //                  .FirstOrDefaultAsync();
-
-      //Assert.IsNull(actualTodoListEntity1);
+      _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
   }
 }
