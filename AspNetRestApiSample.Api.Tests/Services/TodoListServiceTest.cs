@@ -4,7 +4,6 @@
 
 namespace AspNetRestApiSample.Api.Tests.Services
 {
-  using Microsoft.EntityFrameworkCore;
   using Moq;
 
   using AspNetRestApiSample.Api.Storage;
@@ -17,7 +16,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
 #pragma warning disable CS8618
     private Mock<ITodoListEntityCollection> _todoListEntityCollectionMock;
     private Mock<ITodoListTaskEntityCollection> _todoListTaskEntityCollectionMock;
-    private Mock<IEntityContainer> _entityContainerMock;
+    private Mock<IEntityDatabase> _entityDatabaseMock;
 
     private TodoListService _todoListService;
 #pragma warning restore CS8618
@@ -29,15 +28,15 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       _todoListEntityCollectionMock = new Mock<ITodoListEntityCollection>();
       _todoListTaskEntityCollectionMock = new Mock<ITodoListTaskEntityCollection>();
-      _entityContainerMock = new Mock<IEntityContainer>();
+      _entityDatabaseMock = new Mock<IEntityDatabase>();
 
-      _entityContainerMock.SetupGet(container => container.TodoLists)
-                          .Returns(_todoListEntityCollectionMock.Object);
+      _entityDatabaseMock.SetupGet(database => database.TodoLists)
+                         .Returns(_todoListEntityCollectionMock.Object);
 
-      _entityContainerMock.SetupGet(container => container.TodoListTasks)
-                          .Returns(_todoListTaskEntityCollectionMock.Object);
+      _entityDatabaseMock.SetupGet(database => database.TodoListTasks)
+                         .Returns(_todoListTaskEntityCollectionMock.Object);
 
-      _todoListService = new TodoListService(_entityContainerMock.Object);
+      _todoListService = new TodoListService(_entityDatabaseMock.Object);
     }
 
     [TestMethod]
@@ -61,7 +60,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
-      _entityContainerMock.VerifyNoOtherCalls();
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -87,7 +86,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
-      _entityContainerMock.VerifyNoOtherCalls();
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -111,7 +110,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
-      _entityContainerMock.VerifyNoOtherCalls();
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -137,7 +136,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
-      _entityContainerMock.VerifyNoOtherCalls();
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -234,7 +233,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
-      _entityContainerMock.VerifyNoOtherCalls();
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -251,9 +250,9 @@ namespace AspNetRestApiSample.Api.Tests.Services
                                    .Returns(todoListEntity)
                                    .Verifiable();
 
-      _entityContainerMock.Setup(container => container.CommitAsync(It.IsAny<CancellationToken>()))
-                          .Returns(Task.CompletedTask)
-                          .Verifiable();
+      _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
+                         .Returns(Task.CompletedTask)
+                         .Verifiable();
 
       var command = new AddTodoListRequestDto
       {
@@ -271,8 +270,8 @@ namespace AspNetRestApiSample.Api.Tests.Services
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
-      _entityContainerMock.Verify(container => container.CommitAsync(_cancellationToken));
-      _entityContainerMock.VerifyNoOtherCalls();
+      _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]

@@ -12,13 +12,13 @@ namespace AspNetRestApiSample.Api.Services
   /// <summary>Provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Api.Entities.TodoListEntity"/> class.</summary>
   public sealed class TodoListService : ITodoListService
   {
-    private readonly IEntityContainer _entityContainer;
+    private readonly IEntityDatabase _entityDatabase;
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Services.TodoListService"/> class.</summary>
-    /// <param name="entityContainer">An object that provides a simple API to query entities from the database and to commit changes.</param>
-    public TodoListService(IEntityContainer entityContainer)
+    /// <param name="entityDatabase">An object that provides a simple API to a database.</param>
+    public TodoListService(IEntityDatabase entityDatabase)
     {
-      _entityContainer = entityContainer ?? throw new ArgumentNullException(nameof(entityContainer));
+      _entityDatabase = entityDatabase ?? throw new ArgumentNullException(nameof(entityDatabase));
     }
 
     /// <summary>Gets a detached todo list entity.</summary>
@@ -27,7 +27,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public Task<TodoListEntity?> GetDetachedTodoListAsync(
       ITodoListIdentity query, CancellationToken cancellationToken)
-      => _entityContainer.TodoLists.GetDetachedAsync(query.TodoListId, query.TodoListId, cancellationToken);
+      => _entityDatabase.TodoLists.GetDetachedAsync(query.TodoListId, query.TodoListId, cancellationToken);
 
     /// <summary>Gets an attached todo list entity.</summary>
     /// <param name="query">An object that represents an identity of a todo list.</param>
@@ -35,7 +35,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public Task<TodoListEntity?> GetAttachedTodoListAsync(
       ITodoListIdentity query, CancellationToken cancellationToken)
-      => _entityContainer.TodoLists.GetAttachedAsync(query.TodoListId, query.TodoListId, cancellationToken);
+      => _entityDatabase.TodoLists.GetAttachedAsync(query.TodoListId, query.TodoListId, cancellationToken);
 
     /// <summary>Gets a todo list response DTO.</summary>
     /// <param name="todoListEntity">An object that represents data of a todo list.</param>
@@ -55,7 +55,7 @@ namespace AspNetRestApiSample.Api.Services
     public async Task<SearchTodoListsRecordResponseDto[]> SearchTodoListsAsync(
       SearchTodoListsRequestDto query, CancellationToken cancellationToken)
     {
-      var todoListTaskEntities = await _entityContainer.TodoLists.GetDetachedTodoListsAsync(cancellationToken);
+      var todoListTaskEntities = await _entityDatabase.TodoLists.GetDetachedTodoListsAsync(cancellationToken);
       var searchTodoListsRecordResponseDtos = new SearchTodoListsRecordResponseDto[todoListTaskEntities.Length];
 
       for (var i = 0; i < todoListTaskEntities.Length; ++i)
@@ -80,9 +80,9 @@ namespace AspNetRestApiSample.Api.Services
     public async Task<AddTodoListResponseDto> AddTodoListAsync(
       AddTodoListRequestDto command, CancellationToken cancellationToken)
     {
-      var todoListEntity = _entityContainer.TodoLists.Add(command);
+      var todoListEntity = _entityDatabase.TodoLists.Add(command);
 
-      await _entityContainer.CommitAsync(cancellationToken);
+      await _entityDatabase.CommitAsync(cancellationToken);
 
       return new AddTodoListResponseDto
       {
@@ -100,9 +100,9 @@ namespace AspNetRestApiSample.Api.Services
       TodoListEntity todoListEntity,
       CancellationToken cancellationToken)
     {
-      _entityContainer.TodoLists.Update(command, todoListEntity);
+      _entityDatabase.TodoLists.Update(command, todoListEntity);
 
-      return _entityContainer.CommitAsync(cancellationToken);
+      return _entityDatabase.CommitAsync(cancellationToken);
     }
 
     /// <summary>Deletes an existing todo list.</summary>
@@ -112,9 +112,9 @@ namespace AspNetRestApiSample.Api.Services
     public Task DeleteTodoListAsync(
       TodoListEntity todoListEntity, CancellationToken cancellationToken)
     {
-      _entityContainer.TodoLists.Delete(todoListEntity);
+      _entityDatabase.TodoLists.Delete(todoListEntity);
 
-      return _entityContainer.CommitAsync(cancellationToken);
+      return _entityDatabase.CommitAsync(cancellationToken);
     }
   }
 }

@@ -8,7 +8,7 @@ namespace AspNetRestApiSample.Api.Storage
 
   using AspNetRestApiSample.Api.Entities;
 
-  /// <summary>Provides a simple API to query/change entities.</summary>
+  /// <summary>Provides a simple API to an entity collection in a database.</summary>
   public sealed class TodoListEntityCollection : EntityCollectionBase<TodoListEntity>, ITodoListEntityCollection
   {
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Storage.TodoListEntityCollection"/> class.</summary>

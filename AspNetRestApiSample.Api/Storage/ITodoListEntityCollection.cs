@@ -6,7 +6,7 @@ namespace AspNetRestApiSample.Api.Storage
 {
   using AspNetRestApiSample.Api.Entities;
 
-  /// <summary>Provides a simple API to query/change entities.</summary>
+  /// <summary>Provides a simple API to an entity collection in a database.</summary>
   public interface ITodoListEntityCollection : IEntityCollection<TodoListEntity>
   {
     /// <summary>Gets a collection of TODO lists.</summary>
