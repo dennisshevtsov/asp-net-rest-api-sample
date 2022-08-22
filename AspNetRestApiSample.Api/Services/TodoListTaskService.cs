@@ -47,14 +47,38 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public GetTodoListTaskResponseDto GetTodoListTask(TodoListTaskEntityBase todoListTaskEntity)
-      => new GetTodoListTaskResponseDto
+    public GetTodoListTaskResponseDtoBase GetTodoListTask(TodoListTaskEntityBase todoListTaskEntity)
+    {
+      GetTodoListTaskResponseDtoBase responseDto = null;
+
+      if (todoListTaskEntity is TodoListDayTaskEntity todoListDayTaskEntity)
       {
-        TodoListTaskId = todoListTaskEntity.Id,
-        TodoListId = todoListTaskEntity.TodoListId,
-        Title = todoListTaskEntity.Title,
-        Description = todoListTaskEntity.Description,
-      };
+        responseDto = new GetTodoListDayTaskResponseDto
+        {
+          Date = todoListDayTaskEntity.Date,
+        };
+      }
+      else if (todoListTaskEntity is TodoListPeriodTaskEntity todoListPeriodTaskEntity)
+      {
+        responseDto = new GetTodoListPeriodTaskResponseDto
+        {
+          Beginning = todoListPeriodTaskEntity.Beginning,
+          End = todoListPeriodTaskEntity.End,
+        };
+      }
+      else
+      {
+        throw new NotSupportedException($"Type {todoListTaskEntity.GetType()} is not supported.");
+      }
+
+      responseDto.TodoListTaskId = todoListTaskEntity.Id;
+      responseDto.TodoListId = todoListTaskEntity.TodoListId;
+      responseDto.Title = todoListTaskEntity.Title;
+      responseDto.Description = todoListTaskEntity.Description;
+      responseDto.Completed = todoListTaskEntity.Completed;
+
+      return responseDto;
+    }
 
     /// <summary>Gets a collection of TODO list tasks.</summary>
     /// <param name="query">An object that represents conditions to query TODO list tasks.</param>

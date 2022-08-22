@@ -114,24 +114,72 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public void GetTodoListTask_Should_Return_Populated_Dto()
+    public void GetTodoListTask_Should_Return_Populated_Dto_For_Day_Task()
     {
-      var todoListTaskEntity = new TodoListDayTaskEntity
+      var todoListDayTaskEntity = new TodoListDayTaskEntity
       {
         Id = Guid.NewGuid(),
         TodoListId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
+        Completed = true,
+        Date = new DateTime(2022, 8, 22),
       };
 
-      var getTodoListTaskResponseDto = _todoListTaskService.GetTodoListTask(todoListTaskEntity);
+      var getTodoListTaskResponseDto = _todoListTaskService.GetTodoListTask(todoListDayTaskEntity);
 
       Assert.IsNotNull(getTodoListTaskResponseDto);
 
-      Assert.AreEqual(todoListTaskEntity.Id, getTodoListTaskResponseDto.TodoListTaskId);
-      Assert.AreEqual(todoListTaskEntity.TodoListId, getTodoListTaskResponseDto.TodoListId);
-      Assert.AreEqual(todoListTaskEntity.Title, getTodoListTaskResponseDto.Title);
-      Assert.AreEqual(todoListTaskEntity.Description, getTodoListTaskResponseDto.Description);
+      var todoListDayTaskResponseDto = getTodoListTaskResponseDto as GetTodoListDayTaskResponseDto;
+
+      Assert.IsNotNull(todoListDayTaskResponseDto);
+
+      Assert.AreEqual(todoListDayTaskEntity.Id, todoListDayTaskResponseDto.TodoListTaskId);
+      Assert.AreEqual(todoListDayTaskEntity.TodoListId, todoListDayTaskResponseDto.TodoListId);
+      Assert.AreEqual(todoListDayTaskEntity.Title, todoListDayTaskResponseDto.Title);
+      Assert.AreEqual(todoListDayTaskEntity.Description, todoListDayTaskResponseDto.Description);
+      Assert.AreEqual(todoListDayTaskEntity.Completed, todoListDayTaskResponseDto.Completed);
+      Assert.AreEqual(todoListDayTaskEntity.Date, todoListDayTaskResponseDto.Date);
+    }
+
+    [TestMethod]
+    public void GetTodoListTask_Should_Return_Populated_Dto_For_Period_Task()
+    {
+      var todoListPeriodTaskEntity = new TodoListPeriodTaskEntity
+      {
+        Id = Guid.NewGuid(),
+        TodoListId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Completed = true,
+        Beginning = new DateTime(2022, 8, 22, 18, 0, 0),
+        End = new DateTime(2022, 8, 22, 19, 0, 0),
+      };
+
+      var getTodoListTaskResponseDto = _todoListTaskService.GetTodoListTask(todoListPeriodTaskEntity);
+
+      Assert.IsNotNull(getTodoListTaskResponseDto);
+
+      var getTodoListPeriodTaskResponseDto = getTodoListTaskResponseDto as GetTodoListPeriodTaskResponseDto;
+
+      Assert.IsNotNull(getTodoListPeriodTaskResponseDto);
+
+      Assert.AreEqual(todoListPeriodTaskEntity.Id, getTodoListPeriodTaskResponseDto.TodoListTaskId);
+      Assert.AreEqual(todoListPeriodTaskEntity.TodoListId, getTodoListPeriodTaskResponseDto.TodoListId);
+      Assert.AreEqual(todoListPeriodTaskEntity.Title, getTodoListPeriodTaskResponseDto.Title);
+      Assert.AreEqual(todoListPeriodTaskEntity.Description, getTodoListPeriodTaskResponseDto.Description);
+      Assert.AreEqual(todoListPeriodTaskEntity.Completed, getTodoListPeriodTaskResponseDto.Completed);
+      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, getTodoListPeriodTaskResponseDto.Beginning);
+      Assert.AreEqual(todoListPeriodTaskEntity.End, getTodoListPeriodTaskResponseDto.End);
+    }
+
+    [TestMethod]
+    public void GetTodoListTask_Should_Throw_Exception()
+    {
+      var todoListPeriodTaskEntity = new TestTodoListTaskEntity();
+
+      Assert.ThrowsException<NotSupportedException>(
+        () => _todoListTaskService.GetTodoListTask(todoListPeriodTaskEntity));
     }
 
     [TestMethod]
@@ -374,5 +422,13 @@ namespace AspNetRestApiSample.Api.Tests.Services
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
       _entityDatabaseMock.VerifyNoOtherCalls();
     }
+
+    #region Test Classes
+
+    private sealed class TestTodoListTaskEntity : TodoListTaskEntityBase
+    {
+    }
+
+    #endregion
   }
 }

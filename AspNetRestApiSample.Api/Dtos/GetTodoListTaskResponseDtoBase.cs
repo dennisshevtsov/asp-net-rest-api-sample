@@ -6,8 +6,8 @@ namespace AspNetRestApiSample.Api.Dtos
 {
   using AspNetRestApiSample.Api.Indentities;
 
-  /// <summary>Represents data of a response for the get TODO list query.</summary>
-  public sealed class GetTodoListTaskResponseDto : ITodoListIdentity, ITodoListTaskIdentity
+  /// <summary>Represents a base of a response for the get TODO list query.</summary>
+  public abstract class GetTodoListTaskResponseDtoBase : ITodoListIdentity, ITodoListTaskIdentity
   {
     /// <summary>Gets/sets an object that reprsents an ID of a TODO list.</summary>
     public Guid TodoListId { get; set; }
@@ -20,5 +20,8 @@ namespace AspNetRestApiSample.Api.Dtos
 
     /// <summary>Gets/sets an object that represents a description of a TODO list task.</summary>
     public string? Description { get; set; }
+
+    /// <summary>Gets/sets an object that indicates if an TODO list is completed.</summary>
+    public bool Completed { get; set; }
   }
 }

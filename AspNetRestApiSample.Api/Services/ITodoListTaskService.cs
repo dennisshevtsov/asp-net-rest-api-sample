@@ -33,7 +33,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public GetTodoListTaskResponseDto GetTodoListTask(TodoListTaskEntityBase todoListTaskEntity);
+    public GetTodoListTaskResponseDtoBase GetTodoListTask(TodoListTaskEntityBase todoListTaskEntity);
 
     /// <summary>Gets a collection of TODO list tasks.</summary>
     /// <param name="query">An object that represents conditions to query TODO list tasks.</param>

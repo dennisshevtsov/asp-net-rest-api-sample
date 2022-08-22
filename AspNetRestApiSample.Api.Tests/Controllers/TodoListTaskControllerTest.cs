@@ -71,7 +71,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
                               .ReturnsAsync(todoListTaskEntity)
                               .Verifiable();
 
-      var getTodoListTaskResponseDto = new GetTodoListTaskResponseDto
+      var getTodoListTaskResponseDto = new GetTodoListDayTaskResponseDto
       {
         TodoListId = todoListId,
         TodoListTaskId = todoListTaskId,
