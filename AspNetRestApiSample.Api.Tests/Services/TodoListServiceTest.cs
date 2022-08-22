@@ -277,35 +277,25 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task UpdateTodoListAsync_Should_Update_Attached_Entity()
     {
-      //var todoListEntity = new TodoListEntity
-      //{
-      //  Title = Guid.NewGuid().ToString(),
-      //  Description = Guid.NewGuid().ToString(),
-      //};
+      _todoListEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
+                                   .Verifiable();
 
-      //_dbContext.Add(todoListEntity);
-      //await _dbContext.SaveChangesAsync();
+      _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
+                         .Returns(Task.CompletedTask)
+                         .Verifiable();
 
-      //var todoListId = todoListEntity.Id;
-      //var command = new UpdateTodoListRequestDto
-      //{
-      //  TodoListId = todoListId,
-      //  Title = Guid.NewGuid().ToString(),
-      //  Description = Guid.NewGuid().ToString(),
-      //};
+      var command = new UpdateTodoListRequestDto();
+      var todoListEntity = new TodoListEntity();
 
-      //await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
+      await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
 
-      //var actualTodoListEntity =
-      //  await _dbContext.Set<TodoListEntity>()
-      //                  .AsNoTracking()
-      //                  .Where(entity => entity.TodoListId == todoListId)
-      //                  .Where(entity => entity.Id == todoListId)
-      //                  .FirstOrDefaultAsync();
+      _todoListEntityCollectionMock.Verify(collection => collection.Update(command, todoListEntity));
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
-      //Assert.IsNotNull(actualTodoListEntity);
-      //Assert.AreEqual(command.Title, actualTodoListEntity.Title);
-      //Assert.AreEqual(command.Description, actualTodoListEntity.Description);
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
