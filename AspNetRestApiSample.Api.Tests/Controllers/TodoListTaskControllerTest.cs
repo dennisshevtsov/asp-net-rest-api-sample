@@ -106,11 +106,11 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     public async Task SearchTodoListTasks_Should_Return_Ok()
     {
       var todoListId = Guid.NewGuid();
-      var searchTodoListTasksRecordResponseDtos = new[]
+      var searchTodoListTasksRecordResponseDtos = new SearchTodoListTasksRecordResponseDtoBase[]
       {
-        new SearchTodoListTasksRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), },
-        new SearchTodoListTasksRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), },
-        new SearchTodoListTasksRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), },
+        new SearchTodoListTasksDayRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Date = new DateTime(2022, 08, 22), },
+        new SearchTodoListTasksDayRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Date = new DateTime(2022, 08, 23), },
+        new SearchTodoListTasksPeriodRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Beginning = new DateTime(2022, 08, 23, 12, 0, 0), End = new DateTime(2022, 08, 22, 13, 0, 0), },
       };
 
       _todoListTaskServiceMock.Setup(service => service.SearchTodoListTasksAsync(It.IsAny<SearchTodoListTasksRequestDto>(), It.IsAny<CancellationToken>()))

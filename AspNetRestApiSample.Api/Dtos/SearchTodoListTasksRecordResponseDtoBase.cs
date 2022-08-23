@@ -6,8 +6,8 @@ namespace AspNetRestApiSample.Api.Dtos
 {
   using AspNetRestApiSample.Api.Indentities;
 
-  /// <summary>Represents data of a record of a response for search TODO list tasks.</summary>
-  public sealed class SearchTodoListTasksRecordResponseDto : ITodoListIdentity, ITodoListTaskIdentity
+  /// <summary>Represents a base of a record of a response for search TODO list tasks.</summary>
+  public abstract class SearchTodoListTasksRecordResponseDtoBase : ITodoListIdentity, ITodoListTaskIdentity
   {
     /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
     public Guid TodoListId { get; set; }

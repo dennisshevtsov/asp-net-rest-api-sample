@@ -5,12 +5,12 @@
 namespace AspNetRestApiSample.Api.Controllers
 {
   using System;
+  using System.Net;
 
   using Microsoft.AspNetCore.Mvc;
 
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Services;
-  using System.Net;
 
   /// <summary>Provides a simple API to handle HTTP requests.</summary>
   [ApiController]
@@ -65,7 +65,7 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet(Name = nameof(TodoListTaskController.SearchTodoListTasks))]
-    [ProducesResponseType(typeof(SearchTodoListTasksRecordResponseDto[]), (int)HttpStatusCode.OK, TodoListTaskController.ContentType)]
+    [ProducesResponseType(typeof(SearchTodoListTasksRecordResponseDtoBase[]), (int)HttpStatusCode.OK, TodoListTaskController.ContentType)]
     public async Task<IActionResult> SearchTodoListTasks(
       [FromRoute] SearchTodoListTasksRequestDto query,
       CancellationToken cancellationToken)

@@ -49,7 +49,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public GetTodoListTaskResponseDtoBase GetTodoListTask(TodoListTaskEntityBase todoListTaskEntity)
     {
-      GetTodoListTaskResponseDtoBase responseDto = null;
+      GetTodoListTaskResponseDtoBase responseDto;
 
       if (todoListTaskEntity is TodoListDayTaskEntity todoListDayTaskEntity)
       {
@@ -84,7 +84,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="query">An object that represents conditions to query TODO list tasks.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
-    public async Task<SearchTodoListTasksRecordResponseDto[]> SearchTodoListTasksAsync(
+    public async Task<SearchTodoListTasksRecordResponseDtoBase[]> SearchTodoListTasksAsync(
       SearchTodoListTasksRequestDto query, CancellationToken cancellationToken)
     {
       var todoListTaskEntityCollection =
@@ -92,19 +92,12 @@ namespace AspNetRestApiSample.Api.Services
           query.TodoListId, cancellationToken);
 
       var searchTodoListTasksRecordResponseDtoCollection =
-        new SearchTodoListTasksRecordResponseDto[todoListTaskEntityCollection.Length];
+        new SearchTodoListTasksRecordResponseDtoBase[todoListTaskEntityCollection.Length];
 
       for (int i = 0; i < todoListTaskEntityCollection.Length; ++i)
       {
-        var todoListTaskEntity = todoListTaskEntityCollection[i];
-
-        searchTodoListTasksRecordResponseDtoCollection[i] = new SearchTodoListTasksRecordResponseDto
-        {
-          TodoListId = todoListTaskEntity.TodoListId,
-          TodoListTaskId = todoListTaskEntity.Id,
-          Title = todoListTaskEntity.Title,
-          Description = todoListTaskEntity.Description,
-        };
+        searchTodoListTasksRecordResponseDtoCollection[i] =
+          TodoListTaskService.Convert(todoListTaskEntityCollection[i]);
       }
 
       return searchTodoListTasksRecordResponseDtoCollection;
@@ -185,5 +178,40 @@ namespace AspNetRestApiSample.Api.Services
 
       return Task.CompletedTask;
     }
+
+
+    private static SearchTodoListTasksRecordResponseDtoBase Convert(TodoListTaskEntityBase todoListTaskEntity)
+    {
+      SearchTodoListTasksRecordResponseDtoBase responseDto = null;
+
+      if (todoListTaskEntity is TodoListDayTaskEntity todoListDayTaskEntity)
+      {
+        responseDto = new SearchTodoListTasksDayRecordResponseDto
+        {
+          Date = todoListDayTaskEntity.Date,
+        };
+      }
+      else if (todoListTaskEntity is TodoListPeriodTaskEntity todoListPeriodTaskEntity)
+      {
+        responseDto = new SearchTodoListTasksPeriodRecordResponseDto
+        {
+          Beginning = todoListPeriodTaskEntity.Beginning,
+          End = todoListPeriodTaskEntity.End,
+        };
+      }
+      else
+      {
+        throw new NotSupportedException($"Type {todoListTaskEntity.GetType()} is not supported.");
+      }
+
+      responseDto.TodoListId = todoListTaskEntity.TodoListId;
+      responseDto.TodoListTaskId = todoListTaskEntity.Id;
+      responseDto.Title = todoListTaskEntity.Title;
+      responseDto.Description = todoListTaskEntity.Description;
+      responseDto.Completed = todoListTaskEntity.Completed;
+
+      return responseDto;
+    }
+
   }
 }
