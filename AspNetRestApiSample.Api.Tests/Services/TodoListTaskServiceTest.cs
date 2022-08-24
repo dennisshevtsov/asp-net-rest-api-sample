@@ -323,7 +323,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
         TodoListId = todoListId,
       };
 
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<AddTodoListTaskRequestDto>()))
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<AddTodoListTaskRequestDtoBase>()))
                                        .Returns(todoListTaskEntity)
                                        .Verifiable();
 
@@ -331,7 +331,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
                          .Returns(Task.CompletedTask)
                          .Verifiable();
 
-      var command = new AddTodoListTaskRequestDto();
+      var command = new AddTodoListDayTaskRequestDto();
 
       var addTodoListTaskResponseDto =
         await _todoListTaskService.AddTodoListTaskAsync(command, _cancellationToken);

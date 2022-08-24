@@ -140,7 +140,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
                           .ReturnsAsync(default(TodoListEntity))
                           .Verifiable();
 
-      var command = new AddTodoListTaskRequestDto
+      var command = new AddTodoListDayTaskRequestDto
       {
         TodoListId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
@@ -168,7 +168,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
 
       var todoListTaskId = Guid.NewGuid();
 
-      _todoListTaskServiceMock.Setup(service => service.AddTodoListTaskAsync(It.IsAny<AddTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.AddTodoListTaskAsync(It.IsAny<AddTodoListTaskRequestDtoBase>(), It.IsAny<CancellationToken>()))
                               .ReturnsAsync(new AddTodoListTaskResponseDto
                               {
                                 TodoListId = todoListId,
@@ -176,7 +176,7 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
                               })
                               .Verifiable();
 
-      var command = new AddTodoListTaskRequestDto
+      var command = new AddTodoListDayTaskRequestDto
       {
         TodoListId = todoListId,
         Title = Guid.NewGuid().ToString(),

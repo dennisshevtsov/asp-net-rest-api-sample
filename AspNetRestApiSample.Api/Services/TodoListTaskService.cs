@@ -108,7 +108,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public async Task<AddTodoListTaskResponseDto> AddTodoListTaskAsync(
-      AddTodoListTaskRequestDto command, CancellationToken cancellationToken)
+      AddTodoListTaskRequestDtoBase command, CancellationToken cancellationToken)
     {
       var todoListTaskEntity = _entityDatabase.TodoListTasks.Add(command);
 

@@ -80,9 +80,9 @@ namespace AspNetRestApiSample.Api.Controllers
     [HttpPost(Name = nameof(TodoListTaskController.AddTodoListTask))]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(AddTodoListTaskResponseDto), (int)HttpStatusCode.OK, TodoListTaskController.ContentType)]
-    [Consumes(typeof(AddTodoListTaskRequestDto), TodoListTaskController.ContentType)]
+    [Consumes(typeof(AddTodoListTaskRequestDtoBase), TodoListTaskController.ContentType)]
     public async Task<IActionResult> AddTodoListTask(
-      [FromBody] AddTodoListTaskRequestDto command,
+      [FromBody] AddTodoListTaskRequestDtoBase command,
       CancellationToken cancellationToken)
     {
       var todoListEntity = await _todoListService.GetDetachedTodoListAsync(command, cancellationToken);
