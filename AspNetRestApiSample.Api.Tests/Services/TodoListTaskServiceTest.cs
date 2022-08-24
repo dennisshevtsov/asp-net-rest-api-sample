@@ -280,6 +280,38 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
+    public async Task SearchTodoListTasksAsync_Should_Return_Throw_Exception()
+    {
+      var todoListTaskEntityCollection = new TodoListTaskEntityBase[]
+      {
+        new TodoListDayTaskEntity(),
+        new TodoListDayTaskEntity(),
+        new TodoListPeriodTaskEntity(),
+        new TestTodoListTaskEntity(),
+      };
+
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.GetDetachedTodoListTasksAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                                       .ReturnsAsync(todoListTaskEntityCollection)
+                                       .Verifiable();
+
+      var todoListId = Guid.NewGuid();
+      var query = new SearchTodoListTasksRequestDto
+      {
+        TodoListId = todoListId,
+      };
+
+      await Assert.ThrowsExceptionAsync<NotSupportedException>(
+        () => _todoListTaskService.SearchTodoListTasksAsync(query, _cancellationToken));
+
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.GetDetachedTodoListTasksAsync(todoListId, _cancellationToken));
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityDatabaseMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
     public async Task AddTodoListTaskAsync_Should_Save_Todo_List_Task()
     {
       var todoListId = Guid.NewGuid();
