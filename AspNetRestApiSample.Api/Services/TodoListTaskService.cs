@@ -111,7 +111,7 @@ namespace AspNetRestApiSample.Api.Services
       AddTodoListTaskRequestDtoBase command, CancellationToken cancellationToken)
     {
       TodoListTaskEntityBase todoListTaskEntity;
-      
+
       if (command is AddTodoListDayTaskRequestDto)
       {
         todoListTaskEntity = new TodoListDayTaskEntity();

@@ -247,8 +247,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
         TodoListId = todoListId,
       };
 
-      _todoListEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<AddTodoListRequestDto>()))
-                                   .Returns(todoListEntity)
+      _todoListEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<AddTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
                                    .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -266,7 +265,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       Assert.IsNotNull(addTodoListResponseDto);
       Assert.AreEqual(todoListId, addTodoListResponseDto.TodoListId);
 
-      _todoListEntityCollectionMock.Verify(collection => collection.Add(command));
+      _todoListEntityCollectionMock.Verify(collection => collection.Update(command, todoListEntity));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
