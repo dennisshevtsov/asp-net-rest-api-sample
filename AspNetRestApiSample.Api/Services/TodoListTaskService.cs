@@ -110,8 +110,22 @@ namespace AspNetRestApiSample.Api.Services
     public async Task<AddTodoListTaskResponseDto> AddTodoListTaskAsync(
       AddTodoListTaskRequestDtoBase command, CancellationToken cancellationToken)
     {
-      var todoListTaskEntity = _entityDatabase.TodoListTasks.Add(command);
+      TodoListTaskEntityBase todoListTaskEntity;
+      
+      if (command is AddTodoListDayTaskRequestDto)
+      {
+        todoListTaskEntity = new TodoListDayTaskEntity();
+      }
+      else if (command is AddTodoListPeriodTaskRequestDto)
+      {
+        todoListTaskEntity = new TodoListPeriodTaskEntity();
+      }
+      else
+      {
+        throw new NotSupportedException();
+      }
 
+      _entityDatabase.TodoListTasks.Update(command, todoListTaskEntity);
       await _entityDatabase.CommitAsync(cancellationToken);
 
       return new AddTodoListTaskResponseDto

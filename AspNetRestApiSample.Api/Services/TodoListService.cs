@@ -80,8 +80,9 @@ namespace AspNetRestApiSample.Api.Services
     public async Task<AddTodoListResponseDto> AddTodoListAsync(
       AddTodoListRequestDto command, CancellationToken cancellationToken)
     {
-      var todoListEntity = _entityDatabase.TodoLists.Add(command);
+      var todoListEntity = new TodoListEntity();
 
+      _entityDatabase.TodoLists.Update(command, todoListEntity);
       await _entityDatabase.CommitAsync(cancellationToken);
 
       return new AddTodoListResponseDto
