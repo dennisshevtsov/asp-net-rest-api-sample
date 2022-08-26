@@ -241,13 +241,15 @@ namespace AspNetRestApiSample.Api.Tests.Services
     public async Task AddTodoListAsync_Should_Create_New_Todo_List()
     {
       var todoListId = Guid.NewGuid();
-      var todoListEntity = new TodoListEntity
-      {
-        Id = todoListId,
-        TodoListId = todoListId,
-      };
+      TodoListEntity? todoListEntity = null;
 
       _todoListEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<AddTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
+                                   .Callback((object command, TodoListEntity entity) =>
+                                   {
+                                     entity.TodoListId = todoListId;
+
+                                     todoListEntity = entity;
+                                   })
                                    .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -263,6 +265,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
       var addTodoListResponseDto = await _todoListService.AddTodoListAsync(command, CancellationToken.None);
 
       Assert.IsNotNull(addTodoListResponseDto);
+      Assert.IsNotNull(todoListEntity);
       Assert.AreEqual(todoListId, addTodoListResponseDto.TodoListId);
 
       _todoListEntityCollectionMock.Verify(collection => collection.Update(command, todoListEntity));
