@@ -390,6 +390,21 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
+    public async Task AddTodoListTaskAsync_Should_Throw_Exception()
+    {
+      var command = new TestAddTodoListTaskRequestDto();
+
+      await Assert.ThrowsExceptionAsync<NotSupportedException>(
+        () => _todoListTaskService.AddTodoListTaskAsync(command, _cancellationToken));
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityDatabaseMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
     public async Task UpdateTodoListTaskAsync_Should_Save_Todo_List_Task()
     {
       _todoListTaskEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntityBase>()))
@@ -529,6 +544,10 @@ namespace AspNetRestApiSample.Api.Tests.Services
     #region Test Classes
 
     private sealed class TestTodoListTaskEntity : TodoListTaskEntityBase
+    {
+    }
+
+    private sealed class TestAddTodoListTaskRequestDto : AddTodoListTaskRequestDtoBase
     {
     }
 
