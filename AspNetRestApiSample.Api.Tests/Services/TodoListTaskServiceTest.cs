@@ -312,9 +312,9 @@ namespace AspNetRestApiSample.Api.Tests.Services
     }
 
     [TestMethod]
-    public async Task AddTodoListTaskAsync_Should_Save_Todo_List_Task()
+    public async Task AddTodoListTaskAsync_Should_Save_Todo_List_Day_Task()
     {
-      TodoListTaskEntityBase todoListTaskEntity = null;
+      TodoListTaskEntityBase? todoListTaskEntity = null;
 
       _todoListTaskEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<AddTodoListTaskRequestDtoBase>(), It.IsAny<TodoListTaskEntityBase>()))
                                        .Callback<object, TodoListTaskEntityBase>((command, entity) =>
@@ -331,6 +331,45 @@ namespace AspNetRestApiSample.Api.Tests.Services
                          .Verifiable();
 
       var command = new AddTodoListDayTaskRequestDto();
+
+      var addTodoListTaskResponseDto =
+        await _todoListTaskService.AddTodoListTaskAsync(command, _cancellationToken);
+
+      Assert.IsNotNull(addTodoListTaskResponseDto);
+      Assert.IsNotNull(todoListTaskEntity);
+
+      Assert.AreEqual(todoListTaskEntity.Id, addTodoListTaskResponseDto.TodoListTaskId);
+      Assert.AreEqual(todoListTaskEntity.TodoListId, addTodoListTaskResponseDto.TodoListId);
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Update(command, todoListTaskEntity));
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
+      _entityDatabaseMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task AddTodoListTaskAsync_Should_Save_Todo_List_Period_Task()
+    {
+      TodoListTaskEntityBase? todoListTaskEntity = null;
+
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<AddTodoListTaskRequestDtoBase>(), It.IsAny<TodoListTaskEntityBase>()))
+                                       .Callback<object, TodoListTaskEntityBase>((command, entity) =>
+                                       {
+                                         entity.Id = Guid.NewGuid();
+                                         entity.TodoListId = Guid.NewGuid();
+
+                                         todoListTaskEntity = entity;
+                                       })
+                                       .Verifiable();
+
+      _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
+                         .Returns(Task.CompletedTask)
+                         .Verifiable();
+
+      var command = new AddTodoListPeriodTaskRequestDto();
 
       var addTodoListTaskResponseDto =
         await _todoListTaskService.AddTodoListTaskAsync(command, _cancellationToken);
