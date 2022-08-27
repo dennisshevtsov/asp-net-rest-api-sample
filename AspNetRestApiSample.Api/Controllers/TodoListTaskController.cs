@@ -102,9 +102,9 @@ namespace AspNetRestApiSample.Api.Controllers
     [HttpPut(TodoListTaskController.UpdateTodoListTaskRoute, Name = nameof(TodoListTaskController.UpdateTodoListTask))]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    [Consumes(typeof(UpdateTodoListTaskRequestDto), TodoListTaskController.ContentType)]
+    [Consumes(typeof(UpdateTodoListTaskRequestDtoBase), TodoListTaskController.ContentType)]
     public async Task<IActionResult> UpdateTodoListTask(
-      [FromBody] UpdateTodoListTaskRequestDto command,
+      [FromBody] UpdateTodoListTaskRequestDtoBase command,
       CancellationToken cancellationToken)
     {
       var todoListTaskEntity = await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(command, cancellationToken);

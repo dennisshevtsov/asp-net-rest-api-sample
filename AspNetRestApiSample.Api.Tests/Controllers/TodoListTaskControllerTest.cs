@@ -202,11 +202,11 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
     [TestMethod]
     public async Task UpdateTodoListTask_Should_Return_Not_Found()
     {
-      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<UpdateTodoListTaskRequestDtoBase>(), It.IsAny<CancellationToken>()))
                               .ReturnsAsync(default(TodoListTaskEntityBase))
                               .Verifiable();
 
-      var command = new UpdateTodoListTaskRequestDto
+      var command = new UpdateTodoListDayTaskRequestDto
       {
         TodoListId = Guid.NewGuid(),
         TodoListTaskId = Guid.NewGuid(),
@@ -240,15 +240,15 @@ namespace AspNetRestApiSample.Api.Tests.Controllers
       };
 
 
-      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.GetAttachedTodoListTaskEntityAsync(It.IsAny<UpdateTodoListTaskRequestDtoBase>(), It.IsAny<CancellationToken>()))
                               .ReturnsAsync(todoListTaskEntity)
                               .Verifiable();
 
-      _todoListTaskServiceMock.Setup(service => service.UpdateTodoListTaskAsync(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntityBase>(), It.IsAny<CancellationToken>()))
+      _todoListTaskServiceMock.Setup(service => service.UpdateTodoListTaskAsync(It.IsAny<UpdateTodoListTaskRequestDtoBase>(), It.IsAny<TodoListTaskEntityBase>(), It.IsAny<CancellationToken>()))
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
-      var command = new UpdateTodoListTaskRequestDto
+      var command = new UpdateTodoListDayTaskRequestDto
       {
         TodoListId = Guid.NewGuid(),
         TodoListTaskId = Guid.NewGuid(),

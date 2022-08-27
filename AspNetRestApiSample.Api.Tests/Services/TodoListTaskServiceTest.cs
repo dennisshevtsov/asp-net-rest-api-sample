@@ -407,7 +407,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
     [TestMethod]
     public async Task UpdateTodoListTaskAsync_Should_Save_Todo_List_Task()
     {
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListTaskRequestDto>(), It.IsAny<TodoListTaskEntityBase>()))
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListTaskRequestDtoBase>(), It.IsAny<TodoListTaskEntityBase>()))
                                        .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -423,7 +423,7 @@ namespace AspNetRestApiSample.Api.Tests.Services
         TodoListId = todoListId,
       };
 
-      var command = new UpdateTodoListTaskRequestDto();
+      var command = new UpdateTodoListDayTaskRequestDto();
 
       await _todoListTaskService.UpdateTodoListTaskAsync(command, todoListTaskEntity, _cancellationToken);
 
