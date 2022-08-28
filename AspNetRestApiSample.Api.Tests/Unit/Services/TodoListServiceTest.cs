@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.Api.Tests.Services
+namespace AspNetRestApiSample.Api.Tests.Unit.Services
 {
   using Moq;
 
