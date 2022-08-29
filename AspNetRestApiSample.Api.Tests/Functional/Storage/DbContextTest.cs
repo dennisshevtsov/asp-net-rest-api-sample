@@ -8,6 +8,7 @@ namespace AspNetRestApiSample.Api.Tests.Functional.Storage
   using Microsoft.Extensions.DependencyInjection;
 
   using AspNetRestApiSample.Api.Storage;
+  using Microsoft.Extensions.Configuration;
 
   [TestClass]
   public sealed class DbContextTest
@@ -21,7 +22,10 @@ namespace AspNetRestApiSample.Api.Tests.Functional.Storage
     [TestInitialize]
     public void Initialize()
     {
-      var scope = new ServiceCollection().AddDatabase(null)
+      var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json")
+                                                    .Build();
+
+      var scope = new ServiceCollection().AddDatabase(configuration)
                                          .BuildServiceProvider()
                                          .CreateScope();
 
