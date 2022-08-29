@@ -10,13 +10,14 @@ namespace AspNetRestApiSample.Api.Configurations
   using AspNetRestApiSample.Api.Entities;
 
   /// <summary>Allows configuration for an entity type.</summary>
-  public class TodoListDayTaskEntityTypeConfiguration : IEntityTypeConfiguration<TodoListDayTaskEntity>
+  public sealed class TodoListDayTaskEntityTypeConfiguration : IEntityTypeConfiguration<TodoListDayTaskEntity>
   {
     /// <summary>Configures the entity of type <see cref="AspNetRestApiSample.Api.Entities.TodoListDayTaskEntity"/>.</summary>
     /// <param name="builder">An object that provides a simple API to configure the entity type.</param>
     public void Configure(EntityTypeBuilder<TodoListDayTaskEntity> builder)
     {
       builder.HasBaseType<TodoListTaskEntityBase>();
+      builder.HasPartitionKey(entity => entity.TodoListId);
 
       builder.Property(entity => entity.Date).ToJsonProperty("date");
     }

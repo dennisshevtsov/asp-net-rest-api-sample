@@ -19,7 +19,7 @@ namespace AspNetRestApiSample.Api.Configurations
     : IEntityTypeConfiguration<TEntity>
     where TEntity : TodoListEntityBase
   {
-    private const string DescriminatorPropertyName = "__type";
+    private const string DescriminatorPropertyName = "_type";
 
     private readonly string _containerName;
 
