@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.Api.Tests.Functional.Storage
+namespace AspNetRestApiSample.Api.Tests.Integration.Storage
 {
   using Microsoft.EntityFrameworkCore;
+  using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
 
   using AspNetRestApiSample.Api.Storage;
-  using System.Configuration;
-  using Microsoft.Extensions.Configuration;
-
+  
   [TestClass]
   public sealed class EntityDatabaseTest
   {
@@ -44,15 +43,6 @@ namespace AspNetRestApiSample.Api.Tests.Functional.Storage
     {
       _dbContext.Database.EnsureDeleted();
       _disposable.Dispose();
-    }
-
-    [TestMethod]
-    public void Test()
-    {
-      _dbContext.Add(new TodoListEntity
-      {
-        Title
-      });
     }
   }
 }
