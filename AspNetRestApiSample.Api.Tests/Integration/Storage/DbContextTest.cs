@@ -15,16 +15,19 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
   [TestClass]
   public sealed class DbContextTest
   {
+    private CancellationToken _cancellationToken;
+
 #pragma warning disable CS8618
     private DbContext _dbContext;
 
     private IDisposable _disposable;
-    private CancellationToken _cancellationToken;
 #pragma warning restore CS8618
 
     [TestInitialize]
     public void Initialize()
     {
+      _cancellationToken = CancellationToken.None;
+
       var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json")
                                                     .Build();
 
@@ -36,7 +39,6 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       _dbContext.Database.EnsureCreated();
 
       _disposable = scope;
-      _cancellationToken = CancellationToken.None;
     }
 
     [TestCleanup]
@@ -47,7 +49,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
     }
 
     [TestMethod]
-    public async Task Add_Should_Save_Todo_List_Entity()
+    public async Task Add_Should_Save_Todo_List()
     {
       var title = Guid.NewGuid().ToString();
       var description = Guid.NewGuid().ToString();
@@ -82,7 +84,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
     }
 
     [TestMethod]
-    public async Task Update_Should_Save_Todo_List_Entity()
+    public async Task Update_Should_Save_Todo_List()
     {
       var todoListEntity = new TodoListEntity
       {
@@ -117,7 +119,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
     }
 
     [TestMethod]
-    public async Task Delete_Should_Delete_Todo_List_Entity()
+    public async Task Delete_Should_Delete_Todo_List()
     {
       var todoListEntity = new TodoListEntity
       {
@@ -144,6 +146,49 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
                         .FirstOrDefaultAsync(_cancellationToken);
 
       Assert.IsNull(dbTodoListEntity);
+    }
+
+    [TestMethod]
+    public async Task Add_Should_Save_Todo_List_Day_Task()
+    {
+      var todoListEntity = new TodoListEntity
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Add(todoListEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      _dbContext.Entry(todoListEntity).State = EntityState.Detached;
+
+      var todoListDayTaskEntity = new TodoListDayTaskEntity
+      {
+        TodoListId = todoListEntity.TodoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Date = new DateTime(2022, 9, 1),
+      };
+
+      _dbContext.Add(todoListDayTaskEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      var dbTodoListTaskEntity =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .WithPartitionKey(todoListEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListDayTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNotNull(dbTodoListTaskEntity);
+      Assert.AreEqual(todoListDayTaskEntity.Title, dbTodoListTaskEntity.Title);
+      Assert.AreEqual(todoListDayTaskEntity.Description, dbTodoListTaskEntity.Description);
+
+      var dbTodoListDayTaskEntity = dbTodoListTaskEntity as TodoListDayTaskEntity;
+
+      Assert.IsNotNull(dbTodoListDayTaskEntity);
+      Assert.AreEqual(todoListDayTaskEntity.Date, dbTodoListDayTaskEntity.Date);
     }
   }
 }
