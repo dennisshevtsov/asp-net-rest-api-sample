@@ -115,5 +115,35 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.AreEqual(todoListEntity.Title, dbTodoListEntity.Title);
       Assert.AreEqual(todoListEntity.Description, dbTodoListEntity.Description);
     }
+
+    [TestMethod]
+    public async Task Delete_Should_Delete_Todo_List_Entity()
+    {
+      var todoListEntity = new TodoListEntity
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Add(todoListEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      Assert.IsTrue(todoListEntity.Id != default);
+      Assert.IsTrue(todoListEntity.TodoListId != default);
+      Assert.IsTrue(todoListEntity.Id == todoListEntity.TodoListId);
+
+      _dbContext.Entry(todoListEntity).State = EntityState.Deleted;
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      var dbTodoListEntity =
+        await _dbContext.Set<TodoListEntity>()
+                        .WithPartitionKey(todoListEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNull(dbTodoListEntity);
+    }
   }
 }
