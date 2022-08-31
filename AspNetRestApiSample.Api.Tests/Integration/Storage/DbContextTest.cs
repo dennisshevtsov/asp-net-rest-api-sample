@@ -187,6 +187,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.IsNotNull(dbTodoListTaskEntity);
       Assert.AreEqual(todoListDayTaskEntity.Title, dbTodoListTaskEntity.Title);
       Assert.AreEqual(todoListDayTaskEntity.Description, dbTodoListTaskEntity.Description);
+      Assert.AreEqual(todoListDayTaskEntity.Completed, dbTodoListTaskEntity.Completed);
 
       var dbTodoListDayTaskEntity = dbTodoListTaskEntity as TodoListDayTaskEntity;
 
@@ -233,12 +234,66 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.IsNotNull(dbTodoListTaskEntity);
       Assert.AreEqual(todoListPeriodTaskEntity.Title, dbTodoListTaskEntity.Title);
       Assert.AreEqual(todoListPeriodTaskEntity.Description, dbTodoListTaskEntity.Description);
+      Assert.AreEqual(todoListPeriodTaskEntity.Completed, dbTodoListTaskEntity.Completed);
 
       var dbTodoListPeriodTaskEntity = dbTodoListTaskEntity as TodoListPeriodTaskEntity;
 
       Assert.IsNotNull(dbTodoListPeriodTaskEntity);
       Assert.AreEqual(todoListPeriodTaskEntity.Beginning, dbTodoListPeriodTaskEntity.Beginning);
       Assert.AreEqual(todoListPeriodTaskEntity.End, dbTodoListPeriodTaskEntity.End);
+    }
+
+    [TestMethod]
+    public async Task Update_Should_Save_Todo_List_Day_Task()
+    {
+      var todoListEntity = new TodoListEntity
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Add(todoListEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      _dbContext.Entry(todoListEntity).State = EntityState.Detached;
+
+      var todoListDayTaskEntity = new TodoListDayTaskEntity
+      {
+        TodoListId = todoListEntity.TodoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Date = new DateTime(2022, 9, 1),
+      };
+
+      _dbContext.Add(todoListDayTaskEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      todoListDayTaskEntity.Title = Guid.NewGuid().ToString();
+      todoListDayTaskEntity.Description = Guid.NewGuid().ToString();
+      todoListDayTaskEntity.Completed = true;
+      todoListDayTaskEntity.Date = new DateTime(2022, 9, 2);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      _dbContext.Entry(todoListDayTaskEntity).State = EntityState.Detached;
+
+      var dbTodoListTaskEntity =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .WithPartitionKey(todoListEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListDayTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNotNull(dbTodoListTaskEntity);
+      Assert.AreEqual(todoListDayTaskEntity.Title, dbTodoListTaskEntity.Title);
+      Assert.AreEqual(todoListDayTaskEntity.Description, dbTodoListTaskEntity.Description);
+      Assert.AreEqual(todoListDayTaskEntity.Completed, dbTodoListTaskEntity.Completed);
+
+      var dbTodoListDayTaskEntity = dbTodoListTaskEntity as TodoListDayTaskEntity;
+
+      Assert.IsNotNull(dbTodoListDayTaskEntity);
+      Assert.AreEqual(todoListDayTaskEntity.Date, dbTodoListDayTaskEntity.Date);
     }
   }
 }
