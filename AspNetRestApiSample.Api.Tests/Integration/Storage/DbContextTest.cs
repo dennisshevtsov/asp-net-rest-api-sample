@@ -295,5 +295,61 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.IsNotNull(dbTodoListDayTaskEntity);
       Assert.AreEqual(todoListDayTaskEntity.Date, dbTodoListDayTaskEntity.Date);
     }
+
+    [TestMethod]
+    public async Task Update_Should_Save_Todo_List_Period_Task()
+    {
+      var todoListEntity = new TodoListEntity
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Add(todoListEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      _dbContext.Entry(todoListEntity).State = EntityState.Detached;
+
+      var todoListPeriodTaskEntity = new TodoListPeriodTaskEntity
+      {
+        TodoListId = todoListEntity.TodoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Beginning = new DateTime(2022, 9, 1, 12, 0, 0),
+        End = new DateTime(2022, 9, 1, 13, 0, 0),
+      };
+
+      _dbContext.Add(todoListPeriodTaskEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      todoListPeriodTaskEntity.Title = Guid.NewGuid().ToString();
+      todoListPeriodTaskEntity.Description = Guid.NewGuid().ToString();
+      todoListPeriodTaskEntity.Completed = true;
+      todoListPeriodTaskEntity.Beginning = new DateTime(2022, 9, 2, 12, 0, 0);
+      todoListPeriodTaskEntity.End = new DateTime(2022, 9, 2, 13, 0, 0);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      _dbContext.Entry(todoListPeriodTaskEntity).State = EntityState.Detached;
+
+      var dbTodoListTaskEntity =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .WithPartitionKey(todoListEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListPeriodTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNotNull(dbTodoListTaskEntity);
+      Assert.AreEqual(todoListPeriodTaskEntity.Title, dbTodoListTaskEntity.Title);
+      Assert.AreEqual(todoListPeriodTaskEntity.Description, dbTodoListTaskEntity.Description);
+      Assert.AreEqual(todoListPeriodTaskEntity.Completed, dbTodoListTaskEntity.Completed);
+
+      var dbTodoListPeriodTaskEntity = dbTodoListTaskEntity as TodoListPeriodTaskEntity;
+
+      Assert.IsNotNull(dbTodoListPeriodTaskEntity);
+      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, dbTodoListPeriodTaskEntity.Beginning);
+      Assert.AreEqual(todoListPeriodTaskEntity.End, dbTodoListPeriodTaskEntity.End);
+    }
   }
 }
