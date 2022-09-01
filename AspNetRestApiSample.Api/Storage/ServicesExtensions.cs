@@ -41,6 +41,10 @@ namespace AspNetRestApiSample.Api.Storage
           builder.UseCosmos(options.AccountEndpoint, options.AccountKey, options.DatabaseName);
         });
 
+      services.AddScoped<IEntityDatabase, EntityDatabase>();
+      services.AddScoped<ITodoListEntityCollection, TodoListEntityCollection>();
+      services.AddScoped<ITodoListTaskEntityCollection, TodoListTaskEntityCollection>();
+
       return services;
     }
   }
