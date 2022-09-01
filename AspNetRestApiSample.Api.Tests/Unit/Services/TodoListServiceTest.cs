@@ -243,7 +243,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       var todoListId = Guid.NewGuid();
       TodoListEntity? todoListEntity = null;
 
-      _todoListEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<AddTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
+      _todoListEntityCollectionMock.Setup(collection => collection.AddOrUpdate(It.IsAny<AddTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
                                    .Callback((object command, TodoListEntity entity) =>
                                    {
                                      entity.TodoListId = todoListId;
@@ -268,7 +268,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       Assert.IsNotNull(todoListEntity);
       Assert.AreEqual(todoListId, addTodoListResponseDto.TodoListId);
 
-      _todoListEntityCollectionMock.Verify(collection => collection.Update(command, todoListEntity));
+      _todoListEntityCollectionMock.Verify(collection => collection.AddOrUpdate(command, todoListEntity));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
@@ -280,7 +280,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     [TestMethod]
     public async Task UpdateTodoListAsync_Should_Update_Entity()
     {
-      _todoListEntityCollectionMock.Setup(collection => collection.Update(It.IsAny<UpdateTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
+      _todoListEntityCollectionMock.Setup(collection => collection.AddOrUpdate(It.IsAny<UpdateTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
                                    .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -292,7 +292,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
 
-      _todoListEntityCollectionMock.Verify(collection => collection.Update(command, todoListEntity));
+      _todoListEntityCollectionMock.Verify(collection => collection.AddOrUpdate(command, todoListEntity));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();

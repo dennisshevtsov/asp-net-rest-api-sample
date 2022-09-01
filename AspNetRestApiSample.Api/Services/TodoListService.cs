@@ -82,7 +82,7 @@ namespace AspNetRestApiSample.Api.Services
     {
       var todoListEntity = new TodoListEntity();
 
-      _entityDatabase.TodoLists.Update(command, todoListEntity);
+      _entityDatabase.TodoLists.AddOrUpdate(command, todoListEntity);
       await _entityDatabase.CommitAsync(cancellationToken);
 
       return new AddTodoListResponseDto
@@ -101,7 +101,7 @@ namespace AspNetRestApiSample.Api.Services
       TodoListEntity todoListEntity,
       CancellationToken cancellationToken)
     {
-      _entityDatabase.TodoLists.Update(command, todoListEntity);
+      _entityDatabase.TodoLists.AddOrUpdate(command, todoListEntity);
 
       return _entityDatabase.CommitAsync(cancellationToken);
     }

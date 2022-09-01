@@ -125,7 +125,7 @@ namespace AspNetRestApiSample.Api.Services
         throw new NotSupportedException();
       }
 
-      _entityDatabase.TodoListTasks.Update(command, todoListTaskEntity);
+      _entityDatabase.TodoListTasks.AddOrUpdate(command, todoListTaskEntity);
       await _entityDatabase.CommitAsync(cancellationToken);
 
       return new AddTodoListTaskResponseDto
@@ -145,7 +145,7 @@ namespace AspNetRestApiSample.Api.Services
       TodoListTaskEntityBase todoListTaskEntity,
       CancellationToken cancellationToken)
     {
-      _entityDatabase.TodoListTasks.Update(command, todoListTaskEntity);
+      _entityDatabase.TodoListTasks.AddOrUpdate(command, todoListTaskEntity);
 
       await _entityDatabase.CommitAsync(cancellationToken);
     }

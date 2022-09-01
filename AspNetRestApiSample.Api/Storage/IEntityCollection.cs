@@ -29,7 +29,7 @@ namespace AspNetRestApiSample.Api.Storage
     /// <summary>Populates an entity with data of a command.</summary>
     /// <param name="command">An object that represents data to populate an entity.</param>
     /// <param name="entity">An instance of an entity.</param>
-    public void Update(object command, TEntity entity);
+    public void AddOrUpdate(object command, TEntity entity);
 
     /// <summary>Enqueues an entity to be deleted.</summary>
     /// <param name="entity">An instance of an entity.</param>
