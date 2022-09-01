@@ -351,5 +351,50 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.AreEqual(todoListPeriodTaskEntity.Beginning, dbTodoListPeriodTaskEntity.Beginning);
       Assert.AreEqual(todoListPeriodTaskEntity.End, dbTodoListPeriodTaskEntity.End);
     }
+
+    [TestMethod]
+    public async Task Delete_Should_Delete_Todo_List_Task()
+    {
+      var todoListEntity = new TodoListEntity
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      _dbContext.Add(todoListEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      _dbContext.Entry(todoListEntity).State = EntityState.Detached;
+
+      var todoListTaskEntity = new TodoListDayTaskEntity
+      {
+        TodoListId = todoListEntity.TodoListId,
+      };
+
+      _dbContext.Add(todoListTaskEntity);
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      var dbTodoListTaskEntity0 =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .WithPartitionKey(todoListEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNotNull(dbTodoListTaskEntity0);
+
+      _dbContext.Entry(todoListTaskEntity).State = EntityState.Deleted;
+
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+
+      var dbTodoListTaskEntity1 =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .WithPartitionKey(todoListEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNull(dbTodoListTaskEntity1);
+    }
   }
 }
