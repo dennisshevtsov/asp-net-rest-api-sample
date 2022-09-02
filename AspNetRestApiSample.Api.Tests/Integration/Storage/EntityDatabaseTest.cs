@@ -74,6 +74,22 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.IsNotNull(dbTodoListEntity0);
       Assert.AreEqual(todoListEntity.Title, dbTodoListEntity0.Title);
       Assert.AreEqual(todoListEntity.Description, dbTodoListEntity0.Description);
+
+      todoListEntity.Title = Guid.NewGuid().ToString();
+      todoListEntity.Description = Guid.NewGuid().ToString();
+
+      await _entityDatabase.CommitAsync(_cancellationToken);
+
+      var dbTodoListEntity1 =
+        await _dbContext.Set<TodoListEntity>()
+                        .AsNoTracking()
+                        .WithPartitionKey(todoListEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNotNull(dbTodoListEntity1);
+      Assert.AreEqual(todoListEntity.Title, dbTodoListEntity1.Title);
+      Assert.AreEqual(todoListEntity.Description, dbTodoListEntity1.Description);
     }
   }
 }
