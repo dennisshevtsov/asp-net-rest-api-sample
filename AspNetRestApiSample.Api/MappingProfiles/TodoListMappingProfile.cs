@@ -19,26 +19,26 @@ namespace AspNetRestApiSample.Api.MappingProfiles
       TodoListMappingProfile.ConfigureUpdateTodoListMapping(this);
     }
 
-    private static void ConfigureGetTodoListMapping(Profile profile)
+    private static void ConfigureGetTodoListMapping(IProfileExpression expression)
     {
-      profile.CreateMap<TodoListEntity, GetTodoListResponseDto>();
+      expression.CreateMap<TodoListEntity, GetTodoListResponseDto>();
     }
 
-    private static void ConfigureSearchTodoListsMapping(Profile profile)
+    private static void ConfigureSearchTodoListsMapping(IProfileExpression expression)
     {
-      profile.CreateMap<TodoListEntity, SearchTodoListsRecordResponseDto>();
+      expression.CreateMap<TodoListEntity, SearchTodoListsRecordResponseDto>();
     }
 
-    private static void ConfigureAddTodoListMapping(Profile profile)
+    private static void ConfigureAddTodoListMapping(IProfileExpression expression)
     {
-      profile.CreateMap<AddTodoListRequestDto, TodoListEntity>();
-      profile.CreateMap<TodoListEntity, AddTodoListResponseDto>();
+      expression.CreateMap<AddTodoListRequestDto, TodoListEntity>();
+      expression.CreateMap<TodoListEntity, AddTodoListResponseDto>();
     }
 
-    private static void ConfigureUpdateTodoListMapping(Profile profile)
+    private static void ConfigureUpdateTodoListMapping(IProfileExpression expression)
     {
-      profile.CreateMap<UpdateTodoListRequestDto, TodoListEntity>()
-             .ForMember(dst => dst.TodoListId, opt => opt.Ignore());
+      expression.CreateMap<UpdateTodoListRequestDto, TodoListEntity>()
+                .ForMember(dst => dst.TodoListId, opt => opt.Ignore());
     }
   }
 }

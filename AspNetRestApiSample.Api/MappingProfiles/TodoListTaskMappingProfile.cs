@@ -19,49 +19,49 @@ namespace AspNetRestApiSample.Api.MappingProfiles
       TodoListTaskMappingProfile.ConfigureUpdateTodoListMapping(this);
     }
 
-    private static void ConfigureGetTodoListMapping(Profile profile)
+    private static void ConfigureGetTodoListMapping(IProfileExpression expression)
     {
-      profile.CreateMap<TodoListTaskEntityBase, GetTodoListTaskResponseDtoBase>()
-             .Include<TodoListDayTaskEntity, GetTodoListDayTaskResponseDto>()
-             .Include<TodoListPeriodTaskEntity, GetTodoListPeriodTaskResponseDto>()
-             .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));
+      expression.CreateMap<TodoListTaskEntityBase, GetTodoListTaskResponseDtoBase>()
+                .Include<TodoListDayTaskEntity, GetTodoListDayTaskResponseDto>()
+                .Include<TodoListPeriodTaskEntity, GetTodoListPeriodTaskResponseDto>()
+                .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));
 
-      profile.CreateMap<TodoListDayTaskEntity, GetTodoListDayTaskResponseDto>();
-      profile.CreateMap<TodoListPeriodTaskEntity, GetTodoListPeriodTaskResponseDto>();
+      expression.CreateMap<TodoListDayTaskEntity, GetTodoListDayTaskResponseDto>();
+      expression.CreateMap<TodoListPeriodTaskEntity, GetTodoListPeriodTaskResponseDto>();
     }
 
-    private static void ConfigureSearchTodoListsMapping(Profile profile)
+    private static void ConfigureSearchTodoListsMapping(IProfileExpression expression)
     {
-      profile.CreateMap<TodoListTaskEntityBase, SearchTodoListTasksRecordResponseDtoBase>()
-             .Include<TodoListDayTaskEntity, SearchTodoListTasksDayRecordResponseDto>()
-             .Include<TodoListPeriodTaskEntity, SearchTodoListTasksPeriodRecordResponseDto>()
-             .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));
+      expression.CreateMap<TodoListTaskEntityBase, SearchTodoListTasksRecordResponseDtoBase>()
+                .Include<TodoListDayTaskEntity, SearchTodoListTasksDayRecordResponseDto>()
+                .Include<TodoListPeriodTaskEntity, SearchTodoListTasksPeriodRecordResponseDto>()
+                .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));
 
-      profile.CreateMap<TodoListDayTaskEntity, SearchTodoListTasksDayRecordResponseDto>();
-      profile.CreateMap<TodoListPeriodTaskEntity, SearchTodoListTasksPeriodRecordResponseDto>();
+      expression.CreateMap<TodoListDayTaskEntity, SearchTodoListTasksDayRecordResponseDto>();
+      expression.CreateMap<TodoListPeriodTaskEntity, SearchTodoListTasksPeriodRecordResponseDto>();
     }
 
-    private static void ConfigureAddTodoListMapping(Profile profile)
+    private static void ConfigureAddTodoListMapping(IProfileExpression expression)
     {
-      profile.CreateMap<AddTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
-             .Include<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
-             .Include<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<AddTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
+                .Include<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
+                .Include<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
 
-      profile.CreateMap<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
-      profile.CreateMap<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
+      expression.CreateMap<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
 
-      profile.CreateMap<TodoListTaskEntityBase, AddTodoListTaskResponseDto>();
+      expression.CreateMap<TodoListTaskEntityBase, AddTodoListTaskResponseDto>();
     }
 
-    private static void ConfigureUpdateTodoListMapping(Profile profile)
+    private static void ConfigureUpdateTodoListMapping(IProfileExpression expression)
     {
-      profile.CreateMap<UpdateTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
-             .Include<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
-             .Include<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>()
-             .ForMember(dst => dst.TodoListId, opt => opt.Ignore());
+      expression.CreateMap<UpdateTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
+                .Include<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
+                .Include<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>()
+                .ForMember(dst => dst.TodoListId, opt => opt.Ignore());
 
-      profile.CreateMap<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
-      profile.CreateMap<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
+      expression.CreateMap<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
     }
   }
 }
