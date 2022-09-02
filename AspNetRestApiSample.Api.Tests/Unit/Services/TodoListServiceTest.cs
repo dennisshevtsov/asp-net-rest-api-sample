@@ -147,22 +147,18 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     [TestMethod]
     public void GetTodoList_Should_Return_Filled_Dto()
     {
-      var todoListId = Guid.NewGuid();
-      var todoListEntity = new TodoListEntity
-      {
-        Id = todoListId,
-        TodoListId = todoListId,
-        Title = Guid.NewGuid().ToString(),
-        Description = Guid.NewGuid().ToString(),
-      };
+      var todoListEntity = new TodoListEntity();
+
+      _mapperMock.Setup(mapper => mapper.Map<GetTodoListResponseDto>(It.IsAny<TodoListEntity>()))
+                 .Returns(new GetTodoListResponseDto())
+                 .Verifiable();
 
       var todoListResponseDto = _todoListService.GetTodoList(todoListEntity);
 
       Assert.IsNotNull(todoListResponseDto);
 
-      Assert.AreEqual(todoListEntity.Id, todoListResponseDto.TodoListId);
-      Assert.AreEqual(todoListEntity.Title, todoListResponseDto.Title);
-      Assert.AreEqual(todoListEntity.Description, todoListResponseDto.Description);
+      _mapperMock.Verify(mapper => mapper.Map<GetTodoListResponseDto>(todoListEntity));
+      _mapperMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
