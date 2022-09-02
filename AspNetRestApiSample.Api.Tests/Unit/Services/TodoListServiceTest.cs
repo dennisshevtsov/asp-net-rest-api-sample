@@ -242,16 +242,17 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     [TestMethod]
     public async Task UpdateTodoListAsync_Should_Update_Entity()
     {
-      var command = new UpdateTodoListRequestDto();
       var todoListEntity = new TodoListEntity();
 
-      _mapperMock.Setup(mapper => mapper.Map(command, todoListEntity))
+      _mapperMock.Setup(mapper => mapper.Map(It.IsAny<UpdateTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
                  .Returns(todoListEntity)
                  .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
                          .Returns(Task.CompletedTask)
                          .Verifiable();
+
+      var command = new UpdateTodoListRequestDto();
 
       await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
 
