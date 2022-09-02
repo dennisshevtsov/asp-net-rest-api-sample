@@ -60,6 +60,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       Assert.IsNull(todoListEntity);
 
+      _mapperMock.VerifyNoOtherCalls();
+
       _todoListEntityCollectionMock.Verify(collection => collection.GetDetachedAsync(query.TodoListId, query.TodoListId, _cancellationToken));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
@@ -86,6 +88,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       Assert.AreEqual(testTodoListEntity, actualTodoListEntity);
 
+      _mapperMock.VerifyNoOtherCalls();
+
       _todoListEntityCollectionMock.Verify(collection => collection.GetDetachedAsync(query.TodoListId, query.TodoListId, _cancellationToken));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
@@ -109,6 +113,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       var todoListEntity = await _todoListService.GetAttachedTodoListAsync(query, CancellationToken.None);
 
       Assert.IsNull(todoListEntity);
+
+      _mapperMock.VerifyNoOtherCalls();
 
       _todoListEntityCollectionMock.Verify(collection => collection.GetAttachedAsync(query.TodoListId, query.TodoListId, _cancellationToken));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
@@ -136,6 +142,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       Assert.AreEqual(testTodoListEntity, actualTodoListEntity);
 
+      _mapperMock.VerifyNoOtherCalls();
+
       _todoListEntityCollectionMock.Verify(collection => collection.GetAttachedAsync(query.TodoListId, query.TodoListId, _cancellationToken));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
@@ -145,7 +153,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     }
 
     [TestMethod]
-    public void GetTodoList_Should_Return_Filled_Dto()
+    public void GetTodoList_Should_Populate_Dto_With_Entity_Data()
     {
       var todoListEntity = new TodoListEntity();
 
@@ -159,75 +167,31 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _mapperMock.Verify(mapper => mapper.Map<GetTodoListResponseDto>(todoListEntity));
       _mapperMock.VerifyNoOtherCalls();
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+      _entityDatabaseMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
     public async Task SearchTodoListsAsync_Should_Return_Entity_Collection()
     {
-      var todoListIdCollection = new[]
-      {
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-      };
-
-      var todoListEntityCollection = new[]
-      {
-        new TodoListEntity
-        {
-          Id = todoListIdCollection[0],
-          TodoListId = todoListIdCollection[0],
-          Title = Guid.NewGuid().ToString(),
-          Description = Guid.NewGuid().ToString(),
-        },
-        new TodoListEntity
-        {
-          Id = todoListIdCollection[1],
-          TodoListId = todoListIdCollection[1],
-          Title = Guid.NewGuid().ToString(),
-          Description = Guid.NewGuid().ToString(),
-        },
-        new TodoListEntity
-        {
-          Id = todoListIdCollection[2],
-          TodoListId = todoListIdCollection[2],
-          Title = Guid.NewGuid().ToString(),
-          Description = Guid.NewGuid().ToString(),
-        },
-      };
+      var todoListEntityCollection = new TodoListEntity[0];
 
       _todoListEntityCollectionMock.Setup(collection => collection.GetDetachedTodoListsAsync(It.IsAny<CancellationToken>()))
                                    .ReturnsAsync(todoListEntityCollection)
                                    .Verifiable();
 
+      _mapperMock.Setup(mapper => mapper.Map<SearchTodoListsRecordResponseDto[]>(It.IsAny<TodoListEntity[]>()))
+                 .Returns(new SearchTodoListsRecordResponseDto[0])
+                 .Verifiable();
+
       var searchTodoListRecordRequestDtos = await _todoListService.SearchTodoListsAsync(new SearchTodoListsRequestDto(), CancellationToken.None);
 
       Assert.IsNotNull(searchTodoListRecordRequestDtos);
-      Assert.AreEqual(todoListEntityCollection.Length, searchTodoListRecordRequestDtos.Length);
 
-      var searchTodoListRecordRequestDto0 = searchTodoListRecordRequestDtos.FirstOrDefault(dto => dto.TodoListId == todoListIdCollection[0]);
-
-      Assert.IsNotNull(searchTodoListRecordRequestDto0);
-
-      Assert.AreEqual(todoListEntityCollection[0].TodoListId, searchTodoListRecordRequestDto0.TodoListId);
-      Assert.AreEqual(todoListEntityCollection[0].Title, searchTodoListRecordRequestDto0.Title);
-      Assert.AreEqual(todoListEntityCollection[0].Description, searchTodoListRecordRequestDto0.Description);
-
-      var searchTodoListRecordRequestDto1 = searchTodoListRecordRequestDtos.FirstOrDefault(dto => dto.TodoListId == todoListIdCollection[1]);
-
-      Assert.IsNotNull(searchTodoListRecordRequestDto1);
-
-      Assert.AreEqual(todoListEntityCollection[1].TodoListId, searchTodoListRecordRequestDto1.TodoListId);
-      Assert.AreEqual(todoListEntityCollection[1].Title, searchTodoListRecordRequestDto1.Title);
-      Assert.AreEqual(todoListEntityCollection[1].Description, searchTodoListRecordRequestDto1.Description);
-
-      var searchTodoListRecordRequestDto2 = searchTodoListRecordRequestDtos.FirstOrDefault(dto => dto.TodoListId == todoListIdCollection[2]);
-
-      Assert.IsNotNull(searchTodoListRecordRequestDto2);
-
-      Assert.AreEqual(todoListEntityCollection[2].TodoListId, searchTodoListRecordRequestDto2.TodoListId);
-      Assert.AreEqual(todoListEntityCollection[2].Title, searchTodoListRecordRequestDto2.Title);
-      Assert.AreEqual(todoListEntityCollection[2].Description, searchTodoListRecordRequestDto2.Description);
+      _mapperMock.Verify(mapper => mapper.Map<SearchTodoListsRecordResponseDto[]>(todoListEntityCollection));
+      _mapperMock.VerifyNoOtherCalls();
 
       _todoListEntityCollectionMock.Verify(collection => collection.GetDetachedTodoListsAsync(_cancellationToken));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
@@ -240,8 +204,11 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     [TestMethod]
     public async Task AddTodoListAsync_Should_Create_New_Todo_List()
     {
-      var todoListId = Guid.NewGuid();
-      TodoListEntity? todoListEntity = null;
+      var todoListEntity = new TodoListEntity();
+
+      _mapperMock.Setup(mapper => mapper.Map<TodoListEntity>(It.IsAny<AddTodoListRequestDto>()))
+                 .Returns(todoListEntity)
+                 .Verifiable();
 
       _todoListEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListEntity>()))
                                    .Verifiable();
@@ -259,8 +226,9 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       var addTodoListResponseDto = await _todoListService.AddTodoListAsync(command, CancellationToken.None);
 
       Assert.IsNotNull(addTodoListResponseDto);
-      Assert.IsNotNull(todoListEntity);
-      Assert.AreEqual(todoListId, addTodoListResponseDto.TodoListId);
+
+      _mapperMock.Verify(mapper => mapper.Map<TodoListEntity>(command));
+      _mapperMock.VerifyNoOtherCalls();
 
       _todoListEntityCollectionMock.Verify(collection => collection.Add(todoListEntity));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
@@ -286,6 +254,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
 
+      _mapperMock.VerifyNoOtherCalls();
+
       _todoListEntityCollectionMock.Verify(collection => collection.Add(todoListEntity));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
@@ -308,6 +278,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       var todoListEntity = new TodoListEntity();
 
       await _todoListService.DeleteTodoListAsync(todoListEntity, CancellationToken.None);
+
+      _mapperMock.VerifyNoOtherCalls();
 
       _todoListEntityCollectionMock.Verify(collection => collection.Delete(todoListEntity));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
