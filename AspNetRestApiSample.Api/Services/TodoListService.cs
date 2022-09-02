@@ -92,7 +92,6 @@ namespace AspNetRestApiSample.Api.Services
       CancellationToken cancellationToken)
     {
       _mapper.Map(command, todoListEntity);
-      _entityDatabase.TodoLists.Add(todoListEntity);
 
       return _entityDatabase.CommitAsync(cancellationToken);
     }
