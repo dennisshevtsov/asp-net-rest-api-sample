@@ -4,6 +4,7 @@
 
 namespace AspNetRestApiSample.Api.Tests.Unit.Services
 {
+  using AutoMapper;
   using Moq;
 
   using AspNetRestApiSample.Api.Storage;
@@ -14,6 +15,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     private CancellationToken _cancellationToken;
 
 #pragma warning disable CS8618
+    private Mock<IMapper> _mapperMock;
+
     private Mock<ITodoListEntityCollection> _todoListEntityCollectionMock;
     private Mock<ITodoListTaskEntityCollection> _todoListTaskEntityCollectionMock;
     private Mock<IEntityDatabase> _entityDatabaseMock;
@@ -26,6 +29,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     {
       _cancellationToken = CancellationToken.None;
 
+      _mapperMock = new Mock<IMapper>();
+
       _todoListEntityCollectionMock = new Mock<ITodoListEntityCollection>();
       _todoListTaskEntityCollectionMock = new Mock<ITodoListTaskEntityCollection>();
       _entityDatabaseMock = new Mock<IEntityDatabase>();
@@ -36,7 +41,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       _entityDatabaseMock.SetupGet(database => database.TodoListTasks)
                          .Returns(_todoListTaskEntityCollectionMock.Object);
 
-      _todoListTaskService = new TodoListTaskService(_entityDatabaseMock.Object);
+      _todoListTaskService = new TodoListTaskService(_mapperMock.Object, _entityDatabaseMock.Object);
     }
 
     [TestMethod]
@@ -316,14 +321,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     {
       TodoListTaskEntityBase? todoListTaskEntity = null;
 
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.AddOrUpdate(It.IsAny<AddTodoListTaskRequestDtoBase>(), It.IsAny<TodoListTaskEntityBase>()))
-                                       .Callback<object, TodoListTaskEntityBase>((command, entity) =>
-                                       {
-                                         entity.Id = Guid.NewGuid();
-                                         entity.TodoListId = Guid.NewGuid();
-
-                                         todoListTaskEntity = entity;
-                                       })
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListTaskEntityBase>()))
                                        .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -343,7 +341,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
-      _todoListTaskEntityCollectionMock.Verify(collection => collection.AddOrUpdate(command, todoListTaskEntity));
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListTaskEntity));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
@@ -355,14 +353,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     {
       TodoListTaskEntityBase? todoListTaskEntity = null;
 
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.AddOrUpdate(It.IsAny<AddTodoListTaskRequestDtoBase>(), It.IsAny<TodoListTaskEntityBase>()))
-                                       .Callback<object, TodoListTaskEntityBase>((command, entity) =>
-                                       {
-                                         entity.Id = Guid.NewGuid();
-                                         entity.TodoListId = Guid.NewGuid();
-
-                                         todoListTaskEntity = entity;
-                                       })
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListTaskEntityBase>()))
                                        .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -382,7 +373,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
-      _todoListTaskEntityCollectionMock.Verify(collection => collection.AddOrUpdate(command, todoListTaskEntity));
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListTaskEntity));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
@@ -407,7 +398,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     [TestMethod]
     public async Task UpdateTodoListTaskAsync_Should_Save_Todo_List_Task()
     {
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.AddOrUpdate(It.IsAny<UpdateTodoListTaskRequestDtoBase>(), It.IsAny<TodoListTaskEntityBase>()))
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListTaskEntityBase>()))
                                        .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -429,7 +420,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
-      _todoListTaskEntityCollectionMock.Verify(collection => collection.AddOrUpdate(command, todoListTaskEntity));
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListTaskEntity));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
