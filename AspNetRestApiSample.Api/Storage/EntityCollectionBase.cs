@@ -46,20 +46,9 @@ namespace AspNetRestApiSample.Api.Storage
                    .Where(entity => entity.Id == id)
                    .FirstOrDefaultAsync(cancellationToken);
 
-    /// <summary>Populates an entity with data of a command.</summary>
-    /// <param name="command">An object that represents data to populate an entity.</param>
+    /// <summary>Enqueues an entity to be added.</summary>
     /// <param name="entity">An instance of an entity.</param>
-    public void AddOrUpdate(object command, TEntity entity)
-    {
-      var entry = _dbContext.Entry(entity);
-
-      if (entry.State == EntityState.Detached)
-      {
-        entry.State = EntityState.Added;
-      }
-
-      entry.CurrentValues.SetValues(command);
-    }
+    public void Add(TEntity entity) => _dbContext.Entry(entity).State = EntityState.Added;
 
     /// <summary>Enqueues an entity to be deleted.</summary>
     /// <param name="entity">An instance of an entity.</param>

@@ -4,6 +4,8 @@
 
 namespace AspNetRestApiSample.Api.Services
 {
+  using AutoMapper;
+
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Entities;
   using AspNetRestApiSample.Api.Indentities;
@@ -12,12 +14,17 @@ namespace AspNetRestApiSample.Api.Services
   /// <summary>Provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Api.Entities.TodoListEntity"/> class.</summary>
   public sealed class TodoListService : ITodoListService
   {
+    private readonly IMapper _mapper;
     private readonly IEntityDatabase _entityDatabase;
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Services.TodoListService"/> class.</summary>
+    /// <param name="mapper">An object that provides a simple API to populate one object from another.</param>
     /// <param name="entityDatabase">An object that provides a simple API to a database.</param>
-    public TodoListService(IEntityDatabase entityDatabase)
+    public TodoListService(
+      IMapper mapper,
+      IEntityDatabase entityDatabase)
     {
+      _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _entityDatabase = entityDatabase ?? throw new ArgumentNullException(nameof(entityDatabase));
     }
 
@@ -41,12 +48,7 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListEntity">An object that represents data of a todo list.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public GetTodoListResponseDto GetTodoList(TodoListEntity todoListEntity)
-      => new GetTodoListResponseDto
-      {
-        TodoListId = todoListEntity.TodoListId,
-        Title = todoListEntity.Title,
-        Description = todoListEntity.Description,
-      };
+      => _mapper.Map<GetTodoListResponseDto>(todoListEntity);
 
     /// <summary>Gets a collection of todo lists that satisfy provided conditions.</summary>
     /// <param name="query">An object that represents conditions to query todo lists.</param>
@@ -56,19 +58,7 @@ namespace AspNetRestApiSample.Api.Services
       SearchTodoListsRequestDto query, CancellationToken cancellationToken)
     {
       var todoListTaskEntities = await _entityDatabase.TodoLists.GetDetachedTodoListsAsync(cancellationToken);
-      var searchTodoListsRecordResponseDtos = new SearchTodoListsRecordResponseDto[todoListTaskEntities.Length];
-
-      for (var i = 0; i < todoListTaskEntities.Length; ++i)
-      {
-        var todoListTaskEntity = todoListTaskEntities[i];
-
-        searchTodoListsRecordResponseDtos[i] = new SearchTodoListsRecordResponseDto
-        {
-          TodoListId = todoListTaskEntity.TodoListId,
-          Title = todoListTaskEntity.Title,
-          Description = todoListTaskEntity.Description,
-        };
-      }
+      var searchTodoListsRecordResponseDtos = _mapper.Map<SearchTodoListsRecordResponseDto[]>(todoListTaskEntities);
 
       return searchTodoListsRecordResponseDtos;
     }
@@ -80,9 +70,9 @@ namespace AspNetRestApiSample.Api.Services
     public async Task<AddTodoListResponseDto> AddTodoListAsync(
       AddTodoListRequestDto command, CancellationToken cancellationToken)
     {
-      var todoListEntity = new TodoListEntity();
+      var todoListEntity = _mapper.Map<TodoListEntity>(command);
 
-      _entityDatabase.TodoLists.AddOrUpdate(command, todoListEntity);
+      _entityDatabase.TodoLists.Add(todoListEntity);
       await _entityDatabase.CommitAsync(cancellationToken);
 
       return new AddTodoListResponseDto
@@ -101,7 +91,8 @@ namespace AspNetRestApiSample.Api.Services
       TodoListEntity todoListEntity,
       CancellationToken cancellationToken)
     {
-      _entityDatabase.TodoLists.AddOrUpdate(command, todoListEntity);
+      _mapper.Map(command, todoListEntity);
+      _entityDatabase.TodoLists.Add(todoListEntity);
 
       return _entityDatabase.CommitAsync(cancellationToken);
     }

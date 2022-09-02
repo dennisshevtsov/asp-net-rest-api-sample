@@ -26,10 +26,9 @@ namespace AspNetRestApiSample.Api.Storage
     public Task<TEntity?> GetDetachedAsync(
       Guid id, Guid todoListId, CancellationToken cancellationToken);
 
-    /// <summary>Populates an entity with data of a command.</summary>
-    /// <param name="command">An object that represents data to populate an entity.</param>
+    /// <summary>Enqueues an entity to be added.</summary>
     /// <param name="entity">An instance of an entity.</param>
-    public void AddOrUpdate(object command, TEntity entity);
+    public void Add(TEntity entity);
 
     /// <summary>Enqueues an entity to be deleted.</summary>
     /// <param name="entity">An instance of an entity.</param>
