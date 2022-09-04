@@ -116,5 +116,39 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.AreEqual(newTitle, dbTodoListEntity1.Title);
       Assert.AreEqual(newDescription, dbTodoListEntity1.Description);
     }
+
+    [TestMethod]
+    public async Task TodoLists_Delete_Should_Delete_Existing_Todo_List()
+    {
+      var todoListEntity = new TodoListEntity()
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var todoListEntityEntry = _dbContext.Entry(todoListEntity);
+
+      todoListEntityEntry.State = EntityState.Added;
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+      todoListEntityEntry.State = EntityState.Detached;
+
+      var dbTodoListEntity0 =
+        await _entityDatabase.TodoLists.GetAttachedAsync(
+          todoListEntity.Id, todoListEntity.TodoListId, _cancellationToken);
+
+      Assert.IsNotNull(dbTodoListEntity0);
+
+      _entityDatabase.TodoLists.Delete(dbTodoListEntity0);
+      await _entityDatabase.CommitAsync(_cancellationToken);
+
+      var dbTodoListEntity1 =
+        await _dbContext.Set<TodoListEntity>()
+                        .AsNoTracking()
+                        .WithPartitionKey(todoListEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNull(dbTodoListEntity1);
+    }
   }
 }
