@@ -50,7 +50,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
     }
 
     [TestMethod]
-    public async Task TodoLists_AddOrUpdate_Should_Save_Todo_List()
+    public async Task TodoLists_Add_Should_Add_New_Todo_List()
     {
       var todoListEntity = new TodoListEntity()
       {
@@ -64,19 +64,44 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.IsTrue(todoListEntity.Id != default);
       Assert.IsTrue(todoListEntity.Id == todoListEntity.TodoListId);
 
-      var dbTodoListEntity0 =
+      var dbTodoListEntity =
         await _dbContext.Set<TodoListEntity>()
                         .AsNoTracking()
                         .WithPartitionKey(todoListEntity.TodoListId.ToString())
                         .Where(entity => entity.Id == todoListEntity.Id)
                         .FirstOrDefaultAsync(_cancellationToken);
 
-      Assert.IsNotNull(dbTodoListEntity0);
-      Assert.AreEqual(todoListEntity.Title, dbTodoListEntity0.Title);
-      Assert.AreEqual(todoListEntity.Description, dbTodoListEntity0.Description);
+      Assert.IsNotNull(dbTodoListEntity);
+      Assert.AreEqual(todoListEntity.Title, dbTodoListEntity.Title);
+      Assert.AreEqual(todoListEntity.Description, dbTodoListEntity.Description);
+    }
 
-      todoListEntity.Title = Guid.NewGuid().ToString();
-      todoListEntity.Description = Guid.NewGuid().ToString();
+    [TestMethod]
+    public async Task CommitAsync_Should_Update_Existing_Todo_List()
+    {
+      var todoListEntity = new TodoListEntity()
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var todoListEntityEntry = _dbContext.Entry(todoListEntity);
+
+      todoListEntityEntry.State = EntityState.Added;
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+      todoListEntityEntry.State = EntityState.Detached;
+
+      var dbTodoListEntity0 =
+        await _entityDatabase.TodoLists.GetAttachedAsync(
+          todoListEntity.Id, todoListEntity.TodoListId, _cancellationToken);
+
+      Assert.IsNotNull(dbTodoListEntity0);
+
+      var newTitle = Guid.NewGuid().ToString();
+      var newDescription = Guid.NewGuid().ToString();
+
+      dbTodoListEntity0.Title = newTitle;
+      dbTodoListEntity0.Description = newDescription;
 
       await _entityDatabase.CommitAsync(_cancellationToken);
 
@@ -88,8 +113,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
                         .FirstOrDefaultAsync(_cancellationToken);
 
       Assert.IsNotNull(dbTodoListEntity1);
-      Assert.AreEqual(todoListEntity.Title, dbTodoListEntity1.Title);
-      Assert.AreEqual(todoListEntity.Description, dbTodoListEntity1.Description);
+      Assert.AreEqual(newTitle, dbTodoListEntity1.Title);
+      Assert.AreEqual(newDescription, dbTodoListEntity1.Description);
     }
   }
 }
