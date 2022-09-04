@@ -2,15 +2,17 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.Api.MappingProfiles
+namespace AspNetRestApiSample.Api.Mapping
 {
   using AutoMapper;
 
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Entities;
 
+  /// <summary>Provides a named configuration for maps.</summary>
   public sealed class TodoListTaskMappingProfile : Profile
   {
+    /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.MappingProfiles.TodoListTaskMappingProfile"/> class.</summary>
     public TodoListTaskMappingProfile()
     {
       TodoListTaskMappingProfile.ConfigureGetTodoListMapping(this);

@@ -147,40 +147,5 @@ namespace AspNetRestApiSample.Api.Services
 
       return Task.CompletedTask;
     }
-
-
-    private static SearchTodoListTasksRecordResponseDtoBase Convert(TodoListTaskEntityBase todoListTaskEntity)
-    {
-      SearchTodoListTasksRecordResponseDtoBase responseDto = null;
-
-      if (todoListTaskEntity is TodoListDayTaskEntity todoListDayTaskEntity)
-      {
-        responseDto = new SearchTodoListTasksDayRecordResponseDto
-        {
-          Date = todoListDayTaskEntity.Date,
-        };
-      }
-      else if (todoListTaskEntity is TodoListPeriodTaskEntity todoListPeriodTaskEntity)
-      {
-        responseDto = new SearchTodoListTasksPeriodRecordResponseDto
-        {
-          Beginning = todoListPeriodTaskEntity.Beginning,
-          End = todoListPeriodTaskEntity.End,
-        };
-      }
-      else
-      {
-        throw new NotSupportedException($"Type {todoListTaskEntity.GetType()} is not supported.");
-      }
-
-      responseDto.TodoListId = todoListTaskEntity.TodoListId;
-      responseDto.TodoListTaskId = todoListTaskEntity.Id;
-      responseDto.Title = todoListTaskEntity.Title;
-      responseDto.Description = todoListTaskEntity.Description;
-      responseDto.Completed = todoListTaskEntity.Completed;
-
-      return responseDto;
-    }
-
   }
 }

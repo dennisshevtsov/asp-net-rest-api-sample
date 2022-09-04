@@ -2,18 +2,20 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.Api.Storage
+namespace Microsoft.Extensions.DependencyInjection
 {
   using Microsoft.EntityFrameworkCore;
   using Microsoft.Extensions.Options;
 
+  using AspNetRestApiSample.Api.Storage;
+
   /// <summary>Provides a simple API to register database services.</summary>
-  public static class ServicesExtensions
+  public static class StorageExtensions
   {
-    /// <summary>Registers database servces.</summary>
+    /// <summary>Registers database services.</summary>
     /// <param name="services">An object that specifies the contract for a collection of service descriptors.</param>
     /// <param name="configuration">An object that represents a set of key/value application configuration properties.</param>
-    /// <returns>An object that represents a set of key/value application configuration properties.</returns>
+    /// <returns>An object that specifies the contract for a collection of service descriptors.</returns>
     public static IServiceCollection AddDatabase(
       this IServiceCollection services, IConfiguration configuration)
     {

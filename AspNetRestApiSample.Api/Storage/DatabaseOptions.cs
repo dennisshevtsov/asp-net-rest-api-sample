@@ -4,7 +4,7 @@
 
 namespace AspNetRestApiSample.Api.Storage
 {
-  /// <summary>Represents options of a database.</summary>
+  /// <summary>Represents settings of a database.</summary>
   public sealed class DatabaseOptions
   {
     /// <summary>Gets/sets an object that represents an account endpoint of a database.</summary>
@@ -13,7 +13,13 @@ namespace AspNetRestApiSample.Api.Storage
     /// <summary>Gets/sets an object that represents an account key of a database.</summary>
     public string? AccountKey { get; set; }
 
-    /// <summary>Gets/sets an object that represents an name of a database.</summary>
+    /// <summary>Gets/sets an object that represents a name of a database.</summary>
     public string? DatabaseName { get; set; }
+
+    /// <summary>Gets/sets an object that represents a name of a container.</summary>
+    public string? ContainerName { get; set; }
+
+    /// <summary>Gets/sets an object that represents a value of a throughput.</summary>
+    public int Throughput { get; set; }
   }
 }

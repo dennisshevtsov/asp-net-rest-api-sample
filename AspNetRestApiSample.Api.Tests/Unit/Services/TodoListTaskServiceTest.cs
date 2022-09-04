@@ -176,9 +176,17 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     }
 
     [TestMethod]
-    public async Task AddTodoListTaskAsync_Should_Save_Todo_List_Day_Task()
+    public async Task AddTodoListTaskAsync_Should_Save_Todo_List_Task()
     {
-      TodoListTaskEntityBase? todoListTaskEntity = null;
+      var todoListTaskEntity = new TodoListDayTaskEntity();
+
+      _mapperMock.Setup(mapper => mapper.Map<TodoListTaskEntityBase>(It.IsAny<AddTodoListTaskRequestDtoBase>()))
+                 .Returns(todoListTaskEntity)
+                 .Verifiable();
+
+      _mapperMock.Setup(mapper => mapper.Map<AddTodoListTaskResponseDto>(It.IsAny<TodoListDayTaskEntity>()))
+                 .Returns(new AddTodoListTaskResponseDto())
+                 .Verifiable();
 
       _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListTaskEntityBase>()))
                                        .Verifiable();
@@ -193,42 +201,10 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
         await _todoListTaskService.AddTodoListTaskAsync(command, _cancellationToken);
 
       Assert.IsNotNull(addTodoListTaskResponseDto);
-      Assert.IsNotNull(todoListTaskEntity);
 
-      Assert.AreEqual(todoListTaskEntity.Id, addTodoListTaskResponseDto.TodoListTaskId);
-      Assert.AreEqual(todoListTaskEntity.TodoListId, addTodoListTaskResponseDto.TodoListId);
-
-      _todoListEntityCollectionMock.VerifyNoOtherCalls();
-
-      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListTaskEntity));
-      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
-
-      _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
-      _entityDatabaseMock.VerifyNoOtherCalls();
-    }
-
-    [TestMethod]
-    public async Task AddTodoListTaskAsync_Should_Save_Todo_List_Period_Task()
-    {
-      TodoListTaskEntityBase? todoListTaskEntity = null;
-
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListTaskEntityBase>()))
-                                       .Verifiable();
-
-      _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
-                         .Returns(Task.CompletedTask)
-                         .Verifiable();
-
-      var command = new AddTodoListPeriodTaskRequestDto();
-
-      var addTodoListTaskResponseDto =
-        await _todoListTaskService.AddTodoListTaskAsync(command, _cancellationToken);
-
-      Assert.IsNotNull(addTodoListTaskResponseDto);
-      Assert.IsNotNull(todoListTaskEntity);
-
-      Assert.AreEqual(todoListTaskEntity.Id, addTodoListTaskResponseDto.TodoListTaskId);
-      Assert.AreEqual(todoListTaskEntity.TodoListId, addTodoListTaskResponseDto.TodoListId);
+      _mapperMock.Verify(mapper => mapper.Map<TodoListTaskEntityBase>(command));
+      _mapperMock.Verify(mapper => mapper.Map<AddTodoListTaskResponseDto>(todoListTaskEntity));
+      _mapperMock.VerifyNoOtherCalls();
 
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
@@ -236,21 +212,6 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
-      _entityDatabaseMock.VerifyNoOtherCalls();
-    }
-
-    [TestMethod]
-    public async Task AddTodoListTaskAsync_Should_Throw_Exception()
-    {
-      var command = new TestAddTodoListTaskRequestDto();
-
-      await Assert.ThrowsExceptionAsync<NotSupportedException>(
-        () => _todoListTaskService.AddTodoListTaskAsync(command, _cancellationToken));
-
-      _todoListEntityCollectionMock.VerifyNoOtherCalls();
-
-      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
-
       _entityDatabaseMock.VerifyNoOtherCalls();
     }
 

@@ -10,7 +10,6 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
   using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
 
-  using AspNetRestApiSample.Api.Storage;
   using AspNetRestApiSample.Api.Entities;
 
   [TestClass]
