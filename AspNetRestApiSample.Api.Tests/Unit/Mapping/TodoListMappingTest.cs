@@ -49,5 +49,53 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(todoListEntity.Title, getTodoListResponseDto.Title);
       Assert.AreEqual(todoListEntity.Description, getTodoListResponseDto.Description);
     }
+
+    [TestMethod]
+    public void Map_Should_Populate_SearchTodoListsRecordResponseDto()
+    {
+      var todoListIdCollection = new[]
+      {
+        Guid.NewGuid(),
+        Guid.NewGuid(),
+      };
+
+      var todoListEntityCollection = new[]
+      {
+        new TodoListEntity
+        {
+          Id = todoListIdCollection[0],
+          TodoListId = todoListIdCollection[0],
+          Title = Guid.NewGuid().ToString(),
+          Description = Guid.NewGuid().ToString(),
+        },
+        new TodoListEntity
+        {
+          Id = todoListIdCollection[1],
+          TodoListId = todoListIdCollection[1],
+          Title = Guid.NewGuid().ToString(),
+          Description = Guid.NewGuid().ToString(),
+        },
+      };
+
+      var searchTodoListsRecordResponseDtoCollection =
+        _mapper.Map<SearchTodoListsRecordResponseDto[]>(todoListEntityCollection);
+
+      Assert.IsNotNull(searchTodoListsRecordResponseDtoCollection);
+      Assert.AreEqual(todoListEntityCollection.Length, searchTodoListsRecordResponseDtoCollection.Length);
+
+      TodoListMappingTest.Check(todoListEntityCollection[0], searchTodoListsRecordResponseDtoCollection);
+      TodoListMappingTest.Check(todoListEntityCollection[1], searchTodoListsRecordResponseDtoCollection);
+    }
+
+    private static void Check(TodoListEntity todoListEntity, SearchTodoListsRecordResponseDto[] searchTodoListsRecordResponseDtoCollection)
+    {
+      var searchTodoListsRecordResponseDto0 = searchTodoListsRecordResponseDtoCollection.FirstOrDefault(
+        dto => dto.TodoListId == todoListEntity.TodoListId);
+
+      Assert.IsNotNull(searchTodoListsRecordResponseDto0);
+      Assert.AreEqual(todoListEntity.TodoListId, searchTodoListsRecordResponseDto0.TodoListId);
+      Assert.AreEqual(todoListEntity.Title, searchTodoListsRecordResponseDto0.Title);
+      Assert.AreEqual(todoListEntity.Description, searchTodoListsRecordResponseDto0.Description);
+    }
   }
 }
