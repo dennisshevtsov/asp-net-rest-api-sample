@@ -297,5 +297,56 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
 
       Assert.IsNotNull(dbTodoListPeriodTaskEntity);
     }
+
+    [TestMethod]
+    public async Task TodoListTasks_Delete_Should_Delete_Existing_Todo_List_Task()
+    {
+      var todoListEntity = new TodoListEntity()
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var todoListEntityEntry = _dbContext.Entry(todoListEntity);
+
+      todoListEntityEntry.State = EntityState.Added;
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+      todoListEntityEntry.State = EntityState.Detached;
+
+      var todoListTaskEntity = new TodoListDayTaskEntity()
+      {
+        TodoListId = todoListEntity.TodoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Date = new DateTime(2022, 9, 1),
+      };
+
+      _entityDatabase.TodoListTasks.Add(todoListTaskEntity);
+      await _entityDatabase.CommitAsync(_cancellationToken);
+
+      Assert.IsTrue(todoListTaskEntity.Id != default);
+      Assert.AreEqual(todoListEntity.TodoListId, todoListTaskEntity.TodoListId);
+
+      var dbTodoListTaskEntity0 =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .AsNoTracking()
+                        .WithPartitionKey(todoListTaskEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNotNull(dbTodoListTaskEntity0);
+
+      _entityDatabase.TodoListTasks.Delete(todoListTaskEntity);
+      await _entityDatabase.CommitAsync(_cancellationToken);
+
+      var dbTodoListTaskEntity1 =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .AsNoTracking()
+                        .WithPartitionKey(todoListTaskEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken);
+
+      Assert.IsNull(dbTodoListTaskEntity1);
+    }
   }
 }
