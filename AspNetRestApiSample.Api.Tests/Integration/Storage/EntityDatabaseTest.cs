@@ -9,6 +9,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
   using Microsoft.Extensions.DependencyInjection;
 
   using AspNetRestApiSample.Api.Storage;
+  using AspNetRestApiSample.Api.Entities;
 
   [TestClass]
   public sealed class EntityDatabaseTest
@@ -193,17 +194,99 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       Assert.IsTrue(todoListPeriodTaskEntity.Id != default);
       Assert.AreEqual(todoListEntity.TodoListId, todoListPeriodTaskEntity.TodoListId);
 
-      var dbTodoListDayTaskEntity =
+      var dbTodoListDayTaskEntity0 =
         await _dbContext.Set<TodoListTaskEntityBase>()
                         .AsNoTracking()
                         .WithPartitionKey(todoListDayTaskEntity.TodoListId.ToString())
                         .Where(entity => entity.Id == todoListDayTaskEntity.Id)
                         .FirstOrDefaultAsync(_cancellationToken) as TodoListDayTaskEntity;
 
-      Assert.IsNotNull(dbTodoListDayTaskEntity);
-      Assert.AreEqual(todoListDayTaskEntity.Title, dbTodoListDayTaskEntity.Title);
-      Assert.AreEqual(todoListDayTaskEntity.Description, dbTodoListDayTaskEntity.Description);
-      Assert.AreEqual(todoListDayTaskEntity.Date, dbTodoListDayTaskEntity.Date);
+      Assert.IsNotNull(dbTodoListDayTaskEntity0);
+
+      _entityDatabase.TodoListTasks.Delete(todoListDayTaskEntity);
+      await _entityDatabase.CommitAsync(_cancellationToken);
+
+      var dbTodoListDayTaskEntity1 =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .AsNoTracking()
+                        .WithPartitionKey(todoListDayTaskEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListDayTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken) as TodoListDayTaskEntity;
+
+      Assert.IsNull(dbTodoListDayTaskEntity1);
+
+      var dbTodoListPeriodTaskEntity0 =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .AsNoTracking()
+                        .WithPartitionKey(todoListPeriodTaskEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListPeriodTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken) as TodoListPeriodTaskEntity;
+
+      Assert.IsNotNull(dbTodoListPeriodTaskEntity0);
+
+      _entityDatabase.TodoListTasks.Delete(todoListPeriodTaskEntity);
+      await _entityDatabase.CommitAsync(_cancellationToken);
+
+      var dbTodoListPeriodTaskEntity =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .AsNoTracking()
+                        .WithPartitionKey(todoListPeriodTaskEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListPeriodTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken) as TodoListPeriodTaskEntity;
+
+      Assert.IsNull(dbTodoListPeriodTaskEntity);
+    }
+
+    [TestMethod]
+    public async Task CommitAsync_Should_Update_Existing_Todo_List_Task()
+    {
+      var todoListEntity = new TodoListEntity()
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var todoListEntityEntry = _dbContext.Entry(todoListEntity);
+
+      todoListEntityEntry.State = EntityState.Added;
+      await _dbContext.SaveChangesAsync(_cancellationToken);
+      todoListEntityEntry.State = EntityState.Detached;
+
+      var todoListDayTaskEntity = new TodoListDayTaskEntity()
+      {
+        TodoListId = todoListEntity.TodoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Date = new DateTime(2022, 9, 1),
+      };
+
+      var todoListPeriodTaskEntity = new TodoListPeriodTaskEntity()
+      {
+        TodoListId = todoListEntity.TodoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Beginning = new DateTime(2022, 9, 1, 12, 30, 0),
+        End = new DateTime(2022, 9, 1, 13, 30, 0),
+      };
+
+      _entityDatabase.TodoListTasks.Add(todoListDayTaskEntity);
+      _entityDatabase.TodoListTasks.Add(todoListPeriodTaskEntity);
+      await _entityDatabase.CommitAsync(_cancellationToken);
+
+      Assert.IsTrue(todoListDayTaskEntity.Id != default);
+      Assert.AreEqual(todoListEntity.TodoListId, todoListDayTaskEntity.TodoListId);
+
+      Assert.IsTrue(todoListPeriodTaskEntity.Id != default);
+      Assert.AreEqual(todoListEntity.TodoListId, todoListPeriodTaskEntity.TodoListId);
+
+      var dbTodoListDayTaskEntity0 =
+        await _dbContext.Set<TodoListTaskEntityBase>()
+                        .AsNoTracking()
+                        .WithPartitionKey(todoListDayTaskEntity.TodoListId.ToString())
+                        .Where(entity => entity.Id == todoListDayTaskEntity.Id)
+                        .FirstOrDefaultAsync(_cancellationToken) as TodoListDayTaskEntity;
+
+      Assert.IsNotNull(dbTodoListDayTaskEntity0);
 
       var dbTodoListPeriodTaskEntity =
         await _dbContext.Set<TodoListTaskEntityBase>()
@@ -213,10 +296,6 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
                         .FirstOrDefaultAsync(_cancellationToken) as TodoListPeriodTaskEntity;
 
       Assert.IsNotNull(dbTodoListPeriodTaskEntity);
-      Assert.AreEqual(todoListPeriodTaskEntity.Title, dbTodoListPeriodTaskEntity.Title);
-      Assert.AreEqual(todoListPeriodTaskEntity.Description, dbTodoListPeriodTaskEntity.Description);
-      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, dbTodoListPeriodTaskEntity.Beginning);
-      Assert.AreEqual(todoListPeriodTaskEntity.End, dbTodoListPeriodTaskEntity.End);
     }
   }
 }
