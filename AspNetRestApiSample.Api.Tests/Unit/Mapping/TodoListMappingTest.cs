@@ -29,5 +29,25 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
     {
       _disposable?.Dispose();
     }
+
+    [TestMethod]
+    public void Map_Should_Populate_GetTodoListResponseDto()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var getTodoListResponseDto = _mapper.Map<GetTodoListResponseDto>(todoListEntity);
+
+      Assert.IsNotNull(getTodoListResponseDto);
+      Assert.AreEqual(todoListEntity.TodoListId, getTodoListResponseDto.TodoListId);
+      Assert.AreEqual(todoListEntity.Title, getTodoListResponseDto.Title);
+      Assert.AreEqual(todoListEntity.Description, getTodoListResponseDto.Description);
+    }
   }
 }
