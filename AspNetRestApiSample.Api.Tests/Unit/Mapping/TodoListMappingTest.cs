@@ -87,6 +87,25 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       TodoListMappingTest.Check(todoListEntityCollection[1], searchTodoListsRecordResponseDtoCollection);
     }
 
+    [TestMethod]
+    public void Map_Should_Populate_TodoListEntity_From_AddTodoListRequestDto()
+    {
+      var addTodoListRequestDto = new AddTodoListRequestDto
+      {
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      var todoListEntity = _mapper.Map<TodoListEntity>(addTodoListRequestDto);
+
+      Assert.IsNotNull(todoListEntity);
+      Assert.AreEqual(default, todoListEntity.Id);
+      Assert.AreEqual(default, todoListEntity.TodoListId);
+      Assert.AreEqual(addTodoListRequestDto.Title, todoListEntity.Title);
+      Assert.AreEqual(addTodoListRequestDto.Description, todoListEntity.Description);
+      Assert.AreEqual(default, todoListEntity.Tasks);
+    }
+
     private static void Check(TodoListEntity todoListEntity, SearchTodoListsRecordResponseDto[] searchTodoListsRecordResponseDtoCollection)
     {
       var searchTodoListsRecordResponseDto0 = searchTodoListsRecordResponseDtoCollection.FirstOrDefault(
