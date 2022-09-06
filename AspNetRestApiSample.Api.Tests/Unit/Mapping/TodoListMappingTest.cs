@@ -122,6 +122,38 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(todoListEntity.TodoListId, addTodoListResponseDto.TodoListId);
     }
 
+    [TestMethod]
+    public void Map_Should_Populate_TodoListEntity_From_UpdateTodoListRequestDto()
+    {
+      var todoListId = Guid.NewGuid();
+      var title = Guid.NewGuid().ToString();
+      var description = Guid.NewGuid().ToString();
+
+      var todoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+        TodoListId = todoListId,
+        Title = title,
+        Description = description,
+      };
+
+      var updateTodoListRequestDto = new UpdateTodoListRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+      };
+
+      todoListEntity = _mapper.Map(updateTodoListRequestDto, todoListEntity);
+
+      Assert.IsNotNull(todoListEntity);
+      Assert.AreEqual(todoListId, todoListEntity.Id);
+      Assert.AreEqual(todoListId, todoListEntity.TodoListId);
+      Assert.AreEqual(updateTodoListRequestDto.Title, todoListEntity.Title);
+      Assert.AreEqual(updateTodoListRequestDto.Description, todoListEntity.Description);
+      Assert.AreEqual(default, todoListEntity.Tasks);
+    }
+
     private static void Check(TodoListEntity todoListEntity, SearchTodoListsRecordResponseDto[] searchTodoListsRecordResponseDtoCollection)
     {
       var searchTodoListsRecordResponseDto0 = searchTodoListsRecordResponseDtoCollection.FirstOrDefault(
