@@ -106,6 +106,22 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(default, todoListEntity.Tasks);
     }
 
+    [TestMethod]
+    public void Map_Should_Populate_AddTodoListResponseDto()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListEntity = new TodoListEntity
+      {
+        Id = todoListId,
+        TodoListId = todoListId,
+      };
+
+      var addTodoListResponseDto = _mapper.Map<AddTodoListResponseDto>(todoListEntity);
+
+      Assert.IsNotNull(addTodoListResponseDto);
+      Assert.AreEqual(todoListEntity.TodoListId, addTodoListResponseDto.TodoListId);
+    }
+
     private static void Check(TodoListEntity todoListEntity, SearchTodoListsRecordResponseDto[] searchTodoListsRecordResponseDtoCollection)
     {
       var searchTodoListsRecordResponseDto0 = searchTodoListsRecordResponseDtoCollection.FirstOrDefault(
