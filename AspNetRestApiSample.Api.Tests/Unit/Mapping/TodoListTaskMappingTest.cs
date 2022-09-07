@@ -60,7 +60,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
     [TestMethod]
     public void Map_Should_Populate_GetTodoListPeriodTaskResponseDto()
     {
-      var todoListDayTaskEntity = new TodoListPeriodTaskEntity
+      var todoListPeriodTaskEntity = new TodoListPeriodTaskEntity
       {
         Id = Guid.NewGuid(),
         TodoListId = Guid.NewGuid(),
@@ -71,19 +71,75 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         End = new DateTime(2022, 9, 1, 12, 45, 0),
       };
 
-      var getTodoListTaskResponseDto = _mapper.Map<GetTodoListTaskResponseDtoBase>(todoListDayTaskEntity);
+      var getTodoListTaskResponseDto = _mapper.Map<GetTodoListTaskResponseDtoBase>(todoListPeriodTaskEntity);
 
       Assert.IsNotNull(getTodoListTaskResponseDto);
 
       var getTodoListPeriodTaskResponseDto = getTodoListTaskResponseDto as GetTodoListPeriodTaskResponseDto;
 
       Assert.IsNotNull(getTodoListPeriodTaskResponseDto);
-      Assert.AreEqual(todoListDayTaskEntity.TodoListId, getTodoListPeriodTaskResponseDto.TodoListId);
-      Assert.AreEqual(todoListDayTaskEntity.Title, getTodoListPeriodTaskResponseDto.Title);
-      Assert.AreEqual(todoListDayTaskEntity.Description, getTodoListPeriodTaskResponseDto.Description);
-      Assert.AreEqual(todoListDayTaskEntity.Completed, getTodoListPeriodTaskResponseDto.Completed);
-      Assert.AreEqual(todoListDayTaskEntity.Beginning, getTodoListPeriodTaskResponseDto.Beginning);
-      Assert.AreEqual(todoListDayTaskEntity.End, getTodoListPeriodTaskResponseDto.End);
+      Assert.AreEqual(todoListPeriodTaskEntity.TodoListId, getTodoListPeriodTaskResponseDto.TodoListId);
+      Assert.AreEqual(todoListPeriodTaskEntity.Title, getTodoListPeriodTaskResponseDto.Title);
+      Assert.AreEqual(todoListPeriodTaskEntity.Description, getTodoListPeriodTaskResponseDto.Description);
+      Assert.AreEqual(todoListPeriodTaskEntity.Completed, getTodoListPeriodTaskResponseDto.Completed);
+      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, getTodoListPeriodTaskResponseDto.Beginning);
+      Assert.AreEqual(todoListPeriodTaskEntity.End, getTodoListPeriodTaskResponseDto.End);
+    }
+
+    [TestMethod]
+    public void Map_Should_Populate_Collection_Of_SearchTodoListTasksRecordResponseDtoBase()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListDayTaskEntity = new TodoListDayTaskEntity
+      {
+        Id = Guid.NewGuid(),
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Completed = true,
+        Date = new DateTime(2022, 9, 1),
+      };
+      var todoListPeriodTaskEntity = new TodoListPeriodTaskEntity
+      {
+        Id = Guid.NewGuid(),
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Completed = true,
+        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        End = new DateTime(2022, 9, 1, 12, 45, 0),
+      };
+      var todoListTaskEntityCollection = new TodoListTaskEntityBase[]
+      {
+        todoListDayTaskEntity,
+        todoListPeriodTaskEntity,
+      };
+
+      var searchTodoListTasksRecordResponseDtoCollection =
+        _mapper.Map<SearchTodoListTasksRecordResponseDtoBase[]>(todoListTaskEntityCollection);
+
+      Assert.IsNotNull(searchTodoListTasksRecordResponseDtoCollection);
+
+      var searchTodoListTasksDayRecordResponseDto =
+        searchTodoListTasksRecordResponseDtoCollection[0] as SearchTodoListTasksDayRecordResponseDto;
+
+      Assert.IsNotNull(searchTodoListTasksDayRecordResponseDto);
+      Assert.AreEqual(todoListDayTaskEntity.TodoListId, searchTodoListTasksDayRecordResponseDto.TodoListId);
+      Assert.AreEqual(todoListDayTaskEntity.Title, searchTodoListTasksDayRecordResponseDto.Title);
+      Assert.AreEqual(todoListDayTaskEntity.Description, searchTodoListTasksDayRecordResponseDto.Description);
+      Assert.AreEqual(todoListDayTaskEntity.Completed, searchTodoListTasksDayRecordResponseDto.Completed);
+      Assert.AreEqual(todoListDayTaskEntity.Date, searchTodoListTasksDayRecordResponseDto.Date);
+
+      var searchTodoListTasksPeriodRecordResponseDto =
+        searchTodoListTasksRecordResponseDtoCollection[1] as SearchTodoListTasksPeriodRecordResponseDto;
+
+      Assert.IsNotNull(searchTodoListTasksPeriodRecordResponseDto);
+      Assert.AreEqual(todoListPeriodTaskEntity.TodoListId, searchTodoListTasksPeriodRecordResponseDto.TodoListId);
+      Assert.AreEqual(todoListPeriodTaskEntity.Title, searchTodoListTasksPeriodRecordResponseDto.Title);
+      Assert.AreEqual(todoListPeriodTaskEntity.Description, searchTodoListTasksPeriodRecordResponseDto.Description);
+      Assert.AreEqual(todoListPeriodTaskEntity.Completed, searchTodoListTasksPeriodRecordResponseDto.Completed);
+      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, searchTodoListTasksPeriodRecordResponseDto.Beginning);
+      Assert.AreEqual(todoListPeriodTaskEntity.End, searchTodoListTasksPeriodRecordResponseDto.End);
     }
   }
 }
