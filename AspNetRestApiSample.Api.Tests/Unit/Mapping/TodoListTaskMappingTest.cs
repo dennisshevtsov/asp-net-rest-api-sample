@@ -105,7 +105,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         TodoListId = todoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Completed = true,
+        Completed = false,
         Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 12, 45, 0),
       };
@@ -167,6 +167,35 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(addTodoListDayTaskRequestDto.Description, todoListDayTaskEntity.Description);
       Assert.IsFalse(todoListDayTaskEntity.Completed);
       Assert.AreEqual(addTodoListDayTaskRequestDto.Date, todoListDayTaskEntity.Date);
+    }
+
+    [TestMethod]
+    public void Map_Should_Populate_TodoListPeriodTaskEntity_From_AddTodoListDayTaskRequestDto()
+    {
+      var addTodoListPeriodTaskRequestDto = new AddTodoListPeriodTaskRequestDto
+      {
+        TodoListId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        End = new DateTime(2022, 9, 1, 12, 45, 0),
+      };
+      var addTodoListTaskRequestDto = addTodoListPeriodTaskRequestDto;
+
+      var todoListTaskEntity = _mapper.Map<TodoListTaskEntityBase>(addTodoListTaskRequestDto);
+
+      Assert.IsNotNull(todoListTaskEntity);
+
+      var todoListPeriodTaskEntity = todoListTaskEntity as TodoListPeriodTaskEntity;
+
+      Assert.IsNotNull(todoListPeriodTaskEntity);
+      Assert.AreEqual(default, todoListPeriodTaskEntity.Id);
+      Assert.AreEqual(addTodoListPeriodTaskRequestDto.TodoListId, todoListPeriodTaskEntity.TodoListId);
+      Assert.AreEqual(addTodoListPeriodTaskRequestDto.Title, todoListPeriodTaskEntity.Title);
+      Assert.AreEqual(addTodoListPeriodTaskRequestDto.Description, todoListPeriodTaskEntity.Description);
+      Assert.IsFalse(todoListPeriodTaskEntity.Completed);
+      Assert.AreEqual(addTodoListPeriodTaskRequestDto.Beginning, todoListPeriodTaskEntity.Beginning);
+      Assert.AreEqual(addTodoListPeriodTaskRequestDto.End, todoListPeriodTaskEntity.End);
     }
   }
 }
