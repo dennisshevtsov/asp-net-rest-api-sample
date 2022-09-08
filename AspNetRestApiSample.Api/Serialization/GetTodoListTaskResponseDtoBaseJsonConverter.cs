@@ -9,9 +9,15 @@ namespace AspNetRestApiSample.Api.Serialization
 
   using AspNetRestApiSample.Api.Dtos;
 
+  /// <summary>Converts an object or value to or from JSON.</summary>
   public sealed class GetTodoListTaskResponseDtoBaseJsonConverter
     : JsonConverter<GetTodoListTaskResponseDtoBase>
   {
+    /// <summary>Reads and converts the JSON to type <see cref="AspNetRestApiSample.Api.Indentities.GetTodoListTaskResponseDtoBase"/>.</summary>
+    /// <param name="reader">The <see cref="System.Text.Json.Utf8JsonReader"/> to read from.</param>
+    /// <param name="typeToConvert">The <see cref="AspNetRestApiSample.Api.Dtos.GetTodoListTaskResponseDtoBase"/> being converted.</param>
+    /// <param name="options">The <see cref="System.Text.Json.JsonSerializerOptions"/> being used.</param>
+    /// <returns>The value that was converted.</returns>
     public override GetTodoListTaskResponseDtoBase? Read(
       ref Utf8JsonReader reader,
       Type typeToConvert,
@@ -20,6 +26,10 @@ namespace AspNetRestApiSample.Api.Serialization
       throw new NotImplementedException();
     }
 
+    /// <summary>Write the value as JSON.</summary>
+    /// <param name="writer">The <see cref="System.Text.Json.Utf8JsonWriter"/> to write to.</param>
+    /// <param name="value">The value to convert.</param>
+    /// <param name="options">The <see cref="System.Text.Json.JsonSerializerOptions"/> being used.</param>
     public override void Write(
       Utf8JsonWriter writer,
       GetTodoListTaskResponseDtoBase value,
