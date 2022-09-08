@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
+using AspNetRestApiSample.Api.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new GetTodoListTaskResponseDtoBaseJsonConverter()));
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
 builder.Services.AddDatabase(builder.Configuration);
