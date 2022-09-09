@@ -18,6 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
              {
                options.JsonSerializerOptions.Converters.Add(new GetTodoListTaskResponseDtoBaseJsonConverter());
                options.JsonSerializerOptions.Converters.Add(new SearchTodoListTasksRecordResponseDtoBaseJsonConverter());
+               options.JsonSerializerOptions.Converters.Add(new AddTodoListTaskRequestDtoBaseJsonSerialization());
              });
     }
   }
