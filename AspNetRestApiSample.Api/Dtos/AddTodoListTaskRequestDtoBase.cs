@@ -9,8 +9,11 @@ namespace AspNetRestApiSample.Api.Dtos
   /// <summary>Represents types of a TODO list task.</summary>
   public enum TodoListTaskType : byte
   {
+    /// <summary>A value that indicates if a TODO list task is unknown.</summary>
+    Unknown = 0,
+
     /// <summary>A value that indicates if a TODO list task is a day task.</summary>
-    Day = 0,
+    Day = 1,
 
     /// <summary>A value that indicates if a TODO list task is a period task.</summary>
     Period = 1,
