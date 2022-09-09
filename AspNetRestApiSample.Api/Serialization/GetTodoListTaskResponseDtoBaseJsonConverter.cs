@@ -13,7 +13,7 @@ namespace AspNetRestApiSample.Api.Serialization
   public sealed class GetTodoListTaskResponseDtoBaseJsonConverter
     : JsonConverter<GetTodoListTaskResponseDtoBase>
   {
-    /// <summary>Reads and converts the JSON to type <see cref="AspNetRestApiSample.Api.Indentities.GetTodoListTaskResponseDtoBase"/>.</summary>
+    /// <summary>Reads and converts the JSON to type <see cref="AspNetRestApiSample.Api.Dtos.GetTodoListTaskResponseDtoBase"/>.</summary>
     /// <param name="reader">The <see cref="System.Text.Json.Utf8JsonReader"/> to read from.</param>
     /// <param name="typeToConvert">The <see cref="AspNetRestApiSample.Api.Dtos.GetTodoListTaskResponseDtoBase"/> being converted.</param>
     /// <param name="options">The <see cref="System.Text.Json.JsonSerializerOptions"/> being used.</param>
