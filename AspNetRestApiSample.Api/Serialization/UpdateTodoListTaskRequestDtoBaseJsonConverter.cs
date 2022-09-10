@@ -23,7 +23,18 @@ namespace AspNetRestApiSample.Api.Serialization
       Type typeToConvert,
       JsonSerializerOptions options)
     {
-      throw new NotImplementedException();
+      var todoListTaskType = UpdateTodoListTaskRequestDtoBaseJsonConverter.GetTodoListType(reader);
+
+      UpdateTodoListTaskRequestDtoBase? requestDto = null;
+
+      if (todoListTaskType != TodoListTaskType.Unknown)
+      {
+        var requestDtoType = UpdateTodoListTaskRequestDtoBaseJsonConverter.GetRequestDtoType(todoListTaskType);
+
+        requestDto = JsonSerializer.Deserialize(ref reader, requestDtoType, options) as UpdateTodoListTaskRequestDtoBase;
+      }
+
+      return requestDto;
     }
 
     /// <summary>Write the value as JSON.</summary>
@@ -36,6 +47,60 @@ namespace AspNetRestApiSample.Api.Serialization
       JsonSerializerOptions options)
     {
       throw new NotImplementedException();
+    }
+
+    private static TodoListTaskType GetTodoListType(Utf8JsonReader reader)
+    {
+      var todoListTaskType = TodoListTaskType.Unknown;
+      string? propertyName = null;
+
+      while (reader.Read())
+      {
+        if (reader.TokenType == JsonTokenType.PropertyName)
+        {
+          propertyName = reader.GetString();
+
+          continue;
+        }
+
+        if (propertyName == null || !string.Equals(propertyName, nameof(UpdateTodoListTaskRequestDtoBase.Type), StringComparison.OrdinalIgnoreCase))
+        {
+          continue;
+        }
+
+        if (reader.TokenType == JsonTokenType.Number)
+        {
+          var todoListTaskTypeNumber = reader.GetByte();
+
+          if (Enum.IsDefined(typeof(TodoListTaskType), todoListTaskTypeNumber))
+          {
+            todoListTaskType = (TodoListTaskType)todoListTaskTypeNumber;
+          }
+
+          break;
+        }
+
+        if (reader.TokenType == JsonTokenType.String)
+        {
+          var todoListTaskTypeString = reader.GetString();
+
+          Enum.TryParse(todoListTaskTypeString, out todoListTaskType);
+        }
+
+        break;
+      }
+
+      return todoListTaskType;
+    }
+
+    private static Type GetRequestDtoType(TodoListTaskType todoListTaskType)
+    {
+      if (todoListTaskType == TodoListTaskType.Day)
+      {
+        return typeof(UpdateTodoListDayTaskRequestDto);
+      }
+
+      return typeof(UpdateTodoListPeriodTaskRequestDto);
     }
   }
 }
