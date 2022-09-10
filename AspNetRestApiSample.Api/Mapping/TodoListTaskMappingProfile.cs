@@ -28,8 +28,10 @@ namespace AspNetRestApiSample.Api.Mapping
                 .Include<TodoListPeriodTaskEntity, GetTodoListPeriodTaskResponseDto>()
                 .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));
 
-      expression.CreateMap<TodoListDayTaskEntity, GetTodoListDayTaskResponseDto>();
-      expression.CreateMap<TodoListPeriodTaskEntity, GetTodoListPeriodTaskResponseDto>();
+      expression.CreateMap<TodoListDayTaskEntity, GetTodoListDayTaskResponseDto>()
+                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => TodoListTaskType.Day));
+      expression.CreateMap<TodoListPeriodTaskEntity, GetTodoListPeriodTaskResponseDto>()
+                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => TodoListTaskType.Period));
     }
 
     private static void ConfigureSearchTodoListsMapping(IProfileExpression expression)
@@ -39,8 +41,10 @@ namespace AspNetRestApiSample.Api.Mapping
                 .Include<TodoListPeriodTaskEntity, SearchTodoListTasksPeriodRecordResponseDto>()
                 .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));
 
-      expression.CreateMap<TodoListDayTaskEntity, SearchTodoListTasksDayRecordResponseDto>();
-      expression.CreateMap<TodoListPeriodTaskEntity, SearchTodoListTasksPeriodRecordResponseDto>();
+      expression.CreateMap<TodoListDayTaskEntity, SearchTodoListTasksDayRecordResponseDto>()
+                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => TodoListTaskType.Day));
+      expression.CreateMap<TodoListPeriodTaskEntity, SearchTodoListTasksPeriodRecordResponseDto>()
+                .ForMember(dst => dst.Type, opt => opt.MapFrom(src => TodoListTaskType.Period));
     }
 
     private static void ConfigureAddTodoListMapping(IProfileExpression expression)
