@@ -20,5 +20,8 @@ namespace AspNetRestApiSample.Api.Dtos
 
     /// <summary>Gets/sets an object that represents a description of a todo list task.</summary>
     public string? Description { get; set; }
+
+    /// <summary>Gets/sets an object that represents a type of a TODO list task.</summary>
+    public TodoListTaskType Type { get; set; }
   }
 }

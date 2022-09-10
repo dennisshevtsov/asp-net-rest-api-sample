@@ -6,19 +6,6 @@ namespace AspNetRestApiSample.Api.Dtos
 {
   using AspNetRestApiSample.Api.Indentities;
 
-  /// <summary>Represents types of a TODO list task.</summary>
-  public enum TodoListTaskType : byte
-  {
-    /// <summary>A value that indicates if a TODO list task is unknown.</summary>
-    Unknown = 0,
-
-    /// <summary>A value that indicates if a TODO list task is a day task.</summary>
-    Day = 1,
-
-    /// <summary>A value that indicates if a TODO list task is a period task.</summary>
-    Period = 1,
-  }
-
   /// <summary>Represents data to add a task to a todo list.</summary>
   public abstract class AddTodoListTaskRequestDtoBase : ITodoListIdentity
   {
