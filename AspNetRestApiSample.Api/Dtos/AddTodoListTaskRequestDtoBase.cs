@@ -4,21 +4,8 @@
 
 namespace AspNetRestApiSample.Api.Dtos
 {
-  using AspNetRestApiSample.Api.Indentities;
-
   /// <summary>Represents data to add a task to a todo list.</summary>
-  public abstract class AddTodoListTaskRequestDtoBase : ITodoListIdentity
+  public abstract class AddTodoListTaskRequestDtoBase : TodoListTaskDtoBase
   {
-    /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
-    public Guid TodoListId { get; set; }
-
-    /// <summary>Gets/sets an object that represents a title of a todo list task.</summary>
-    public string? Title { get; set; }
-
-    /// <summary>Gets/sets an object that represents a description of a todo list task.</summary>
-    public string? Description { get; set; }
-
-    /// <summary>Gets/sets an object that represents a type of a TODO list task.</summary>
-    public TodoListTaskType Type { get; set; }
   }
 }
