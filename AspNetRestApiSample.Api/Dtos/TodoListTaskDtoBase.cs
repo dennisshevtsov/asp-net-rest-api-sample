@@ -2,7 +2,7 @@
 
 namespace AspNetRestApiSample.Api.Dtos
 {
-  /// <summary>Represents a base data of a TODO list task.</summary>
+  /// <summary>Represents a base of a TODO list task.</summary>
   public abstract class TodoListTaskDtoBase : ITodoListIdentity
   {
     /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
