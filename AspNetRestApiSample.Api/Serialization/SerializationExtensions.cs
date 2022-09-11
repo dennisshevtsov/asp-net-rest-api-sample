@@ -4,6 +4,8 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+  using System.Text.Json;
+
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Serialization;
 
@@ -17,6 +19,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
       builder.AddJsonOptions(options =>
              {
+               options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+               options.JsonSerializerOptions.AllowTrailingCommas = true;
+
                options.JsonSerializerOptions.Converters.Add(new TodoListTaskWriterJsonConverter<GetTodoListTaskResponseDtoBase>());
                options.JsonSerializerOptions.Converters.Add(new TodoListTaskWriterJsonConverter<SearchTodoListTasksRecordResponseDtoBase>());
                options.JsonSerializerOptions.Converters.Add(new AddTodoListTaskRequestDtoBaseJsonConverter());
