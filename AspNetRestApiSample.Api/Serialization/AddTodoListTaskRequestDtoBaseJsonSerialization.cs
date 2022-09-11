@@ -15,7 +15,7 @@ namespace AspNetRestApiSample.Api.Serialization
   {
     /// <summary>Reads and converts the JSON to type <see cref="AspNetRestApiSample.Api.Dtos.SearchTodoListTasksRecordResponseDtoBase"/>.</summary>
     /// <param name="reader">The <see cref="System.Text.Json.Utf8JsonReader"/> to read from.</param>
-    /// <param name="typeToConvert">The <see cref="AspNetRestApiSample.Api.Dtos.SearchTodoListTasksRecordResponseDtoBase"/> being converted.</param>
+    /// <param name="typeToConvert">The <see cref="System.Type"/> being converted.</param>
     /// <param name="options">The <see cref="System.Text.Json.JsonSerializerOptions"/> being used.</param>
     /// <returns>The value that was converted.</returns>
     public override AddTodoListTaskRequestDtoBase? Read(

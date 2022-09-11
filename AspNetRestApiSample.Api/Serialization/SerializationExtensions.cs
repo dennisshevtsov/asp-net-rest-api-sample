@@ -4,6 +4,7 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+  using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Serialization;
 
   /// <summary>Provides a simple API to register application services.</summary>
@@ -16,8 +17,8 @@ namespace Microsoft.Extensions.DependencyInjection
     {
       builder.AddJsonOptions(options =>
              {
-               options.JsonSerializerOptions.Converters.Add(new GetTodoListTaskResponseDtoBaseJsonConverter());
-               options.JsonSerializerOptions.Converters.Add(new SearchTodoListTasksRecordResponseDtoBaseJsonConverter());
+               options.JsonSerializerOptions.Converters.Add(new WriterJsonConverter<GetTodoListTaskResponseDtoBase>());
+               options.JsonSerializerOptions.Converters.Add(new WriterJsonConverter<SearchTodoListTasksRecordResponseDtoBase>());
                options.JsonSerializerOptions.Converters.Add(new AddTodoListTaskRequestDtoBaseJsonSerialization());
                options.JsonSerializerOptions.Converters.Add(new UpdateTodoListTaskRequestDtoBaseJsonConverter());
              });
