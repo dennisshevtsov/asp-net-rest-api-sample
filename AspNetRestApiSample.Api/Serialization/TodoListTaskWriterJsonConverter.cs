@@ -3,8 +3,10 @@
   using System.Text.Json;
   using System.Text.Json.Serialization;
 
+  using AspNetRestApiSample.Api.Dtos;
+
   /// <summary>Converts an object or value to or from JSON.</summary>
-  public sealed class WriterJsonConverter<T> : JsonConverter<T>
+  public sealed class TodoListTaskWriterJsonConverter<T> : JsonConverter<T> where T : TodoListTaskDtoBase
   {
     /// <summary>Reads and converts the JSON to T.</summary>
     /// <param name="reader">The <see cref="System.Text.Json.Utf8JsonReader"/> to read from.</param>
