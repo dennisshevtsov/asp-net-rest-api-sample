@@ -10,28 +10,27 @@ namespace AspNetRestApiSample.Api.Serialization
   using AspNetRestApiSample.Api.Dtos;
 
   /// <summary>Converts an object or value to or from JSON.</summary>
-  public sealed class AddTodoListTaskRequestDtoBaseJsonSerialization
-    : JsonConverter<AddTodoListTaskRequestDtoBase>
+  public abstract class TodoListTaskReaderJsonConverterBase<T> : JsonConverter<T> where T : TodoListTaskDtoBase
   {
     /// <summary>Reads and converts the JSON to type <see cref="AspNetRestApiSample.Api.Dtos.SearchTodoListTasksRecordResponseDtoBase"/>.</summary>
     /// <param name="reader">The <see cref="System.Text.Json.Utf8JsonReader"/> to read from.</param>
     /// <param name="typeToConvert">The <see cref="System.Type"/> being converted.</param>
     /// <param name="options">The <see cref="System.Text.Json.JsonSerializerOptions"/> being used.</param>
     /// <returns>The value that was converted.</returns>
-    public override AddTodoListTaskRequestDtoBase? Read(
+    public override T? Read(
       ref Utf8JsonReader reader,
       Type typeToConvert,
       JsonSerializerOptions options)
     {
-      var todoListTaskType = AddTodoListTaskRequestDtoBaseJsonSerialization.GetTodoListType(reader);
+      var todoListTaskType = TodoListTaskReaderJsonConverterBase<T>.GetTodoListType(reader);
 
-      AddTodoListTaskRequestDtoBase? requestDto = null;
+      T? requestDto = null;
 
       if (todoListTaskType != TodoListTaskType.Unknown)
       {
-        var requestDtoType = AddTodoListTaskRequestDtoBaseJsonSerialization.GetRequestDtoType(todoListTaskType);
+        var requestDtoType = GetRequestDtoType(todoListTaskType);
 
-        requestDto = JsonSerializer.Deserialize(ref reader, requestDtoType, options) as AddTodoListTaskRequestDtoBase;
+        requestDto = JsonSerializer.Deserialize(ref reader, requestDtoType, options) as T;
       }
 
       return requestDto;
@@ -43,11 +42,16 @@ namespace AspNetRestApiSample.Api.Serialization
     /// <param name="options">The <see cref="System.Text.Json.JsonSerializerOptions"/> being used.</param>
     public override void Write(
       Utf8JsonWriter writer,
-      AddTodoListTaskRequestDtoBase value,
+      T value,
       JsonSerializerOptions options)
     {
       throw new NotImplementedException();
     }
+
+    /// <summary>Gets an instance of the <see cref="System.Type"/> that represents a type of a request DTO.</summary>
+    /// <param name="todoListTaskType">A value that represents a type of a request DTO.</param>
+    /// <returns>A value that represents a type of a request DTO.</returns>
+    protected abstract Type GetRequestDtoType(TodoListTaskType todoListTaskType);
 
     private static TodoListTaskType GetTodoListType(Utf8JsonReader reader)
     {
@@ -91,16 +95,6 @@ namespace AspNetRestApiSample.Api.Serialization
       }
 
       return todoListTaskType;
-    }
-
-    private static Type GetRequestDtoType(TodoListTaskType todoListTaskType)
-    {
-      if (todoListTaskType == TodoListTaskType.Day)
-      {
-        return typeof(AddTodoListDayTaskRequestDto);
-      }
-
-      return typeof(AddTodoListPeriodTaskRequestDto);
     }
   }
 }

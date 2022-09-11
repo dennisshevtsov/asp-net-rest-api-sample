@@ -7,8 +7,8 @@ namespace AspNetRestApiSample.Api.Serialization
   using AspNetRestApiSample.Api.Dtos;
 
   /// <summary>Converts an object or value to or from JSON.</summary>
-  public sealed class UpdateTodoListTaskRequestDtoBaseJsonConverter
-    : TodoListTaskReaderJsonConverterBase<UpdateTodoListTaskRequestDtoBase>
+  public sealed class AddTodoListTaskRequestDtoBaseJsonConverter
+    : TodoListTaskReaderJsonConverterBase<AddTodoListTaskRequestDtoBase>
   {
     /// <summary>Gets an instance of the <see cref="System.Type"/> that represents a type of a request DTO.</summary>
     /// <param name="todoListTaskType">A value that represents a type of a request DTO.</param>
@@ -17,10 +17,10 @@ namespace AspNetRestApiSample.Api.Serialization
     {
       if (todoListTaskType == TodoListTaskType.Day)
       {
-        return typeof(UpdateTodoListDayTaskRequestDto);
+        return typeof(AddTodoListDayTaskRequestDto);
       }
 
-      return typeof(UpdateTodoListPeriodTaskRequestDto);
+      return typeof(AddTodoListPeriodTaskRequestDto);
     }
   }
 }
