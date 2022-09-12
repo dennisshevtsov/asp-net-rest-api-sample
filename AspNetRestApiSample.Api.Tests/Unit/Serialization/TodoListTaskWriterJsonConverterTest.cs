@@ -26,5 +26,32 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         },
       };
     }
+
+    [TestMethod]
+    public void Serialize_Should_Serialize_GetTodoListDayTaskResponseDto()
+    {
+      var dto = new GetTodoListDayTaskResponseDto
+      {
+        TodoListId = Guid.NewGuid(),
+        TodoListTaskId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Completed = true,
+        Date = new DateTime(2022, 9, 1),
+      };
+
+      var json = JsonSerializer.Serialize(dto, _jsonSerializerOptions);
+
+      Assert.IsNotNull(json);
+
+      var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(json);
+
+      Assert.AreEqual(dto.TodoListId.ToString(), obj[nameof(GetTodoListDayTaskResponseDto.TodoListId)]);
+      Assert.AreEqual(dto.TodoListTaskId.ToString(), obj[nameof(GetTodoListDayTaskResponseDto.TodoListTaskId)]);
+      Assert.AreEqual(dto.Title, obj[nameof(GetTodoListDayTaskResponseDto.Title)]);
+      Assert.AreEqual(dto.Description, obj[nameof(GetTodoListDayTaskResponseDto.Description)]);
+      Assert.AreEqual(dto.Completed, obj[nameof(GetTodoListDayTaskResponseDto.Completed)]);
+      Assert.AreEqual(dto.Date, obj[nameof(GetTodoListDayTaskResponseDto.Date)]);
+    }
   }
 }
