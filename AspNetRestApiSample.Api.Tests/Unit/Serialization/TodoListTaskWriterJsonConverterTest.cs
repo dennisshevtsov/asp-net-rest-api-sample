@@ -38,6 +38,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         Description = Guid.NewGuid().ToString(),
         Completed = true,
         Date = new DateTime(2022, 9, 1),
+        Type = TodoListTaskType.Day,
       };
 
       var json = JsonSerializer.Serialize(dto, _jsonSerializerOptions);
@@ -52,6 +53,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
       Assert.AreEqual(dto.Description, obj[nameof(GetTodoListDayTaskResponseDto.Description)]);
       Assert.AreEqual(dto.Completed, obj[nameof(GetTodoListDayTaskResponseDto.Completed)]);
       Assert.AreEqual(dto.Date, obj[nameof(GetTodoListDayTaskResponseDto.Date)]);
+      Assert.AreEqual((int)TodoListTaskType.Day, obj[nameof(GetTodoListDayTaskResponseDto.Type)]);
     }
   }
 }
