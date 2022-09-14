@@ -58,13 +58,14 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       obj[nameof(GetTodoListDayTaskResponseDto.Description)]);
       Assert.AreEqual(getTodoListDayTaskResponseDto.Completed,
                       obj[nameof(GetTodoListDayTaskResponseDto.Completed)]);
-      Assert.AreEqual(getTodoListDayTaskResponseDto.Date, obj[nameof(GetTodoListDayTaskResponseDto.Date)]);
+      Assert.AreEqual(getTodoListDayTaskResponseDto.Date,
+                      obj[nameof(GetTodoListDayTaskResponseDto.Date)]);
       Assert.AreEqual((int)TodoListTaskType.Day,
                       obj[nameof(GetTodoListDayTaskResponseDto.Type)]);
     }
 
     [TestMethod]
-    public void Serialize_Should_Serialize_AddTodoListPeriodTaskRequestDto()
+    public void Serialize_Should_Serialize_GetTodoListPeriodTaskResponseDto()
     {
       var getTodoListPeriodTaskResponseDto = new GetTodoListPeriodTaskResponseDto
       {
@@ -101,6 +102,75 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       obj[nameof(GetTodoListPeriodTaskResponseDto.End)]);
       Assert.AreEqual((int)TodoListTaskType.Day,
                       obj[nameof(GetTodoListPeriodTaskResponseDto.Type)]);
+    }
+
+    [TestMethod]
+    public void Serialize_Should_Serialize_Collection_Of_SearchTodoListTasksRecordResponseDtoBase()
+    {
+      var searchTodoListTasksDayRecordResponseDto = new SearchTodoListTasksDayRecordResponseDto
+      {
+        TodoListId = Guid.NewGuid(),
+        TodoListTaskId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Completed = true,
+        Date = new DateTime(2022, 9, 1),
+        Type = TodoListTaskType.Day,
+      };
+      var searchTodoListTasksPeriodRecordResponseDto = new SearchTodoListTasksPeriodRecordResponseDto
+      {
+        TodoListId = Guid.NewGuid(),
+        TodoListTaskId = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Completed = true,
+        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        End = new DateTime(2022, 9, 1, 13, 30, 0),
+        Type = TodoListTaskType.Period,
+      };
+      var searchTodoListTasksRecordResponseDtos = new SearchTodoListTasksRecordResponseDtoBase[]
+      {
+        searchTodoListTasksDayRecordResponseDto,
+        searchTodoListTasksPeriodRecordResponseDto,
+      };
+
+      var json = JsonSerializer.Serialize(searchTodoListTasksRecordResponseDtos, _jsonSerializerOptions);
+
+      Assert.IsNotNull(json);
+
+      var arr = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JArray>(json);
+
+      Assert.AreEqual(searchTodoListTasksDayRecordResponseDto.TodoListId.ToString(),
+                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.TodoListId)]);
+      Assert.AreEqual(searchTodoListTasksDayRecordResponseDto.TodoListTaskId.ToString(),
+                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.TodoListTaskId)]);
+      Assert.AreEqual(searchTodoListTasksDayRecordResponseDto.Title,
+                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Title)]);
+      Assert.AreEqual(searchTodoListTasksDayRecordResponseDto.Description,
+                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Description)]);
+      Assert.AreEqual(searchTodoListTasksDayRecordResponseDto.Completed,
+                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Completed)]);
+      Assert.AreEqual(searchTodoListTasksDayRecordResponseDto.Date,
+                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Date)]);
+      Assert.AreEqual((int)TodoListTaskType.Day,
+                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Type)]);
+
+      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.TodoListId.ToString(),
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.TodoListId)]);
+      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.TodoListTaskId.ToString(),
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.TodoListTaskId)]);
+      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.Title,
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Title)]);
+      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.Description,
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Description)]);
+      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.Completed,
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Completed)]);
+      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.Beginning,
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Beginning)]);
+      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.End,
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.End)]);
+      Assert.AreEqual((int)TodoListTaskType.Day,
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Type)]);
     }
   }
 }
