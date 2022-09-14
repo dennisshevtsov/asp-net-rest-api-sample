@@ -187,11 +187,11 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
       };
 
       var json = $@"{{
-""todoListId"": ""{expetedAddTodoListDayTaskRequestDto.TodoListId}"",
-""title"": ""{expetedAddTodoListDayTaskRequestDto.Title}"",
-""description"": ""{expetedAddTodoListDayTaskRequestDto.Description}"",
-""type"": ""{expetedAddTodoListDayTaskRequestDto.Type}"",
-""date"": ""{expetedAddTodoListDayTaskRequestDto.Date}""
+""{nameof(AddTodoListDayTaskRequestDto.TodoListId)}"": ""{expetedAddTodoListDayTaskRequestDto.TodoListId}"",
+""{nameof(AddTodoListDayTaskRequestDto.Title)}"": ""{expetedAddTodoListDayTaskRequestDto.Title}"",
+""{nameof(AddTodoListDayTaskRequestDto.Description)}"": ""{expetedAddTodoListDayTaskRequestDto.Description}"",
+""{nameof(AddTodoListDayTaskRequestDto.Type)}"": {(int)expetedAddTodoListDayTaskRequestDto.Type},
+""{nameof(AddTodoListDayTaskRequestDto.Date)}"": ""{expetedAddTodoListDayTaskRequestDto.Date.ToString("yyyy-MM-ddTHH:mm:ss")}""
 }}
 ";
 
@@ -210,7 +210,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       addTodoListDayTaskRequestDto.Description);
       Assert.AreEqual(expetedAddTodoListDayTaskRequestDto.Date,
                       addTodoListDayTaskRequestDto.Date);
-      Assert.AreEqual(expetedAddTodoListDayTaskRequestDto,
+      Assert.AreEqual(expetedAddTodoListDayTaskRequestDto.Type,
                       addTodoListDayTaskRequestDto.Type);
     }
   }
