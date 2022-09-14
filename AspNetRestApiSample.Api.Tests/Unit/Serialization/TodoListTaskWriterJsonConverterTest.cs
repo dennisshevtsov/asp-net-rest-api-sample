@@ -23,6 +23,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         Converters = {
           new TodoListTaskWriterJsonConverter<GetTodoListTaskResponseDtoBase>(),
           new TodoListTaskWriterJsonConverter<SearchTodoListTasksRecordResponseDtoBase>(),
+          new AddTodoListTaskRequestDtoBaseJsonConverter(),
         },
       };
     }
@@ -171,6 +172,46 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.End)]);
       Assert.AreEqual((int)TodoListTaskType.Day,
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Type)]);
+    }
+
+    [TestMethod]
+    public void Deserialize_Should_Deserialize_AddTodoListDayTaskRequestDto()
+    {
+      var expetedAddTodoListDayTaskRequestDto = new AddTodoListDayTaskRequestDto
+      {
+        TodoListId  = Guid.NewGuid(),
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Date = new DateTime(2022, 9, 1),
+        Type = TodoListTaskType.Day,
+      };
+
+      var json = $@"{{
+""todoListId"": ""{expetedAddTodoListDayTaskRequestDto.TodoListId}"",
+""title"": ""{expetedAddTodoListDayTaskRequestDto.Title}"",
+""description"": ""{expetedAddTodoListDayTaskRequestDto.Description}"",
+""type"": ""{expetedAddTodoListDayTaskRequestDto.Type}"",
+""date"": ""{expetedAddTodoListDayTaskRequestDto.Date}""
+}}
+";
+
+      var addTodoListTaskRequestDto = JsonSerializer.Deserialize<AddTodoListTaskRequestDtoBase>(json, _jsonSerializerOptions);
+
+      Assert.IsNotNull(addTodoListTaskRequestDto);
+
+      var addTodoListDayTaskRequestDto = addTodoListTaskRequestDto as AddTodoListDayTaskRequestDto;
+
+      Assert.IsNotNull(addTodoListDayTaskRequestDto);
+      Assert.AreEqual(expetedAddTodoListDayTaskRequestDto.TodoListId,
+                      addTodoListDayTaskRequestDto.TodoListId);
+      Assert.AreEqual(expetedAddTodoListDayTaskRequestDto.Title,
+                      addTodoListDayTaskRequestDto.Title);
+      Assert.AreEqual(expetedAddTodoListDayTaskRequestDto.Description,
+                      addTodoListDayTaskRequestDto.Description);
+      Assert.AreEqual(expetedAddTodoListDayTaskRequestDto.Date,
+                      addTodoListDayTaskRequestDto.Date);
+      Assert.AreEqual(expetedAddTodoListDayTaskRequestDto,
+                      addTodoListDayTaskRequestDto.Type);
     }
   }
 }
