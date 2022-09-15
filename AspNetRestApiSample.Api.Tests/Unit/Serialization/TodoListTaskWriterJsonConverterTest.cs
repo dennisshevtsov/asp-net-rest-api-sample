@@ -101,7 +101,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       obj[nameof(GetTodoListPeriodTaskResponseDto.Beginning)]);
       Assert.AreEqual(getTodoListPeriodTaskResponseDto.End,
                       obj[nameof(GetTodoListPeriodTaskResponseDto.End)]);
-      Assert.AreEqual((int)TodoListTaskType.Day,
+      Assert.AreEqual((int)getTodoListPeriodTaskResponseDto.Type,
                       obj[nameof(GetTodoListPeriodTaskResponseDto.Type)]);
     }
 
@@ -153,8 +153,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Completed)]);
       Assert.AreEqual(searchTodoListTasksDayRecordResponseDto.Date,
                       arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Date)]);
-      Assert.AreEqual((int)TodoListTaskType.Day,
-                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Type)]);
+      Assert.AreEqual((int)searchTodoListTasksDayRecordResponseDto.Type,
+                      arr[0][nameof(SearchTodoListTasksDayRecordResponseDto.Type)]); ;
 
       Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.TodoListId.ToString(),
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.TodoListId)]);
@@ -170,7 +170,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Beginning)]);
       Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.End,
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.End)]);
-      Assert.AreEqual((int)TodoListTaskType.Day,
+      Assert.AreEqual((int)searchTodoListTasksPeriodRecordResponseDto.Type,
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Type)]);
     }
 
