@@ -14,6 +14,6 @@ namespace AspNetRestApiSample.Api.Dtos
     Day = 1,
 
     /// <summary>A value that indicates if a TODO list task is a period task.</summary>
-    Period = 1,
+    Period = 2,
   }
 }
