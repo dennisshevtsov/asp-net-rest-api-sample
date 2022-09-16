@@ -9,6 +9,7 @@ namespace AspNetRestApiSample.Api.Controllers
 
   using Microsoft.AspNetCore.Mvc;
 
+  using AspNetRestApiSample.Api.Defaults;
   using AspNetRestApiSample.Api.Dtos;
   using AspNetRestApiSample.Api.Services;
 
@@ -17,8 +18,6 @@ namespace AspNetRestApiSample.Api.Controllers
   [Route(TodoListTaskController.TodoListTaskRoute)]
   public sealed class TodoListTaskController : ControllerBase
   {
-    private const string ContentType = "application/json";
-
     private const string TodoListTaskRoute = "api/todo-list/{todoListId}/task";
     private const string GetTodoListTaskRoute = "{todoListTaskId}";
     private const string UpdateTodoListTaskRoute = TodoListTaskController.GetTodoListTaskRoute;
@@ -44,7 +43,7 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet(TodoListTaskController.GetTodoListTaskRoute, Name = nameof(TodoListTaskController.GetTodoListTask))]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(typeof(GetTodoListTaskResponseDtoBase), (int)HttpStatusCode.OK, TodoListTaskController.ContentType)]
+    [ProducesResponseType(typeof(GetTodoListTaskResponseDtoBase), (int)HttpStatusCode.OK, ContentType.Json)]
     public async Task<IActionResult> GetTodoListTask(
       [FromRoute] GetTodoListTaskRequestDto query,
       CancellationToken cancellationToken)
@@ -65,7 +64,7 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet(Name = nameof(TodoListTaskController.SearchTodoListTasks))]
-    [ProducesResponseType(typeof(SearchTodoListTasksRecordResponseDtoBase[]), (int)HttpStatusCode.OK, TodoListTaskController.ContentType)]
+    [ProducesResponseType(typeof(SearchTodoListTasksRecordResponseDtoBase[]), (int)HttpStatusCode.OK, ContentType.Json)]
     public async Task<IActionResult> SearchTodoListTasks(
       [FromRoute] SearchTodoListTasksRequestDto query,
       CancellationToken cancellationToken)
@@ -79,8 +78,8 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpPost(Name = nameof(TodoListTaskController.AddTodoListTask))]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType(typeof(AddTodoListTaskResponseDto), (int)HttpStatusCode.OK, TodoListTaskController.ContentType)]
-    [Consumes(typeof(AddTodoListTaskRequestDtoBase), TodoListTaskController.ContentType)]
+    [ProducesResponseType(typeof(AddTodoListTaskResponseDto), (int)HttpStatusCode.OK, ContentType.Json)]
+    [Consumes(typeof(AddTodoListTaskRequestDtoBase), ContentType.Json)]
     public async Task<IActionResult> AddTodoListTask(
       [FromBody] AddTodoListTaskRequestDtoBase command,
       CancellationToken cancellationToken)
@@ -102,7 +101,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [HttpPut(TodoListTaskController.UpdateTodoListTaskRoute, Name = nameof(TodoListTaskController.UpdateTodoListTask))]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
-    [Consumes(typeof(UpdateTodoListTaskRequestDtoBase), TodoListTaskController.ContentType)]
+    [Consumes(typeof(UpdateTodoListTaskRequestDtoBase), ContentType.Json)]
     public async Task<IActionResult> UpdateTodoListTask(
       [FromBody] UpdateTodoListTaskRequestDtoBase command,
       CancellationToken cancellationToken)
