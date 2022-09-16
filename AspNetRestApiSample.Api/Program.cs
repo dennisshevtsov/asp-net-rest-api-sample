@@ -15,5 +15,6 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.MapControllers();
+app.InitializeDatabase();
 
 app.Run();
