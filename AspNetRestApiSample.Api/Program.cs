@@ -6,7 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
                 .AddJsonSerialization();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+                {
+                  options.DescribeAllParametersInCamelCase();
+                });
 builder.Services.AddServices();
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddMapping();
