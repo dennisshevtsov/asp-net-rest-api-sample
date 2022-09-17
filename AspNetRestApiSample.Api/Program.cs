@@ -9,6 +9,7 @@ builder.Services.AddControllers()
 builder.Services.AddSwaggerGen(options =>
                 {
                   options.DescribeAllParametersInCamelCase();
+                  options.UseOneOfForPolymorphism();
                 });
 builder.Services.AddServices();
 builder.Services.AddDatabase(builder.Configuration);
