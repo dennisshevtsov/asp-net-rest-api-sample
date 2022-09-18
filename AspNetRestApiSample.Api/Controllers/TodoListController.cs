@@ -68,13 +68,19 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpPost(Name = nameof(TodoListController.AddTodoList))]
-    [ProducesResponseType(typeof(AddTodoListResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AddTodoListResponseDto), StatusCodes.Status201Created)]
     [Consumes(typeof(AddTodoListRequestDto), ContentType.Json)]
     public async Task<IActionResult> AddTodoList(
       [FromBody] AddTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
-      return Ok(await _todoListService.AddTodoListAsync(command, cancellationToken));
+      var addTodoListResponseDto = await _todoListService.AddTodoListAsync(command, cancellationToken);
+      var getTodoListRequestDto = new GetTodoListRequestDto
+      {
+        TodoListId = addTodoListResponseDto.TodoListId,
+      };
+
+      return CreatedAtAction(nameof(TodoListController.GetTodoList), getTodoListRequestDto, addTodoListResponseDto);
     }
 
     /// <summary>Handles the update todo list command request.</summary>

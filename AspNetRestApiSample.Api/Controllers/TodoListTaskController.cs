@@ -71,7 +71,7 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpPost(Name = nameof(TodoListTaskController.AddTodoListTask))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(AddTodoListTaskResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AddTodoListTaskResponseDto), StatusCodes.Status201Created)]
     [Consumes(typeof(AddTodoListTaskRequestDtoBase), ContentType.Json)]
     public async Task<IActionResult> AddTodoListTask(
       [FromBody] AddTodoListTaskRequestDtoBase command,
@@ -84,7 +84,14 @@ namespace AspNetRestApiSample.Api.Controllers
         return NotFound();
       }
 
-      return Ok(await _todoListTaskService.AddTodoListTaskAsync(command, cancellationToken));
+      var addTodoListTaskResponseDto = await _todoListTaskService.AddTodoListTaskAsync(command, cancellationToken);
+      var getTodoListTaskRequestDto = new GetTodoListTaskRequestDto
+      {
+        TodoListId = addTodoListTaskResponseDto.TodoListId,
+        TodoListTaskId = addTodoListTaskResponseDto.TodoListTaskId,
+      };
+
+      return CreatedAtAction(nameof(TodoListTaskController.GetTodoListTask), getTodoListTaskRequestDto, addTodoListTaskResponseDto);
     }
 
     /// <summary>Handles the update a todo list task command request.</summary>
