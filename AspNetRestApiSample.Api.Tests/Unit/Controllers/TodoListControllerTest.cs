@@ -124,7 +124,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Controllers
     }
 
     [TestMethod]
-    public async Task AddTodoList_Should_Return_Ok()
+    public async Task AddTodoList_Should_Return_Created()
     {
       var addTodoListResponseDto = new AddTodoListResponseDto
       {
@@ -144,12 +144,12 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Controllers
       var actionResult = await _todoListController.AddTodoList(command, CancellationToken.None);
 
       Assert.IsNotNull(actionResult);
-      Assert.IsTrue(actionResult is OkObjectResult);
 
-      var okObjectResult = (OkObjectResult)actionResult;
+      var createdAtActionResult = actionResult as CreatedAtActionResult;
 
-      Assert.IsNotNull(okObjectResult.Value);
-      Assert.AreEqual(addTodoListResponseDto, okObjectResult.Value);
+      Assert.IsNotNull(createdAtActionResult);
+      Assert.IsNotNull(createdAtActionResult.Value);
+      Assert.AreEqual(addTodoListResponseDto, createdAtActionResult.Value);
 
       _todoListServiceMock.Verify(service => service.AddTodoListAsync(command, CancellationToken.None));
       _todoListServiceMock.VerifyNoOtherCalls();

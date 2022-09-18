@@ -154,7 +154,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Controllers
     }
 
     [TestMethod]
-    public async Task AddTodoListTask_Should_Return_Ok()
+    public async Task AddTodoListTask_Should_Return_Created()
     {
       var todoListId = Guid.NewGuid();
       var todoListEntity = new TodoListEntity
@@ -187,12 +187,12 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Controllers
 
       Assert.IsNotNull(actionResult);
 
-      var okObjectResult = actionResult as OkObjectResult;
+      var createdAtActionResult = actionResult as CreatedAtActionResult;
 
-      Assert.IsNotNull(okObjectResult);
-      Assert.IsNotNull(okObjectResult.Value);
+      Assert.IsNotNull(createdAtActionResult);
+      Assert.IsNotNull(createdAtActionResult.Value);
 
-      var addTodoListTaskResponseDto = okObjectResult.Value as AddTodoListTaskResponseDto;
+      var addTodoListTaskResponseDto = createdAtActionResult.Value as AddTodoListTaskResponseDto;
 
       Assert.IsNotNull(addTodoListTaskResponseDto);
       Assert.AreEqual(todoListId, addTodoListTaskResponseDto.TodoListId);
