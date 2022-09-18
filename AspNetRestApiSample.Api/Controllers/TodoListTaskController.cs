@@ -15,6 +15,7 @@ namespace AspNetRestApiSample.Api.Controllers
   /// <summary>Provides a simple API to handle HTTP requests.</summary>
   [ApiController]
   [Route(Routing.TodoListTaskRoute)]
+  [Produces(ContentType.Json)]
   public sealed class TodoListTaskController : ControllerBase
   {
     private readonly ITodoListService _todoListService;
@@ -35,7 +36,7 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet(Routing.GetTodoListTaskRoute, Name = nameof(TodoListTaskController.GetTodoListTask))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(GetTodoListTaskResponseDtoBase), StatusCodes.Status200OK, ContentType.Json)]
+    [ProducesResponseType(typeof(GetTodoListTaskResponseDtoBase), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTodoListTask(
       [FromRoute] GetTodoListTaskRequestDto query,
       CancellationToken cancellationToken)
@@ -56,7 +57,7 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpGet(Name = nameof(TodoListTaskController.SearchTodoListTasks))]
-    [ProducesResponseType(typeof(SearchTodoListTasksRecordResponseDtoBase[]), StatusCodes.Status200OK, ContentType.Json)]
+    [ProducesResponseType(typeof(SearchTodoListTasksRecordResponseDtoBase[]), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchTodoListTasks(
       [FromRoute] SearchTodoListTasksRequestDto query,
       CancellationToken cancellationToken)
@@ -70,7 +71,7 @@ namespace AspNetRestApiSample.Api.Controllers
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     [HttpPost(Name = nameof(TodoListTaskController.AddTodoListTask))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(AddTodoListTaskResponseDto), StatusCodes.Status200OK, ContentType.Json)]
+    [ProducesResponseType(typeof(AddTodoListTaskResponseDto), StatusCodes.Status200OK)]
     [Consumes(typeof(AddTodoListTaskRequestDtoBase), ContentType.Json)]
     public async Task<IActionResult> AddTodoListTask(
       [FromBody] AddTodoListTaskRequestDtoBase command,
