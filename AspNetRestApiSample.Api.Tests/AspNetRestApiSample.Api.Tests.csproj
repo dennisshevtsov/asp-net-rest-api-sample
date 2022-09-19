@@ -32,4 +32,8 @@
     <ProjectReference Include="..\AspNetRestApiSample.Api\AspNetRestApiSample.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Functional\" />
+  </ItemGroup>
+
 </Project>
