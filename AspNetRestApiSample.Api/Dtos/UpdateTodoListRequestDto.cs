@@ -7,7 +7,7 @@ namespace AspNetRestApiSample.Api.Dtos
   using AspNetRestApiSample.Api.Indentities;
 
   /// <summary>Represents data to update a todo list.</summary>
-  public sealed class UpdateTodoListRequestDto : TodoListDtoBase, ITodoListIdentity
+  public sealed class UpdateTodoListRequestDto : TodoListDtoBase, ITodoListIdentity, IRequestDto
   {
     /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
     public Guid TodoListId { get; set; }

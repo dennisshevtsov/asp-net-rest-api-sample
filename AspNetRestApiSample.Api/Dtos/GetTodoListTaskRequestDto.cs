@@ -7,7 +7,7 @@ namespace AspNetRestApiSample.Api.Dtos
   using AspNetRestApiSample.Api.Indentities;
 
   /// <summary>Represents conditions to query a TODO list task.</summary>
-  public sealed class GetTodoListTaskRequestDto : ITodoListIdentity, ITodoListTaskIdentity
+  public sealed class GetTodoListTaskRequestDto : ITodoListIdentity, ITodoListTaskIdentity, IRequestDto
   {
     /// <summary>Gets/sets an object that reprsents an ID of a todo list.</summary>
     public Guid TodoListId { get; set; }

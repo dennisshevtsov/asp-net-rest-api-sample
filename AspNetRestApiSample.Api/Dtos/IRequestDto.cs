@@ -4,8 +4,7 @@
 
 namespace AspNetRestApiSample.Api.Dtos
 {
-  /// <summary>Represents data to add a task to a todo list.</summary>
-  public abstract class AddTodoListTaskRequestDtoBase : TodoListTaskDtoBase, IRequestDto
+  public interface IRequestDto
   {
   }
 }
