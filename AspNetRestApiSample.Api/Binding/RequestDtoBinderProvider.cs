@@ -6,6 +6,8 @@ namespace AspNetRestApiSample.Api.Binding
 {
   using Microsoft.AspNetCore.Mvc.ModelBinding;
 
+  using AspNetRestApiSample.Api.Dtos;
+
   /// <summary>Provides a simple API to create an instance of the <see cref="Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinder"/> class.</summary>
   public sealed class RequestDtoBinderProvider : IModelBinderProvider
   {
@@ -14,7 +16,12 @@ namespace AspNetRestApiSample.Api.Binding
     /// <returns>An object that defines an interface for model binders.</returns>
     public IModelBinder? GetBinder(ModelBinderProviderContext context)
     {
-      throw new NotImplementedException();
+      if (context.Metadata.ModelType.IsAssignableTo(typeof(IRequestDto)))
+      {
+        return new RequestDtoBinder();
+      }
+
+      return null;
     }
   }
 }
