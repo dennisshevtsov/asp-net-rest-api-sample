@@ -14,7 +14,11 @@ namespace AspNetRestApiSample.Api.Binding
     /// <returns>An object that represents an asynchronous operation.</returns>
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-      throw new NotImplementedException();
+      bindingContext.Result =
+        ModelBindingResult.Success(
+          Activator.CreateInstance(bindingContext.ModelType));
+
+      return Task.CompletedTask;
     }
   }
 }
