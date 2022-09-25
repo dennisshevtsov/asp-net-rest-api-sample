@@ -8,6 +8,7 @@ namespace AspNetRestApiSample.Api.Binding
 
   using Microsoft.AspNetCore.Mvc;
   using Microsoft.AspNetCore.Mvc.ModelBinding;
+  using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
   using AspNetRestApiSample.Api.Dtos;
 
@@ -28,12 +29,44 @@ namespace AspNetRestApiSample.Api.Binding
     /// <returns>An object that defines an interface for model binders.</returns>
     public IModelBinder? GetBinder(ModelBinderProviderContext context)
     {
-      if (context.Metadata.ModelType.IsAssignableTo(typeof(IRequestDto)))
+      if (!context.Metadata.ModelType.IsAssignableTo(typeof(IRequestDto)))
       {
-        return new RequestDtoBinder();
+        return null;
       }
 
-      return null;
+      var complexObjectModelBinderProvider = _mvcOptions.ModelBinderProviders.FirstOrDefault(
+        provider => provider is ComplexObjectModelBinderProvider);
+
+      if (complexObjectModelBinderProvider == null)
+      {
+        throw new InvalidOperationException("There is no complex object model binder provider.");
+      }
+
+      var complexObjectModelBinder = complexObjectModelBinderProvider.GetBinder(context);
+
+      if (complexObjectModelBinder == null)
+      {
+        throw new InvalidOperationException("There is no body model binder.");
+      }
+
+      var bodyModelBinderProvider = _mvcOptions.ModelBinderProviders.FirstOrDefault(
+        provider => provider is BodyModelBinderProvider);
+
+      if (bodyModelBinderProvider == null)
+      {
+        throw new InvalidOperationException("There is no body model binder provider.");
+      }
+
+      context.BindingInfo.BindingSource = BindingSource.Body;
+
+      var bodyModelBinder = bodyModelBinderProvider.GetBinder(context);
+
+      if (bodyModelBinder == null)
+      {
+        throw new InvalidOperationException("There is no body model binder.");
+      }
+
+      return new RequestDtoBinder(complexObjectModelBinder, bodyModelBinder);
     }
   }
 }
