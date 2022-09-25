@@ -36,7 +36,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(GetTodoListResponseDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTodoList(
-      [FromRoute] GetTodoListRequestDto query,
+      GetTodoListRequestDto query,
       CancellationToken cancellationToken)
     {
       var todoListEntity =
@@ -57,7 +57,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [HttpGet(Name = nameof(TodoListController.SearchTodoLists))]
     [ProducesResponseType(typeof(SearchTodoListsRecordResponseDto[]), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchTodoLists(
-      [FromRoute] SearchTodoListsRequestDto query,
+      SearchTodoListsRequestDto query,
       CancellationToken cancellationToken)
     {
       return Ok(await _todoListService.SearchTodoListsAsync(query, cancellationToken));
@@ -71,7 +71,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(typeof(AddTodoListResponseDto), StatusCodes.Status201Created)]
     [Consumes(typeof(AddTodoListRequestDto), ContentType.Json)]
     public async Task<IActionResult> AddTodoList(
-      [FromBody] AddTodoListRequestDto command,
+      AddTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
       var addTodoListResponseDto = await _todoListService.AddTodoListAsync(command, cancellationToken);
@@ -92,7 +92,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Consumes(typeof(UpdateTodoListRequestDto), ContentType.Json)]
     public async Task<IActionResult> UpdateTodoList(
-      [FromBody] UpdateTodoListRequestDto command,
+      UpdateTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
       var todoListEntity =
@@ -116,7 +116,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteTodoList(
-      [FromRoute] DeleteTodoListRequestDto command,
+      DeleteTodoListRequestDto command,
       CancellationToken cancellationToken)
     {
       var todoListEntity =

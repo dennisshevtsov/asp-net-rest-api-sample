@@ -38,7 +38,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(GetTodoListTaskResponseDtoBase), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTodoListTask(
-      [FromRoute] GetTodoListTaskRequestDto query,
+      GetTodoListTaskRequestDto query,
       CancellationToken cancellationToken)
     {
       var todoListTaskEntity = await _todoListTaskService.GetDetachedTodoListTaskEntityAsync(
@@ -59,7 +59,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [HttpGet(Name = nameof(TodoListTaskController.SearchTodoListTasks))]
     [ProducesResponseType(typeof(SearchTodoListTasksRecordResponseDtoBase[]), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchTodoListTasks(
-      [FromRoute] SearchTodoListTasksRequestDto query,
+      SearchTodoListTasksRequestDto query,
       CancellationToken cancellationToken)
     {
       return Ok(await _todoListTaskService.SearchTodoListTasksAsync(query, cancellationToken));
@@ -74,7 +74,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(typeof(AddTodoListTaskResponseDto), StatusCodes.Status201Created)]
     [Consumes(typeof(AddTodoListTaskRequestDtoBase), ContentType.Json)]
     public async Task<IActionResult> AddTodoListTask(
-      [FromBody] AddTodoListTaskRequestDtoBase command,
+      AddTodoListTaskRequestDtoBase command,
       CancellationToken cancellationToken)
     {
       var todoListEntity = await _todoListService.GetDetachedTodoListAsync(command, cancellationToken);
@@ -103,7 +103,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Consumes(typeof(UpdateTodoListTaskRequestDtoBase), ContentType.Json)]
     public async Task<IActionResult> UpdateTodoListTask(
-      [FromBody] UpdateTodoListTaskRequestDtoBase command,
+      UpdateTodoListTaskRequestDtoBase command,
       CancellationToken cancellationToken)
     {
       var todoListTaskEntity = await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(command, cancellationToken);
@@ -126,7 +126,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteTodoListTask(
-      [FromRoute] DeleteTodoListTaskRequestDto command,
+      DeleteTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
     {
       var todoListTaskEntity = await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(command, cancellationToken);
@@ -149,7 +149,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> CompleteTodoListTask(
-      [FromRoute] CompleteTodoListTaskRequestDto command,
+      CompleteTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
     {
       var todoListTaskEntity = await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(command, cancellationToken);
@@ -172,7 +172,7 @@ namespace AspNetRestApiSample.Api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> UncompleteTodoListTask(
-      [FromRoute] UncompleteTodoListTaskRequestDto command,
+      UncompleteTodoListTaskRequestDto command,
       CancellationToken cancellationToken)
     {
       var todoListTaskEntity = await _todoListTaskService.GetAttachedTodoListTaskEntityAsync(command, cancellationToken);
