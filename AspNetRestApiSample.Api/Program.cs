@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
+using AspNetRestApiSample.Api.Binding;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options => options.ModelBinderProviders.Insert(0, new RequestDtoBinderProvider(options)))
                 .AddJsonSerialization();
 builder.Services.AddSwaggerGen(options =>
                 {
