@@ -5,6 +5,8 @@
 namespace AspNetRestApiSample.Api.Binding
 {
   using Microsoft.AspNetCore.Mvc.ModelBinding;
+  using Newtonsoft.Json.Linq;
+  using System.ComponentModel;
 
   /// <summary>Provides a simple API to create an instance of a model for an HTTP request.</summary>
   public sealed class RequestDtoBinder : IModelBinder
@@ -35,7 +37,39 @@ namespace AspNetRestApiSample.Api.Binding
         return _complexObjectModelBinder.BindModelAsync(bindingContext);
       }
 
-      return _bodyModelBinder.BindModelAsync(bindingContext);
+      _bodyModelBinder.BindModelAsync(bindingContext);
+
+      object model;
+
+      if (bindingContext.Result.Model == null)
+      {
+        model = Activator.CreateInstance(bindingContext.ModelType)!;
+      }
+      else
+      {
+        model = bindingContext.Result.Model;
+      }
+
+      var routeKeys = bindingContext.ActionContext.RouteData.Values.Keys;
+
+      foreach (var propertyMetadata in bindingContext.ModelMetadata.Properties)
+      {
+        object? routeValue;
+        TypeConverter? converter;
+
+        if (propertyMetadata != null &&
+            propertyMetadata.PropertySetter != null &&
+            propertyMetadata.PropertyName != null &&
+            (routeValue = bindingContext.ActionContext.RouteData.Values[propertyMetadata.PropertyName]) != null &&
+            (converter = TypeDescriptor.GetConverter(propertyMetadata.ModelType)) != null)
+        {
+          propertyMetadata.PropertySetter(model, converter.ConvertFrom(routeValue));
+        }
+      }
+
+      bindingContext.Result = ModelBindingResult.Success(model);
+
+      return Task.CompletedTask;
     }
   }
 }
