@@ -30,11 +30,12 @@ namespace AspNetRestApiSample.Api.Binding
     /// <returns>An object that represents an asynchronous operation.</returns>
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-      bindingContext.Result =
-        ModelBindingResult.Success(
-          Activator.CreateInstance(bindingContext.ModelType));
+      if (bindingContext.ActionContext.HttpContext.Request.Method == HttpMethod.Get.Method)
+      {
+        return _complexObjectModelBinder.BindModelAsync(bindingContext);
+      }
 
-      return Task.CompletedTask;
+      return _bodyModelBinder.BindModelAsync(bindingContext);
     }
   }
 }
