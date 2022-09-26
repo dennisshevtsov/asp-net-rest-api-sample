@@ -5,7 +5,7 @@
 namespace AspNetRestApiSample.Api.Dtos
 {
   /// <summary>Represents data to create a new todo list.</summary>
-  public sealed class AddTodoListRequestDto : TodoListDtoBase
+  public sealed class AddTodoListRequestDto : TodoListDtoBase, IRequestDto
   {
   }
 }
