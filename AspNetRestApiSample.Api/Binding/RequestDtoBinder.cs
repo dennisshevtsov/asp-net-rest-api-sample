@@ -44,6 +44,8 @@ namespace AspNetRestApiSample.Api.Binding
       if (bindingContext.Result.Model == null)
       {
         model = Activator.CreateInstance(bindingContext.ModelType)!;
+
+        bindingContext.ModelState.Clear();
       }
       else
       {
