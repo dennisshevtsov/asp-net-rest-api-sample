@@ -145,6 +145,15 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
         </HTTPSamplerProxy>
         <hashTree>
+          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Should contain todoListId" enabled="true">
+            <stringProp name="JSON_PATH">$.todoListId</stringProp>
+            <stringProp name="EXPECTED_VALUE">${todoListId}</stringProp>
+            <boolProp name="JSONVALIDATION">true</boolProp>
+            <boolProp name="EXPECT_NULL">false</boolProp>
+            <boolProp name="INVERT">false</boolProp>
+            <boolProp name="ISREGEX">false</boolProp>
+          </JSONPathAssertion>
+          <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Should contain title" enabled="true">
             <stringProp name="JSON_PATH">$.title</stringProp>
             <stringProp name="EXPECTED_VALUE">${createTodoListTitle}</stringProp>
@@ -239,6 +248,15 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
         </HTTPSamplerProxy>
         <hashTree>
+          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Should contain todoListId" enabled="true">
+            <stringProp name="JSON_PATH">$.todoListId</stringProp>
+            <stringProp name="EXPECTED_VALUE">${todoListId}</stringProp>
+            <boolProp name="JSONVALIDATION">true</boolProp>
+            <boolProp name="EXPECT_NULL">false</boolProp>
+            <boolProp name="INVERT">false</boolProp>
+            <boolProp name="ISREGEX">false</boolProp>
+          </JSONPathAssertion>
+          <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Should contain title" enabled="true">
             <stringProp name="JSON_PATH">$.title</stringProp>
             <stringProp name="EXPECTED_VALUE">${updateTodoListTitle}</stringProp>
