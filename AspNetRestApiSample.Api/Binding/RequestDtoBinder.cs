@@ -4,9 +4,9 @@
 
 namespace AspNetRestApiSample.Api.Binding
 {
-  using Microsoft.AspNetCore.Mvc.ModelBinding;
-  using Newtonsoft.Json.Linq;
   using System.ComponentModel;
+
+  using Microsoft.AspNetCore.Mvc.ModelBinding;
 
   /// <summary>Provides a simple API to create an instance of a model for an HTTP request.</summary>
   public sealed class RequestDtoBinder : IModelBinder
