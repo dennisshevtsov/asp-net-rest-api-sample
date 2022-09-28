@@ -56,7 +56,8 @@ namespace AspNetRestApiSample.Api.Mapping
       expression.CreateMap<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
       expression.CreateMap<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
 
-      expression.CreateMap<TodoListTaskEntityBase, AddTodoListTaskResponseDto>();
+      expression.CreateMap<TodoListTaskEntityBase, AddTodoListTaskResponseDto>()
+                .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));
     }
 
     private static void ConfigureUpdateTodoListMapping(IProfileExpression expression)
