@@ -170,6 +170,23 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
     }
 
     [TestMethod]
+    public void Map_Should_Populate_AddTodoListTaskResponseDto_From_TodoListDayTaskEntity()
+    {
+      TodoListTaskEntityBase todoListTaskEntity = new TodoListDayTaskEntity
+      {
+        Id = Guid.NewGuid(),
+        TodoListId = Guid.NewGuid(),
+      };
+
+      var addTodoListTaskResponseDto = _mapper.Map<AddTodoListTaskResponseDto>(todoListTaskEntity);
+
+      Assert.IsNotNull(addTodoListTaskResponseDto);
+
+      Assert.AreEqual(todoListTaskEntity.Id, addTodoListTaskResponseDto.TodoListTaskId);
+      Assert.AreEqual(todoListTaskEntity.TodoListId, addTodoListTaskResponseDto.TodoListId);
+    }
+
+    [TestMethod]
     public void Map_Should_Populate_TodoListPeriodTaskEntity_From_AddTodoListDayTaskRequestDto()
     {
       var addTodoListPeriodTaskRequestDto = new AddTodoListPeriodTaskRequestDto
@@ -196,6 +213,23 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.IsFalse(todoListPeriodTaskEntity.Completed);
       Assert.AreEqual(addTodoListPeriodTaskRequestDto.Beginning, todoListPeriodTaskEntity.Beginning);
       Assert.AreEqual(addTodoListPeriodTaskRequestDto.End, todoListPeriodTaskEntity.End);
+    }
+
+    [TestMethod]
+    public void Map_Should_Populate_AddTodoListTaskResponseDto_From_TodoListPeriodTaskEntity()
+    {
+      TodoListTaskEntityBase todoListTaskEntity = new TodoListPeriodTaskEntity
+      {
+        Id = Guid.NewGuid(),
+        TodoListId = Guid.NewGuid(),
+      };
+
+      var addTodoListTaskResponseDto = _mapper.Map<AddTodoListTaskResponseDto>(todoListTaskEntity);
+
+      Assert.IsNotNull(addTodoListTaskResponseDto);
+
+      Assert.AreEqual(todoListTaskEntity.Id, addTodoListTaskResponseDto.TodoListTaskId);
+      Assert.AreEqual(todoListTaskEntity.TodoListId, addTodoListTaskResponseDto.TodoListId);
     }
 
     [TestMethod]
