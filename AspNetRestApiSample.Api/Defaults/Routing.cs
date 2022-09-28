@@ -20,7 +20,7 @@ namespace AspNetRestApiSample.Api.Defaults
     public const string DeleteTodoListRoute = Routing.GetTodoListRoute;
 
     /// <summary>A value that represents a base route for the TODO list tasks endpoints.</summary>
-    public const string TodoListTaskRoute = Routing.GetTodoListRoute + "/task";
+    public const string TodoListTaskRoute = Routing.TodoListRoute + "/" + Routing.GetTodoListRoute + "/task";
 
     /// <summary>A value that represents a route to get a TODO list task.</summary>
     public const string GetTodoListTaskRoute = "{todoListTaskId}";
