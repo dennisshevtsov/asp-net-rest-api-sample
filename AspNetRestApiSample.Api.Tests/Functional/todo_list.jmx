@@ -303,9 +303,10 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
+	&quot;type&quot;: 1,&#xd;
 	&quot;title&quot;: &quot;${createTodoListDayTaskTitle}&quot;,&#xd;
-	&quot;desription&quot;: &quot;${createTodoListDayTaskDescription}&quot;,&#xd;
-	&quot;day&quot;: &quot;${createTodoListDayTaskDate}&quot;&#xd;
+	&quot;description&quot;: &quot;${createTodoListDayTaskDescription}&quot;,&#xd;
+	&quot;date&quot;: &quot;${createTodoListDayTaskDate}&quot;&#xd;
 }&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
