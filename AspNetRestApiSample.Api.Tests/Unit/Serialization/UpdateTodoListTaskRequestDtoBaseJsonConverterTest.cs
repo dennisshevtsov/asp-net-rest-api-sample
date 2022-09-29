@@ -79,7 +79,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         TodoListTaskId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 13, 30, 0),
         Type = TodoListTaskType.Period,
       };
@@ -90,7 +90,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
 ""{nameof(UpdateTodoListPeriodTaskRequestDto.Title)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.Title}"",
 ""{nameof(UpdateTodoListPeriodTaskRequestDto.Description)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.Description}"",
 ""{nameof(UpdateTodoListPeriodTaskRequestDto.Type)}"": {(int)expetedUpdateTodoListPeriodTaskRequestDto.Type},
-""{nameof(UpdateTodoListPeriodTaskRequestDto.Beginning)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.Beginning.ToString("yyyy-MM-ddTHH:mm:ss")}"",
+""{nameof(UpdateTodoListPeriodTaskRequestDto.Begin)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.Begin.ToString("yyyy-MM-ddTHH:mm:ss")}"",
 ""{nameof(UpdateTodoListPeriodTaskRequestDto.End)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.End.ToString("yyyy-MM-ddTHH:mm:ss")}""
 }}
 ";
@@ -110,8 +110,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       actualAddTodoListPeriodTaskRequestDto.Title);
       Assert.AreEqual(expetedUpdateTodoListPeriodTaskRequestDto.Description,
                       actualAddTodoListPeriodTaskRequestDto.Description);
-      Assert.AreEqual(expetedUpdateTodoListPeriodTaskRequestDto.Beginning,
-                      actualAddTodoListPeriodTaskRequestDto.Beginning);
+      Assert.AreEqual(expetedUpdateTodoListPeriodTaskRequestDto.Begin,
+                      actualAddTodoListPeriodTaskRequestDto.Begin);
       Assert.AreEqual(expetedUpdateTodoListPeriodTaskRequestDto.End,
                       actualAddTodoListPeriodTaskRequestDto.End);
       Assert.AreEqual(expetedUpdateTodoListPeriodTaskRequestDto.Type,

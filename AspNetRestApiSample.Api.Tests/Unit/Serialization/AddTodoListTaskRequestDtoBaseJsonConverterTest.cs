@@ -74,7 +74,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         TodoListId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 13, 30, 0),
         Type = TodoListTaskType.Period,
       };
@@ -84,7 +84,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
 ""{nameof(AddTodoListPeriodTaskRequestDto.Title)}"": ""{expetedAddTodoListPeriodTaskRequestDto.Title}"",
 ""{nameof(AddTodoListPeriodTaskRequestDto.Description)}"": ""{expetedAddTodoListPeriodTaskRequestDto.Description}"",
 ""{nameof(AddTodoListPeriodTaskRequestDto.Type)}"": {(int)expetedAddTodoListPeriodTaskRequestDto.Type},
-""{nameof(AddTodoListPeriodTaskRequestDto.Beginning)}"": ""{expetedAddTodoListPeriodTaskRequestDto.Beginning.ToString("yyyy-MM-ddTHH:mm:ss")}"",
+""{nameof(AddTodoListPeriodTaskRequestDto.Begin)}"": ""{expetedAddTodoListPeriodTaskRequestDto.Begin.ToString("yyyy-MM-ddTHH:mm:ss")}"",
 ""{nameof(AddTodoListPeriodTaskRequestDto.End)}"": ""{expetedAddTodoListPeriodTaskRequestDto.End.ToString("yyyy-MM-ddTHH:mm:ss")}""
 }}
 ";
@@ -102,8 +102,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       actualAddTodoListPeriodTaskRequestDto.Title);
       Assert.AreEqual(expetedAddTodoListPeriodTaskRequestDto.Description,
                       actualAddTodoListPeriodTaskRequestDto.Description);
-      Assert.AreEqual(expetedAddTodoListPeriodTaskRequestDto.Beginning,
-                      actualAddTodoListPeriodTaskRequestDto.Beginning);
+      Assert.AreEqual(expetedAddTodoListPeriodTaskRequestDto.Begin,
+                      actualAddTodoListPeriodTaskRequestDto.Begin);
       Assert.AreEqual(expetedAddTodoListPeriodTaskRequestDto.End,
                       actualAddTodoListPeriodTaskRequestDto.End);
       Assert.AreEqual(expetedAddTodoListPeriodTaskRequestDto.Type,

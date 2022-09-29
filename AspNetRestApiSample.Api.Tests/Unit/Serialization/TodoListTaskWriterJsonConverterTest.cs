@@ -74,7 +74,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 13, 30, 0),
         Type = TodoListTaskType.Period,
       };
@@ -96,8 +96,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       obj[nameof(GetTodoListPeriodTaskResponseDto.Description)]);
       Assert.AreEqual(getTodoListPeriodTaskResponseDto.Completed,
                       obj[nameof(GetTodoListPeriodTaskResponseDto.Completed)]);
-      Assert.AreEqual(getTodoListPeriodTaskResponseDto.Beginning,
-                      obj[nameof(GetTodoListPeriodTaskResponseDto.Beginning)]);
+      Assert.AreEqual(getTodoListPeriodTaskResponseDto.Begin,
+                      obj[nameof(GetTodoListPeriodTaskResponseDto.Begin)]);
       Assert.AreEqual(getTodoListPeriodTaskResponseDto.End,
                       obj[nameof(GetTodoListPeriodTaskResponseDto.End)]);
       Assert.AreEqual((int)getTodoListPeriodTaskResponseDto.Type,
@@ -124,7 +124,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 13, 30, 0),
         Type = TodoListTaskType.Period,
       };
@@ -165,8 +165,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Description)]);
       Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.Completed,
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Completed)]);
-      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.Beginning,
-                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Beginning)]);
+      Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.Begin,
+                      arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.Begin)]);
       Assert.AreEqual(searchTodoListTasksPeriodRecordResponseDto.End,
                       arr[1][nameof(SearchTodoListTasksPeriodRecordResponseDto.End)]);
       Assert.AreEqual((int)searchTodoListTasksPeriodRecordResponseDto.Type,

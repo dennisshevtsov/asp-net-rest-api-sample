@@ -214,7 +214,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Beginning = new DateTime(2022, 9, 1, 12, 0, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 0, 0),
         End = new DateTime(2022, 9, 1, 13, 0, 0),
       };
 
@@ -238,7 +238,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       var dbTodoListPeriodTaskEntity = dbTodoListTaskEntity as TodoListPeriodTaskEntity;
 
       Assert.IsNotNull(dbTodoListPeriodTaskEntity);
-      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, dbTodoListPeriodTaskEntity.Beginning);
+      Assert.AreEqual(todoListPeriodTaskEntity.Begin, dbTodoListPeriodTaskEntity.Begin);
       Assert.AreEqual(todoListPeriodTaskEntity.End, dbTodoListPeriodTaskEntity.End);
     }
 
@@ -315,7 +315,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Beginning = new DateTime(2022, 9, 1, 12, 0, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 0, 0),
         End = new DateTime(2022, 9, 1, 13, 0, 0),
       };
 
@@ -326,7 +326,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       todoListPeriodTaskEntity.Title = Guid.NewGuid().ToString();
       todoListPeriodTaskEntity.Description = Guid.NewGuid().ToString();
       todoListPeriodTaskEntity.Completed = true;
-      todoListPeriodTaskEntity.Beginning = new DateTime(2022, 9, 2, 12, 0, 0);
+      todoListPeriodTaskEntity.Begin = new DateTime(2022, 9, 2, 12, 0, 0);
       todoListPeriodTaskEntity.End = new DateTime(2022, 9, 2, 13, 0, 0);
 
       await _dbContext.SaveChangesAsync(_cancellationToken);
@@ -347,7 +347,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       var dbTodoListPeriodTaskEntity = dbTodoListTaskEntity as TodoListPeriodTaskEntity;
 
       Assert.IsNotNull(dbTodoListPeriodTaskEntity);
-      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, dbTodoListPeriodTaskEntity.Beginning);
+      Assert.AreEqual(todoListPeriodTaskEntity.Begin, dbTodoListPeriodTaskEntity.Begin);
       Assert.AreEqual(todoListPeriodTaskEntity.End, dbTodoListPeriodTaskEntity.End);
     }
 

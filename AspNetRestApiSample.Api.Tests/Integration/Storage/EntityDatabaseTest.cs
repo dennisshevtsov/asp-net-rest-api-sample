@@ -180,7 +180,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Beginning = new DateTime(2022, 9, 1, 12, 30, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 30, 0),
         End = new DateTime(2022, 9, 1, 13, 30, 0),
       };
 
@@ -265,7 +265,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Beginning = new DateTime(2022, 9, 1, 12, 30, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 30, 0),
         End = new DateTime(2022, 9, 1, 13, 30, 0),
       };
 

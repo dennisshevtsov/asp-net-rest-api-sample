@@ -67,7 +67,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 12, 45, 0),
       };
 
@@ -82,7 +82,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(todoListPeriodTaskEntity.Title, getTodoListPeriodTaskResponseDto.Title);
       Assert.AreEqual(todoListPeriodTaskEntity.Description, getTodoListPeriodTaskResponseDto.Description);
       Assert.AreEqual(todoListPeriodTaskEntity.Completed, getTodoListPeriodTaskResponseDto.Completed);
-      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, getTodoListPeriodTaskResponseDto.Beginning);
+      Assert.AreEqual(todoListPeriodTaskEntity.Begin, getTodoListPeriodTaskResponseDto.Begin);
       Assert.AreEqual(todoListPeriodTaskEntity.End, getTodoListPeriodTaskResponseDto.End);
     }
 
@@ -106,7 +106,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = false,
-        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 12, 45, 0),
       };
       var todoListTaskEntityCollection = new TodoListTaskEntityBase[]
@@ -138,7 +138,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(todoListPeriodTaskEntity.Title, searchTodoListTasksPeriodRecordResponseDto.Title);
       Assert.AreEqual(todoListPeriodTaskEntity.Description, searchTodoListTasksPeriodRecordResponseDto.Description);
       Assert.AreEqual(todoListPeriodTaskEntity.Completed, searchTodoListTasksPeriodRecordResponseDto.Completed);
-      Assert.AreEqual(todoListPeriodTaskEntity.Beginning, searchTodoListTasksPeriodRecordResponseDto.Beginning);
+      Assert.AreEqual(todoListPeriodTaskEntity.Begin, searchTodoListTasksPeriodRecordResponseDto.Begin);
       Assert.AreEqual(todoListPeriodTaskEntity.End, searchTodoListTasksPeriodRecordResponseDto.End);
     }
 
@@ -194,7 +194,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         TodoListId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 12, 45, 0),
       };
       AddTodoListTaskRequestDtoBase addTodoListTaskRequestDto = addTodoListPeriodTaskRequestDto;
@@ -211,7 +211,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(addTodoListPeriodTaskRequestDto.Title, todoListPeriodTaskEntity.Title);
       Assert.AreEqual(addTodoListPeriodTaskRequestDto.Description, todoListPeriodTaskEntity.Description);
       Assert.IsFalse(todoListPeriodTaskEntity.Completed);
-      Assert.AreEqual(addTodoListPeriodTaskRequestDto.Beginning, todoListPeriodTaskEntity.Beginning);
+      Assert.AreEqual(addTodoListPeriodTaskRequestDto.Begin, todoListPeriodTaskEntity.Begin);
       Assert.AreEqual(addTodoListPeriodTaskRequestDto.End, todoListPeriodTaskEntity.End);
     }
 
@@ -281,7 +281,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         TodoListId = todoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Beginning = new DateTime(2022, 9, 1, 12, 15, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
         End = new DateTime(2022, 9, 1, 12, 45, 0),
       };
       UpdateTodoListTaskRequestDtoBase updateTodoListTaskRequestDto = updateTodoListPeriodTaskRequestDto;
@@ -293,7 +293,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = false,
-        Beginning = new DateTime(2022, 9, 2, 13, 45, 0),
+        Begin = new DateTime(2022, 9, 2, 13, 45, 0),
         End = new DateTime(2022, 9, 2, 14, 30, 0),
       };
       TodoListTaskEntityBase todoListTaskEntity = todoListPeriodTaskEntity;
@@ -305,7 +305,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(updateTodoListPeriodTaskRequestDto.Title, todoListPeriodTaskEntity.Title);
       Assert.AreEqual(updateTodoListPeriodTaskRequestDto.Description, todoListPeriodTaskEntity.Description);
       Assert.IsFalse(todoListPeriodTaskEntity.Completed);
-      Assert.AreEqual(updateTodoListPeriodTaskRequestDto.Beginning, todoListPeriodTaskEntity.Beginning);
+      Assert.AreEqual(updateTodoListPeriodTaskRequestDto.Begin, todoListPeriodTaskEntity.Begin);
       Assert.AreEqual(updateTodoListPeriodTaskRequestDto.End, todoListPeriodTaskEntity.End);
     }
   }

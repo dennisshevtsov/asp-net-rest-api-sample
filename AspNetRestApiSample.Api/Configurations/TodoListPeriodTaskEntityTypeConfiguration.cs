@@ -19,7 +19,7 @@ namespace AspNetRestApiSample.Api.Configurations
       builder.HasBaseType<TodoListTaskEntityBase>();
       builder.HasPartitionKey(entity => entity.TodoListId);
 
-      builder.Property(entity => entity.Beginning).ToJsonProperty("beginning");
+      builder.Property(entity => entity.Begin).ToJsonProperty("begin");
       builder.Property(entity => entity.End).ToJsonProperty("end");
     }
   }
