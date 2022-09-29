@@ -166,7 +166,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _mapperMock.Verify(mapper => mapper.Map<SearchTodoListTasksRecordResponseDtoBase[]>(todoListTaskEntityCollection));
       _mapperMock.VerifyNoOtherCalls();
-      
+
       _todoListTaskEntityCollectionMock.Verify(collection => collection.GetDetachedTodoListTasksAsync(todoListId, _cancellationToken));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
@@ -218,9 +218,6 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     [TestMethod]
     public async Task UpdateTodoListTaskAsync_Should_Save_Todo_List_Task()
     {
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListTaskEntityBase>()))
-                                       .Verifiable();
-
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
                          .Returns(Task.CompletedTask)
                          .Verifiable();
@@ -239,8 +236,6 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       await _todoListTaskService.UpdateTodoListTaskAsync(command, todoListTaskEntity, _cancellationToken);
 
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
-
-      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListTaskEntity));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
