@@ -32,25 +32,20 @@ namespace AspNetRestApiSample.Api.Binding
     /// <returns>An object that represents an asynchronous operation.</returns>
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-      if (bindingContext.ActionContext.HttpContext.Request.Method == HttpMethod.Get.Method)
+      if (bindingContext.HttpContext.Request.Method == HttpMethod.Get.Method ||
+          bindingContext.HttpContext.Request.ContentLength == 0)
       {
         return _complexObjectModelBinder.BindModelAsync(bindingContext);
       }
 
       _bodyModelBinder.BindModelAsync(bindingContext);
 
-      object model;
-
-      if (bindingContext.Result.Model == null)
+      if (!bindingContext.Result.IsModelSet || bindingContext.Result.Model == null)
       {
-        model = Activator.CreateInstance(bindingContext.ModelType)!;
+        return Task.CompletedTask;
+      }
 
-        bindingContext.ModelState.Clear();
-      }
-      else
-      {
-        model = bindingContext.Result.Model;
-      }
+      object model = bindingContext.Result.Model;
 
       var routeKeys = bindingContext.ActionContext.RouteData.Values.Keys;
 
