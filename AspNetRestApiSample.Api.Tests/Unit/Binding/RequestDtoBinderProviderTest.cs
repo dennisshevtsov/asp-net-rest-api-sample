@@ -37,11 +37,28 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
                                     .Returns(modelMeradataMock.Object)
                                     .Verifiable();
 
-      var modelBinder =
-        _requestDtoBinderProvider.GetBinder(
-          modelBinderProviderContextMock.Object);
+      var modelBinder = _requestDtoBinderProvider.GetBinder(
+        modelBinderProviderContextMock.Object);
 
       Assert.IsNull(modelBinder);
+    }
+
+    [TestMethod]
+    public void GetBinder_Should_Throw_Exception()
+    {
+      var modelBinderProviderContextMock = new Mock<ModelBinderProviderContext>();
+      var modelMeradataMock = new Mock<ModelMetadata>(
+        ModelMetadataIdentity.ForType(typeof(TestRequestDto)));
+
+      modelBinderProviderContextMock.SetupGet(context => context.Metadata)
+                                    .Returns(modelMeradataMock.Object)
+                                    .Verifiable();
+
+      var exception = Assert.ThrowsException<InvalidOperationException>(
+        () => _requestDtoBinderProvider.GetBinder(modelBinderProviderContextMock.Object));
+
+      Assert.IsNotNull(exception);
+      Assert.AreEqual("There is no complex object model binder provider.", exception.Message);
     }
 
     private sealed class TestRequestDto : IRequestDto { }
