@@ -12,6 +12,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
   using AspNetRestApiSample.Api.Binding;
   using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
   using Microsoft.Extensions.Logging;
+  using Microsoft.AspNetCore.Mvc.Formatters;
+  using Microsoft.AspNetCore.Mvc.Infrastructure;
 
   [TestClass]
   public sealed class RequestDtoBinderProviderTest
@@ -92,6 +94,46 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
 
       Assert.IsNotNull(exception);
       Assert.AreEqual(RequestDtoBinderProvider.NoBodyModelBinderProviderMessage, exception.Message);
+    }
+
+    [TestMethod]
+    public void GetBinder_Should_Return_Model_Binder()
+    {
+      var modelBinderProviderContextMock = new Mock<ModelBinderProviderContext>();
+      var modelMeradataMock = new Mock<ModelMetadata>(
+        ModelMetadataIdentity.ForType(typeof(TestRequestDto)));
+
+      modelMeradataMock.SetupGet(metadata => metadata.Properties)
+                       .Returns(new ModelPropertyCollection(new List<ModelMetadata>()));
+
+      modelBinderProviderContextMock.SetupGet(context => context.Metadata)
+                                    .Returns(modelMeradataMock.Object)
+                                    .Verifiable();
+
+      modelBinderProviderContextMock.SetupGet(context => context.BindingInfo)
+                                    .Returns(new BindingInfo())
+                                    .Verifiable();
+
+      var serviceProviderMock = new Mock<IServiceProvider>();
+
+      serviceProviderMock.Setup(provider => provider.GetService(It.IsAny<Type>()))
+                         .Returns(new Mock<ILoggerFactory>().Object);
+
+      modelBinderProviderContextMock.SetupGet(context => context.Services)
+                                    .Returns(serviceProviderMock.Object);
+
+      _mvcOptions.ModelBinderProviders.Add(new ComplexObjectModelBinderProvider());
+      _mvcOptions.ModelBinderProviders.Add(new BodyModelBinderProvider(
+        new List<IInputFormatter>
+        {
+          new Mock<IInputFormatter>().Object,
+        },
+        new Mock<IHttpRequestStreamReaderFactory>().Object));
+
+      var modelBinder = _requestDtoBinderProvider.GetBinder(modelBinderProviderContextMock.Object);
+
+      Assert.IsNotNull(modelBinder);
+      Assert.IsInstanceOfType(modelBinder, typeof(RequestDtoBinder));
     }
 
     private sealed class TestRequestDto : IRequestDto
