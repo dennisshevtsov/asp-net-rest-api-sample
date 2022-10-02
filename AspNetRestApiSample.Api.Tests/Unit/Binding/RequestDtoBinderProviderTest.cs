@@ -60,7 +60,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
         () => _requestDtoBinderProvider.GetBinder(modelBinderProviderContextMock.Object));
 
       Assert.IsNotNull(exception);
-      Assert.AreEqual("There is no complex object model binder provider.", exception.Message);
+      Assert.AreEqual(RequestDtoBinderProvider.NoComplextObjectModelBinderProviderMessage, exception.Message);
     }
 
     [TestMethod]
@@ -91,7 +91,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
         () => _requestDtoBinderProvider.GetBinder(modelBinderProviderContextMock.Object));
 
       Assert.IsNotNull(exception);
-      Assert.AreEqual("There is no body model binder provider.", exception.Message);
+      Assert.AreEqual(RequestDtoBinderProvider.NoBodyModelBinderProviderMessage, exception.Message);
     }
 
     private sealed class TestRequestDto : IRequestDto
