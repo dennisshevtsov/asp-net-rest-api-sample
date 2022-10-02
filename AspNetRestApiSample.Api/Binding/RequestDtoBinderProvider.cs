@@ -17,7 +17,6 @@ namespace AspNetRestApiSample.Api.Binding
   {
     public const string NoComplextObjectModelBinderProviderMessage = "There is no complex object model binder provider.";
     public const string NoBodyModelBinderProviderMessage = "There is no body model binder provider.";
-    public const string NoBodyModelBinderMessage = "There is no body model binder.";
 
     private readonly MvcOptions _mvcOptions;
 
@@ -46,7 +45,7 @@ namespace AspNetRestApiSample.Api.Binding
         throw new InvalidOperationException(RequestDtoBinderProvider.NoComplextObjectModelBinderProviderMessage);
       }
 
-      var complexObjectModelBinder = complexObjectModelBinderProvider.GetBinder(context);
+      var complexObjectModelBinder = complexObjectModelBinderProvider.GetBinder(context)!;
 
       var bodyModelBinderProvider = _mvcOptions.ModelBinderProviders.FirstOrDefault(
         provider => provider is BodyModelBinderProvider);
@@ -58,14 +57,9 @@ namespace AspNetRestApiSample.Api.Binding
 
       context.BindingInfo.BindingSource = BindingSource.Body;
 
-      var bodyModelBinder = bodyModelBinderProvider.GetBinder(context);
+      var bodyModelBinder = bodyModelBinderProvider.GetBinder(context)!;
 
-      if (bodyModelBinder == null)
-      {
-        throw new InvalidOperationException(RequestDtoBinderProvider.NoBodyModelBinderMessage);
-      }
-
-      return new RequestDtoBinder(complexObjectModelBinder!, bodyModelBinder);
+      return new RequestDtoBinder(complexObjectModelBinder, bodyModelBinder);
     }
   }
 }
