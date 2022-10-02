@@ -10,6 +10,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
   using Moq;
 
   using AspNetRestApiSample.Api.Binding;
+  using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+  using Microsoft.Extensions.Logging;
 
   [TestClass]
   public sealed class RequestDtoBinderProviderTest
@@ -44,7 +46,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
     }
 
     [TestMethod]
-    public void GetBinder_Should_Throw_Exception()
+    public void GetBinder_Should_Throw_Exception_If_There_Is_No_Complex_Object_Model_Binder_Provider()
     {
       var modelBinderProviderContextMock = new Mock<ModelBinderProviderContext>();
       var modelMeradataMock = new Mock<ModelMetadata>(
@@ -61,7 +63,41 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
       Assert.AreEqual("There is no complex object model binder provider.", exception.Message);
     }
 
-    private sealed class TestRequestDto : IRequestDto { }
+    [TestMethod]
+    public void GetBinder_Should_Throw_Exception_If_There_Is_No_Body_Model_Binder_Provider()
+    {
+      var modelBinderProviderContextMock = new Mock<ModelBinderProviderContext>();
+      var modelMeradataMock = new Mock<ModelMetadata>(
+        ModelMetadataIdentity.ForType(typeof(TestRequestDto)));
+
+      modelMeradataMock.SetupGet(metadata => metadata.Properties)
+                       .Returns(new ModelPropertyCollection(new List<ModelMetadata>()));
+
+      modelBinderProviderContextMock.SetupGet(context => context.Metadata)
+                                    .Returns(modelMeradataMock.Object)
+                                    .Verifiable();
+
+      var serviceProviderMock = new Mock<IServiceProvider>();
+
+      serviceProviderMock.Setup(provider => provider.GetService(It.IsAny<Type>()))
+                         .Returns(new Mock<ILoggerFactory>().Object);
+
+      modelBinderProviderContextMock.SetupGet(context => context.Services)
+                                    .Returns(serviceProviderMock.Object);
+
+      _mvcOptions.ModelBinderProviders.Add(new ComplexObjectModelBinderProvider());
+
+      var exception = Assert.ThrowsException<InvalidOperationException>(
+        () => _requestDtoBinderProvider.GetBinder(modelBinderProviderContextMock.Object));
+
+      Assert.IsNotNull(exception);
+      Assert.AreEqual("There is no body model binder provider.", exception.Message);
+    }
+
+    private sealed class TestRequestDto : IRequestDto
+    {
+      public int Property { get; set; }
+    }
 
     private sealed class TestOtherDto { }
   }
