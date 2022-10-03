@@ -5,15 +5,15 @@
 namespace AspNetRestApiSample.Api.Tests.Unit.Binding
 {
   using Microsoft.AspNetCore.Mvc;
+  using Microsoft.AspNetCore.Mvc.Formatters;
+  using Microsoft.AspNetCore.Mvc.Infrastructure;
   using Microsoft.AspNetCore.Mvc.ModelBinding;
+  using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
   using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+  using Microsoft.Extensions.Logging;
   using Moq;
 
   using AspNetRestApiSample.Api.Binding;
-  using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-  using Microsoft.Extensions.Logging;
-  using Microsoft.AspNetCore.Mvc.Formatters;
-  using Microsoft.AspNetCore.Mvc.Infrastructure;
 
   [TestClass]
   public sealed class RequestDtoBinderProviderTest
@@ -136,10 +136,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
       Assert.IsInstanceOfType(modelBinder, typeof(RequestDtoBinder));
     }
 
-    private sealed class TestRequestDto : IRequestDto
-    {
-      public int Property { get; set; }
-    }
+    private sealed class TestRequestDto : IRequestDto { }
 
     private sealed class TestOtherDto { }
   }
