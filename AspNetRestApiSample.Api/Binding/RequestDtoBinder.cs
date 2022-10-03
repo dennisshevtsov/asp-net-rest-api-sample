@@ -11,20 +11,20 @@ namespace AspNetRestApiSample.Api.Binding
   /// <summary>Provides a simple API to create an instance of a model for an HTTP request.</summary>
   public sealed class RequestDtoBinder : IModelBinder
   {
-    private readonly IModelBinder _complexObjectModelBinder;
     private readonly IModelBinder _bodyModelBinder;
+    private readonly IModelBinder _complexObjectModelBinder;
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Binding.RequestDtoBinder"/> class.</summary>
-    /// <param name="complexObjectModelBinder">An object that defines an interface for model binders.</param>
     /// <param name="bodyModelBinder">An object that defines an interface for model binders.</param>
+    /// <param name="complexObjectModelBinder">An object that defines an interface for model binders.</param>
     public RequestDtoBinder(
-      IModelBinder complexObjectModelBinder,
-      IModelBinder bodyModelBinder)
+      IModelBinder bodyModelBinder,
+      IModelBinder complexObjectModelBinder)
     {
-      _complexObjectModelBinder = complexObjectModelBinder ??
-        throw new ArgumentNullException(nameof(complexObjectModelBinder));
       _bodyModelBinder = bodyModelBinder ??
         throw new ArgumentNullException(nameof(bodyModelBinder));
+      _complexObjectModelBinder = complexObjectModelBinder ??
+        throw new ArgumentNullException(nameof(complexObjectModelBinder));
     }
 
     /// <summary>Attempts to bind a model.</summary>

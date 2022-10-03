@@ -58,6 +58,17 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
                                     .Returns(modelMeradataMock.Object)
                                     .Verifiable();
 
+      modelBinderProviderContextMock.SetupGet(context => context.BindingInfo)
+                                    .Returns(new BindingInfo())
+                                    .Verifiable();
+
+      _mvcOptions.ModelBinderProviders.Add(new BodyModelBinderProvider(
+        new List<IInputFormatter>
+        {
+          new Mock<IInputFormatter>().Object,
+        },
+        new Mock<IHttpRequestStreamReaderFactory>().Object));
+
       var exception = Assert.ThrowsException<InvalidOperationException>(
         () => _requestDtoBinderProvider.GetBinder(modelBinderProviderContextMock.Object));
 
@@ -79,6 +90,10 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
                                     .Returns(modelMeradataMock.Object)
                                     .Verifiable();
 
+      modelBinderProviderContextMock.SetupGet(context => context.BindingInfo)
+                                    .Returns(new BindingInfo())
+                                    .Verifiable();
+
       var serviceProviderMock = new Mock<IServiceProvider>();
 
       serviceProviderMock.Setup(provider => provider.GetService(It.IsAny<Type>()))
@@ -86,8 +101,6 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
 
       modelBinderProviderContextMock.SetupGet(context => context.Services)
                                     .Returns(serviceProviderMock.Object);
-
-      _mvcOptions.ModelBinderProviders.Add(new ComplexObjectModelBinderProvider());
 
       var exception = Assert.ThrowsException<InvalidOperationException>(
         () => _requestDtoBinderProvider.GetBinder(modelBinderProviderContextMock.Object));

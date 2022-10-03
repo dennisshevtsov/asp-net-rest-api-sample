@@ -37,6 +37,18 @@ namespace AspNetRestApiSample.Api.Binding
         return null;
       }
 
+      context.BindingInfo.BindingSource = BindingSource.Body;
+
+      var bodyModelBinderProvider = _mvcOptions.ModelBinderProviders.FirstOrDefault(
+        provider => provider is BodyModelBinderProvider);
+
+      if (bodyModelBinderProvider == null)
+      {
+        throw new InvalidOperationException(RequestDtoBinderProvider.NoBodyModelBinderProviderMessage);
+      }
+
+      var bodyModelBinder = bodyModelBinderProvider.GetBinder(context)!;
+
       var complexObjectModelBinderProvider = _mvcOptions.ModelBinderProviders.FirstOrDefault(
         provider => provider is ComplexObjectModelBinderProvider);
 
@@ -47,19 +59,7 @@ namespace AspNetRestApiSample.Api.Binding
 
       var complexObjectModelBinder = complexObjectModelBinderProvider.GetBinder(context)!;
 
-      var bodyModelBinderProvider = _mvcOptions.ModelBinderProviders.FirstOrDefault(
-        provider => provider is BodyModelBinderProvider);
-
-      if (bodyModelBinderProvider == null)
-      {
-        throw new InvalidOperationException(RequestDtoBinderProvider.NoBodyModelBinderProviderMessage);
-      }
-
-      context.BindingInfo.BindingSource = BindingSource.Body;
-
-      var bodyModelBinder = bodyModelBinderProvider.GetBinder(context)!;
-
-      return new RequestDtoBinder(complexObjectModelBinder, bodyModelBinder);
+      return new RequestDtoBinder(bodyModelBinder, complexObjectModelBinder);
     }
   }
 }
