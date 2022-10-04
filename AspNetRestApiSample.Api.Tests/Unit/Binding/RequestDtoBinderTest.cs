@@ -101,5 +101,39 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
       _httpContextMock.Verify();
       _httpRequestMock.VerifyNoOtherCalls();
     }
+
+    [TestMethod]
+    public async Task BindModelAsync_Should_Return_If_Body_Is_Not_Correct()
+    {
+      _httpRequestMock.SetupGet(request => request.Method)
+                      .Returns(HttpMethod.Post.Method)
+                      .Verifiable();
+
+      _httpRequestMock.SetupGet(request => request.ContentLength)
+                      .Returns(1024)
+                      .Verifiable();
+
+      _bodyModelBinderMock.Setup(binder => binder.BindModelAsync(It.IsAny<ModelBindingContext>()))
+                          .Returns(Task.CompletedTask)
+                          .Verifiable();
+
+      _modelBindingContextMock.SetupGet(context => context.Result)
+                              .Returns(ModelBindingResult.Failed())
+                              .Verifiable();
+
+      await _requestDtoBinder.BindModelAsync(_modelBindingContextMock.Object);
+
+      _complexObjectModelBinderMock.Verify();
+      _complexObjectModelBinderMock.VerifyNoOtherCalls();
+
+      _modelBindingContextMock.Verify();
+      _modelBindingContextMock.VerifyNoOtherCalls();
+
+      _httpContextMock.Verify();
+      _httpContextMock.VerifyNoOtherCalls();
+
+      _httpContextMock.Verify();
+      _httpRequestMock.VerifyNoOtherCalls();
+    }
   }
 }
