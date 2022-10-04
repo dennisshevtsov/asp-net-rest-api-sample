@@ -40,12 +40,12 @@ namespace AspNetRestApiSample.Api.Binding
 
       _bodyModelBinder.BindModelAsync(bindingContext);
 
-      if (!bindingContext.Result.IsModelSet || bindingContext.Result.Model == null)
+      if (!bindingContext.Result.IsModelSet)
       {
         return Task.CompletedTask;
       }
 
-      object model = bindingContext.Result.Model;
+      object model = bindingContext.Result.Model!;
 
       var routeKeys = bindingContext.ActionContext.RouteData.Values.Keys;
 
