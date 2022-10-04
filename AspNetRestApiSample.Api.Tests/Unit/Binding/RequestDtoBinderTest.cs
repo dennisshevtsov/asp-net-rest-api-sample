@@ -71,5 +71,35 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
       _httpContextMock.Verify();
       _httpRequestMock.VerifyNoOtherCalls();
     }
+
+    [TestMethod]
+    public async Task BindModelAsync_Should_Call_Complex_Object_Model_Binder_If_Body_Is_Empty()
+    {
+      _httpRequestMock.SetupGet(request => request.Method)
+                      .Returns(HttpMethod.Post.Method)
+                      .Verifiable();
+
+      _httpRequestMock.SetupGet(request => request.ContentLength)
+                      .Returns(0)
+                      .Verifiable();
+
+      _complexObjectModelBinderMock.Setup(binder => binder.BindModelAsync(It.IsAny<ModelBindingContext>()))
+                                   .Returns(Task.CompletedTask)
+                                   .Verifiable();
+
+      await _requestDtoBinder.BindModelAsync(_modelBindingContextMock.Object);
+
+      _complexObjectModelBinderMock.Verify();
+      _complexObjectModelBinderMock.VerifyNoOtherCalls();
+
+      _modelBindingContextMock.Verify();
+      _modelBindingContextMock.VerifyNoOtherCalls();
+
+      _httpContextMock.Verify();
+      _httpContextMock.VerifyNoOtherCalls();
+
+      _httpContextMock.Verify();
+      _httpRequestMock.VerifyNoOtherCalls();
+    }
   }
 }
