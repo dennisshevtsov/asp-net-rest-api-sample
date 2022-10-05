@@ -154,11 +154,13 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
                           .Returns(Task.CompletedTask)
                           .Verifiable();
 
+      var modelBindingResult = ModelBindingResult.Success(new TestRequestDto());
+
       _modelBindingContextMock.SetupGet(context => context.Result)
-                              .Returns(ModelBindingResult.Success(new TestRequestDto()))
+                              .Returns(modelBindingResult)
                               .Verifiable();
 
-      _modelBindingContextMock.SetupSet(context => context.Result)
+      _modelBindingContextMock.SetupSet(context => context.Result = It.IsAny<ModelBindingResult>())
                               .Verifiable();
 
       var modelId0 = Guid.NewGuid();
