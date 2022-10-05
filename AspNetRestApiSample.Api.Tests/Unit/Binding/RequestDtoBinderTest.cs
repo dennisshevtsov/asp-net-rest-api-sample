@@ -9,6 +9,9 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
   using Moq;
 
   using AspNetRestApiSample.Api.Binding;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.AspNetCore.Routing;
+  using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
   [TestClass]
   public sealed class RequestDtoBinderTest
@@ -103,7 +106,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
     }
 
     [TestMethod]
-    public async Task BindModelAsync_Should_Return_If_Body_Is_Not_Correct()
+    public async Task BindModelAsync_Should_Skip_Route_If_Body_Is_Not_Correct()
     {
       _httpRequestMock.SetupGet(request => request.Method)
                       .Returns(HttpMethod.Post.Method)
@@ -134,6 +137,106 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
 
       _httpContextMock.Verify();
       _httpRequestMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task BindModelAsync_Should_Populate_Model_From_Route()
+    {
+      _httpRequestMock.SetupGet(request => request.Method)
+                      .Returns(HttpMethod.Post.Method)
+                      .Verifiable();
+
+      _httpRequestMock.SetupGet(request => request.ContentLength)
+                      .Returns(1024)
+                      .Verifiable();
+
+      _bodyModelBinderMock.Setup(binder => binder.BindModelAsync(It.IsAny<ModelBindingContext>()))
+                          .Returns(Task.CompletedTask)
+                          .Verifiable();
+
+      _modelBindingContextMock.SetupGet(context => context.Result)
+                              .Returns(ModelBindingResult.Success(new TestRequestDto()))
+                              .Verifiable();
+
+      _modelBindingContextMock.SetupSet(context => context.Result)
+                              .Verifiable();
+
+      var modelId0 = Guid.NewGuid();
+      var modelId1 = Guid.NewGuid();
+
+      var actionContext = new ActionContext
+      {
+        RouteData = new RouteData
+        {
+          Values = {
+            { nameof(TestRequestDto.ModelId0), modelId0.ToString() },
+            { nameof(TestRequestDto.ModelId1), modelId1.ToString() },
+          },
+        },
+      };
+
+      _modelBindingContextMock.SetupGet(context => context.ActionContext)
+                              .Returns(actionContext)
+                              .Verifiable();
+
+      var modelMetadataMock = new Mock<ModelMetadata>(
+        ModelMetadataIdentity.ForType(typeof(TestRequestDto)));
+
+      var modelId0MetadataMock = new Mock<ModelMetadata>(
+        ModelMetadataIdentity.ForProperty(
+          typeof(TestRequestDto).GetProperty(nameof(TestRequestDto.ModelId0))!,
+          typeof(Guid),
+          typeof(TestRequestDto)));
+
+      modelId0MetadataMock.SetupGet(metadata => metadata.PropertySetter)
+                          .Returns((object a, object? b) => { })
+                          .Verifiable();
+
+      var modelId1MetadataMock = new Mock<ModelMetadata>(
+        ModelMetadataIdentity.ForProperty(
+          typeof(TestRequestDto).GetProperty(nameof(TestRequestDto.ModelId1))!,
+          typeof(Guid),
+          typeof(TestRequestDto)));
+
+      modelId1MetadataMock.SetupGet(metadata => metadata.PropertySetter)
+                          .Returns((object a, object? b) => { })
+                          .Verifiable();
+
+      var properties = new ModelPropertyCollection(
+        new[]
+        {
+          modelId0MetadataMock.Object,
+          modelId1MetadataMock.Object,
+        });
+
+      modelMetadataMock.Setup(metadata => metadata.Properties)
+                       .Returns(properties)
+                       .Verifiable();
+
+      _modelBindingContextMock.SetupGet(context => context.ModelMetadata)
+                              .Returns(modelMetadataMock.Object)
+                              .Verifiable();
+
+      await _requestDtoBinder.BindModelAsync(_modelBindingContextMock.Object);
+
+      _complexObjectModelBinderMock.Verify();
+      _complexObjectModelBinderMock.VerifyNoOtherCalls();
+
+      _modelBindingContextMock.Verify();
+      _modelBindingContextMock.VerifyNoOtherCalls();
+
+      _httpContextMock.Verify();
+      _httpContextMock.VerifyNoOtherCalls();
+
+      _httpContextMock.Verify();
+      _httpRequestMock.VerifyNoOtherCalls();
+    }
+
+    private sealed class TestRequestDto
+    {
+      public Guid ModelId0 { get; set; }
+
+      public Guid ModelId1 { get; set; }
     }
   }
 }
