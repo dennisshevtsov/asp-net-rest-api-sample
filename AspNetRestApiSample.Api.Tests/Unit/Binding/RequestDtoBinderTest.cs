@@ -154,10 +154,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
                           .Returns(Task.CompletedTask)
                           .Verifiable();
 
-      var modelBindingResult = ModelBindingResult.Success(new TestRequestDto());
-
       _modelBindingContextMock.SetupGet(context => context.Result)
-                              .Returns(modelBindingResult)
+                              .Returns(ModelBindingResult.Success(new TestRequestDto()))
                               .Verifiable();
 
       _modelBindingContextMock.SetupSet(context => context.Result = It.IsAny<ModelBindingResult>())
@@ -232,6 +230,15 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Binding
 
       _httpContextMock.Verify();
       _httpRequestMock.VerifyNoOtherCalls();
+
+      modelMetadataMock.Verify();
+      modelMetadataMock.VerifyNoOtherCalls();
+
+      modelId0MetadataMock.Verify();
+      modelId0MetadataMock.VerifyNoOtherCalls();
+
+      modelId1MetadataMock.Verify();
+      modelId1MetadataMock.VerifyNoOtherCalls();
     }
 
     private sealed class TestRequestDto
