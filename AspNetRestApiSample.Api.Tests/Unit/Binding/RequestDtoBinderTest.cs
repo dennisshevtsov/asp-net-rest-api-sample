@@ -5,13 +5,13 @@
 namespace AspNetRestApiSample.Api.Tests.Unit.Binding
 {
   using Microsoft.AspNetCore.Http;
+  using Microsoft.AspNetCore.Mvc;
   using Microsoft.AspNetCore.Mvc.ModelBinding;
+  using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+  using Microsoft.AspNetCore.Routing;
   using Moq;
 
   using AspNetRestApiSample.Api.Binding;
-  using Microsoft.AspNetCore.Mvc;
-  using Microsoft.AspNetCore.Routing;
-  using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
   [TestClass]
   public sealed class RequestDtoBinderTest
