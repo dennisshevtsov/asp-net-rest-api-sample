@@ -6,6 +6,11 @@ using AspNetRestApiSample.Api.Binding;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+                {
+                  options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200")
+                                                           .AllowAnyMethod());
+                });
 builder.Services.AddControllers(options => options.ModelBinderProviders.Insert(0, new RequestDtoBinderProvider(options)))
                 .AddJsonSerialization();
 builder.Services.AddSwaggerGen(options =>
@@ -20,6 +25,7 @@ builder.Services.AddMapping();
 var app = builder.Build();
 
 app.UseSwagger();
+app.UseCors();
 app.MapControllers();
 app.InitializeDatabase();
 
