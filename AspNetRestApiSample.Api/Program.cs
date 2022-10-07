@@ -9,7 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
                 {
                   options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200")
-                                                           .AllowAnyMethod());
+                                                           .WithMethods(HttpMethods.Options,
+                                                                        HttpMethods.Get,
+                                                                        HttpMethods.Post,
+                                                                        HttpMethods.Put,
+                                                                        HttpMethods.Delete));
                 });
 builder.Services.AddControllers(options => options.ModelBinderProviders.Insert(0, new RequestDtoBinderProvider(options)))
                 .AddJsonSerialization();
