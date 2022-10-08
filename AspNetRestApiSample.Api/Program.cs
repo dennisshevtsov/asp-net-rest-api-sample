@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
+using Microsoft.Net.Http.Headers;
+
 using AspNetRestApiSample.Api.Binding;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +15,8 @@ builder.Services.AddCors(options =>
                                                                         HttpMethods.Get,
                                                                         HttpMethods.Post,
                                                                         HttpMethods.Put,
-                                                                        HttpMethods.Delete));
+                                                                        HttpMethods.Delete)
+                                                           .WithHeaders(HeaderNames.ContentType));
                 });
 builder.Services.AddControllers(options => options.ModelBinderProviders.Insert(0, new RequestDtoBinderProvider(options)))
                 .AddJsonSerialization();
