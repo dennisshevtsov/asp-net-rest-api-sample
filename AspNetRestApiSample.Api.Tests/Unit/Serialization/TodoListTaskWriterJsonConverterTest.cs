@@ -37,7 +37,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
         Type = TodoListTaskType.Day,
       };
       GetTodoListTaskResponseDtoBase getTodoListTaskResponseDto = getTodoListDayTaskResponseDto;
@@ -74,8 +74,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
-        End = new DateTime(2022, 9, 1, 13, 30, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 13, 30, 0).Ticks,
         Type = TodoListTaskType.Period,
       };
       GetTodoListTaskResponseDtoBase getTodoListTaskResponseDto = getTodoListPeriodTaskResponseDto;
@@ -114,7 +114,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
         Type = TodoListTaskType.Day,
       };
       var searchTodoListTasksPeriodRecordResponseDto = new SearchTodoListTasksPeriodRecordResponseDto
@@ -124,8 +124,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
-        End = new DateTime(2022, 9, 1, 13, 30, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 13, 30, 0).Ticks,
         Type = TodoListTaskType.Period,
       };
       var searchTodoListTasksRecordResponseDtos = new SearchTodoListTasksRecordResponseDtoBase[]

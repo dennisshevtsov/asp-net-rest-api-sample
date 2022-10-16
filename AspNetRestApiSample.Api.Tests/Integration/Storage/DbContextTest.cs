@@ -168,7 +168,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
 
       _dbContext.Add(todoListDayTaskEntity);
@@ -214,8 +214,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Begin = new DateTime(2022, 9, 1, 12, 0, 0),
-        End = new DateTime(2022, 9, 1, 13, 0, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 0, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 13, 0, 0).Ticks,
       };
 
       _dbContext.Add(todoListPeriodTaskEntity);
@@ -262,7 +262,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
 
       _dbContext.Add(todoListDayTaskEntity);
@@ -272,7 +272,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       todoListDayTaskEntity.Title = Guid.NewGuid().ToString();
       todoListDayTaskEntity.Description = Guid.NewGuid().ToString();
       todoListDayTaskEntity.Completed = true;
-      todoListDayTaskEntity.Date = new DateTime(2022, 9, 2);
+      todoListDayTaskEntity.Date = new DateTime(2022, 9, 2).Ticks;
 
       await _dbContext.SaveChangesAsync(_cancellationToken);
 
@@ -315,8 +315,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Begin = new DateTime(2022, 9, 1, 12, 0, 0),
-        End = new DateTime(2022, 9, 1, 13, 0, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 0, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 13, 0, 0).Ticks,
       };
 
       _dbContext.Add(todoListPeriodTaskEntity);
@@ -326,8 +326,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
       todoListPeriodTaskEntity.Title = Guid.NewGuid().ToString();
       todoListPeriodTaskEntity.Description = Guid.NewGuid().ToString();
       todoListPeriodTaskEntity.Completed = true;
-      todoListPeriodTaskEntity.Begin = new DateTime(2022, 9, 2, 12, 0, 0);
-      todoListPeriodTaskEntity.End = new DateTime(2022, 9, 2, 13, 0, 0);
+      todoListPeriodTaskEntity.Begin = new DateTime(2022, 9, 2, 12, 0, 0).Ticks;
+      todoListPeriodTaskEntity.End = new DateTime(2022, 9, 2, 13, 0, 0).Ticks;
 
       await _dbContext.SaveChangesAsync(_cancellationToken);
 

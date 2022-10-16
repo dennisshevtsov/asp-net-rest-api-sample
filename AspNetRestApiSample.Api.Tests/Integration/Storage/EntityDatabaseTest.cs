@@ -172,7 +172,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
 
       var todoListPeriodTaskEntity = new TodoListPeriodTaskEntity()
@@ -180,8 +180,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Begin = new DateTime(2022, 9, 1, 12, 30, 0),
-        End = new DateTime(2022, 9, 1, 13, 30, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 30, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 13, 30, 0).Ticks,
       };
 
       _entityDatabase.TodoListTasks.Add(todoListDayTaskEntity);
@@ -257,7 +257,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
 
       var todoListPeriodTaskEntity = new TodoListPeriodTaskEntity()
@@ -265,8 +265,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Begin = new DateTime(2022, 9, 1, 12, 30, 0),
-        End = new DateTime(2022, 9, 1, 13, 30, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 30, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 13, 30, 0).Ticks,
       };
 
       _entityDatabase.TodoListTasks.Add(todoListDayTaskEntity);
@@ -318,7 +318,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         TodoListId = todoListEntity.TodoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
 
       _entityDatabase.TodoListTasks.Add(todoListTaskEntity);

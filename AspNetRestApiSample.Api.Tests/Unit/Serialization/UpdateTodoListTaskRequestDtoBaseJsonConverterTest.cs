@@ -35,17 +35,17 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         TodoListTaskId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
         Type = TodoListTaskType.Day,
       };
 
       var json = $@"{{
+""{nameof(UpdateTodoListDayTaskRequestDto.Type)}"": {(int)expetedUpdateTodoListDayTaskRequestDto.Type},
 ""{nameof(UpdateTodoListDayTaskRequestDto.TodoListId)}"": ""{expetedUpdateTodoListDayTaskRequestDto.TodoListId}"",
 ""{nameof(UpdateTodoListDayTaskRequestDto.TodoListTaskId)}"": ""{expetedUpdateTodoListDayTaskRequestDto.TodoListTaskId}"",
 ""{nameof(UpdateTodoListDayTaskRequestDto.Title)}"": ""{expetedUpdateTodoListDayTaskRequestDto.Title}"",
 ""{nameof(UpdateTodoListDayTaskRequestDto.Description)}"": ""{expetedUpdateTodoListDayTaskRequestDto.Description}"",
-""{nameof(UpdateTodoListDayTaskRequestDto.Type)}"": {(int)expetedUpdateTodoListDayTaskRequestDto.Type},
-""{nameof(UpdateTodoListDayTaskRequestDto.Date)}"": ""{expetedUpdateTodoListDayTaskRequestDto.Date.ToString("yyyy-MM-ddTHH:mm:ss")}""
+""{nameof(UpdateTodoListDayTaskRequestDto.Date)}"": {expetedUpdateTodoListDayTaskRequestDto.Date}
 }}
 ";
 
@@ -79,19 +79,19 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Serialization
         TodoListTaskId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
-        End = new DateTime(2022, 9, 1, 13, 30, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 13, 30, 0).Ticks,
         Type = TodoListTaskType.Period,
       };
 
       var json = $@"{{
+""{nameof(UpdateTodoListPeriodTaskRequestDto.Type)}"": {(int)expetedUpdateTodoListPeriodTaskRequestDto.Type},
 ""{nameof(UpdateTodoListPeriodTaskRequestDto.TodoListId)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.TodoListId}"",
 ""{nameof(UpdateTodoListPeriodTaskRequestDto.TodoListTaskId)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.TodoListTaskId}"",
 ""{nameof(UpdateTodoListPeriodTaskRequestDto.Title)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.Title}"",
 ""{nameof(UpdateTodoListPeriodTaskRequestDto.Description)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.Description}"",
-""{nameof(UpdateTodoListPeriodTaskRequestDto.Type)}"": {(int)expetedUpdateTodoListPeriodTaskRequestDto.Type},
-""{nameof(UpdateTodoListPeriodTaskRequestDto.Begin)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.Begin.ToString("yyyy-MM-ddTHH:mm:ss")}"",
-""{nameof(UpdateTodoListPeriodTaskRequestDto.End)}"": ""{expetedUpdateTodoListPeriodTaskRequestDto.End.ToString("yyyy-MM-ddTHH:mm:ss")}""
+""{nameof(UpdateTodoListPeriodTaskRequestDto.Begin)}"": {expetedUpdateTodoListPeriodTaskRequestDto.Begin},
+""{nameof(UpdateTodoListPeriodTaskRequestDto.End)}"": {expetedUpdateTodoListPeriodTaskRequestDto.End}
 }}
 ";
 

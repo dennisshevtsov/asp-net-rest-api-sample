@@ -108,9 +108,9 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Controllers
       var todoListId = Guid.NewGuid();
       var searchTodoListTasksRecordResponseDtos = new SearchTodoListTasksRecordResponseDtoBase[]
       {
-        new SearchTodoListTasksDayRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Date = new DateTime(2022, 08, 22), },
-        new SearchTodoListTasksDayRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Date = new DateTime(2022, 08, 23), },
-        new SearchTodoListTasksPeriodRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Begin = new DateTime(2022, 08, 23, 12, 0, 0), End = new DateTime(2022, 08, 22, 13, 0, 0), },
+        new SearchTodoListTasksDayRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Date = new DateTime(2022, 08, 22).Ticks, },
+        new SearchTodoListTasksDayRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Date = new DateTime(2022, 08, 23).Ticks, },
+        new SearchTodoListTasksPeriodRecordResponseDto { TodoListId = todoListId, TodoListTaskId = Guid.NewGuid(), Title = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString(), Begin = new DateTime(2022, 08, 23, 12, 0, 0).Ticks, End = new DateTime(2022, 08, 22, 13, 0, 0).Ticks, },
       };
 
       _todoListTaskServiceMock.Setup(service => service.SearchTodoListTasksAsync(It.IsAny<SearchTodoListTasksRequestDto>(), It.IsAny<CancellationToken>()))

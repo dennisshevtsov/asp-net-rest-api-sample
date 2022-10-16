@@ -40,7 +40,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
 
       var getTodoListTaskResponseDto = _mapper.Map<GetTodoListTaskResponseDtoBase>(todoListDayTaskEntity);
@@ -67,8 +67,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
-        End = new DateTime(2022, 9, 1, 12, 45, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 12, 45, 0).Ticks,
       };
 
       var getTodoListTaskResponseDto = _mapper.Map<GetTodoListTaskResponseDtoBase>(todoListPeriodTaskEntity);
@@ -97,7 +97,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = true,
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
       var todoListPeriodTaskEntity = new TodoListPeriodTaskEntity
       {
@@ -106,8 +106,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = false,
-        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
-        End = new DateTime(2022, 9, 1, 12, 45, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 12, 45, 0).Ticks,
       };
       var todoListTaskEntityCollection = new TodoListTaskEntityBase[]
       {
@@ -150,7 +150,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         TodoListId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
       AddTodoListTaskRequestDtoBase addTodoListTaskRequestDto = addTodoListDayTaskRequestDto;
 
@@ -194,8 +194,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         TodoListId = Guid.NewGuid(),
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
-        End = new DateTime(2022, 9, 1, 12, 45, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 12, 45, 0).Ticks,
       };
       AddTodoListTaskRequestDtoBase addTodoListTaskRequestDto = addTodoListPeriodTaskRequestDto;
 
@@ -244,7 +244,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         TodoListId = todoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
       UpdateTodoListTaskRequestDtoBase updateTodoListTaskRequestDto = updateTodoListDayTaskRequestDto;
 
@@ -255,7 +255,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = false,
-        Date = new DateTime(2022, 9, 1),
+        Date = new DateTime(2022, 9, 1).Ticks,
       };
       TodoListTaskEntityBase todoListTaskEntity = todoListDayTaskEntity;
 
@@ -281,8 +281,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         TodoListId = todoListId,
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
-        Begin = new DateTime(2022, 9, 1, 12, 15, 0),
-        End = new DateTime(2022, 9, 1, 12, 45, 0),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 12, 45, 0).Ticks,
       };
       UpdateTodoListTaskRequestDtoBase updateTodoListTaskRequestDto = updateTodoListPeriodTaskRequestDto;
 
@@ -293,8 +293,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
         Title = Guid.NewGuid().ToString(),
         Description = Guid.NewGuid().ToString(),
         Completed = false,
-        Begin = new DateTime(2022, 9, 2, 13, 45, 0),
-        End = new DateTime(2022, 9, 2, 14, 30, 0),
+        Begin = new DateTime(2022, 9, 2, 13, 45, 0).Ticks,
+        End = new DateTime(2022, 9, 2, 14, 30, 0).Ticks,
       };
       TodoListTaskEntityBase todoListTaskEntity = todoListPeriodTaskEntity;
 
