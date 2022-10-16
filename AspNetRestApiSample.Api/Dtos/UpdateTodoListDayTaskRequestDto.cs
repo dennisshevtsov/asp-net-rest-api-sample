@@ -8,6 +8,6 @@ namespace AspNetRestApiSample.Api.Dtos
   public sealed class UpdateTodoListDayTaskRequestDto : UpdateTodoListTaskRequestDtoBase
   {
     /// <summary>Gets/sets an object that represents a date of a TODO list task.</summary>
-    public DateTime Date { get; set; }
+    public long Date { get; set; }
   }
 }

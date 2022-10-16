@@ -8,6 +8,6 @@ namespace AspNetRestApiSample.Api.Entities
   public sealed class TodoListDayTaskEntity : TodoListTaskEntityBase
   {
     /// <summary>Gets/sets an object that represents a date of a task.</summary>
-    public DateTime Date { get; set; }
+    public long Date { get; set; }
   }
 }

@@ -8,9 +8,9 @@ namespace AspNetRestApiSample.Api.Dtos
   public sealed class GetTodoListPeriodTaskResponseDto : GetTodoListTaskResponseDtoBase
   {
     /// <summary>Gets/sets an object that represents a begin of a task.</summary>
-    public DateTime Begin { get; set; }
+    public long Begin { get; set; }
 
     /// <summary>Gets/sets an object that represents an end of a task.</summary>
-    public DateTime End { get; set; }
+    public long End { get; set; }
   }
 }
