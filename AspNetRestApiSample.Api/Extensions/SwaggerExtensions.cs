@@ -4,18 +4,19 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-  using AspNetRestApiSample.Api.Binding;
-
   /// <summary>Provides a simple API to register controllers.</summary>
-  public static class ControllerExtensions
+  public static class SwaggerExtensions
   {
-    /// <summary>Registers configured controllers.</summary>
+    /// <summary>Registers configured swagger services.</summary>
     /// <param name="services"></param>
     /// <returns>An object that specifies the contract for a collection of service descriptors.</returns>
-    public static IServiceCollection AddCofiguredControllers(this IServiceCollection services)
+    public static IServiceCollection AddCofiguredSwagger(this IServiceCollection services)
     {
-      services.AddControllers(options => options.ModelBinderProviders.Insert(0, new RequestDtoBinderProvider(options)))
-              .AddJsonSerialization();
+      services.AddSwaggerGen(options =>
+      {
+        options.DescribeAllParametersInCamelCase();
+        options.UseOneOfForPolymorphism();
+      });
 
       return services;
     }

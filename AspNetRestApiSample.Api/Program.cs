@@ -6,11 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCofiguredCors(builder.Configuration);
 builder.Services.AddCofiguredControllers();
-builder.Services.AddSwaggerGen(options =>
-                {
-                  options.DescribeAllParametersInCamelCase();
-                  options.UseOneOfForPolymorphism();
-                });
+builder.Services.AddCofiguredSwagger();
 builder.Services.AddServices();
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddMapping();
