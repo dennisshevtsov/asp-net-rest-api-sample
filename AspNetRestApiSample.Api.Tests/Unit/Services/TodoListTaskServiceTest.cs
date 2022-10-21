@@ -218,14 +218,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
     [TestMethod]
     public async Task UpdateTodoListTaskAsync_Should_Update_Existing_Todo_List_Task()
     {
-      var todoListId = Guid.NewGuid();
-      var todoListTaskId = Guid.NewGuid();
-
-      TodoListTaskEntityBase todoListTaskEntity = new TodoListDayTaskEntity
-      {
-        Id = todoListTaskId,
-        TodoListId = todoListId,
-      };
+      TodoListTaskEntityBase todoListTaskEntity = new TodoListDayTaskEntity();
 
       _mapperMock.Setup(mapper => mapper.Map(It.IsAny<UpdateTodoListTaskRequestDtoBase>(), It.IsAny<TodoListTaskEntityBase>()))
                  .Returns(todoListTaskEntity)
@@ -243,6 +236,70 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _mapperMock.Verify(mapper => mapper.Map(command, todoListTaskEntity));
+      _mapperMock.VerifyNoOtherCalls();
+
+      _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
+      _entityDatabaseMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task UpdateTodoListTaskAsync_Should_Switch_Type_For_Todo_List_Day_Task()
+    {
+      TodoListTaskEntityBase todoListPeriodTaskEntity = new TodoListPeriodTaskEntity();
+
+      _mapperMock.Setup(mapper => mapper.Map<TodoListTaskEntityBase>(It.IsAny<UpdateTodoListTaskRequestDtoBase>()))
+                 .Returns(todoListPeriodTaskEntity)
+                 .Verifiable();
+
+      _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
+                         .Returns(Task.CompletedTask)
+                         .Verifiable();
+
+      TodoListTaskEntityBase todoListTaskEntity = new TodoListDayTaskEntity();
+
+      UpdateTodoListTaskRequestDtoBase command = new UpdateTodoListPeriodTaskRequestDto();
+
+      await _todoListTaskService.UpdateTodoListTaskAsync(command, todoListTaskEntity, _cancellationToken);
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Delete(todoListTaskEntity));
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListPeriodTaskEntity));
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _mapperMock.Verify(mapper => mapper.Map<TodoListTaskEntityBase>(command));
+      _mapperMock.VerifyNoOtherCalls();
+
+      _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
+      _entityDatabaseMock.VerifyNoOtherCalls();
+    }
+
+    [TestMethod]
+    public async Task UpdateTodoListTaskAsync_Should_Switch_Type_For_Todo_List_Period_Task()
+    {
+      TodoListTaskEntityBase todoListDayTaskEntity = new TodoListDayTaskEntity();
+
+      _mapperMock.Setup(mapper => mapper.Map<TodoListTaskEntityBase>(It.IsAny<UpdateTodoListTaskRequestDtoBase>()))
+                 .Returns(todoListDayTaskEntity)
+                 .Verifiable();
+
+      _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
+                         .Returns(Task.CompletedTask)
+                         .Verifiable();
+
+      TodoListTaskEntityBase todoListTaskEntity = new TodoListPeriodTaskEntity();
+
+      UpdateTodoListTaskRequestDtoBase command = new UpdateTodoListDayTaskRequestDto();
+
+      await _todoListTaskService.UpdateTodoListTaskAsync(command, todoListTaskEntity, _cancellationToken);
+
+      _todoListEntityCollectionMock.VerifyNoOtherCalls();
+
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Delete(todoListTaskEntity));
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListDayTaskEntity));
+      _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
+
+      _mapperMock.Verify(mapper => mapper.Map<TodoListTaskEntityBase>(command));
       _mapperMock.VerifyNoOtherCalls();
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
@@ -270,6 +327,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
       _entityDatabaseMock.VerifyNoOtherCalls();
+
+      _mapperMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -294,6 +353,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
       _entityDatabaseMock.VerifyNoOtherCalls();
+
+      _mapperMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -311,6 +372,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
       _entityDatabaseMock.VerifyNoOtherCalls();
+      _mapperMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -335,6 +397,8 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
       _entityDatabaseMock.VerifyNoOtherCalls();
+
+      _mapperMock.VerifyNoOtherCalls();
     }
 
     [TestMethod]
@@ -352,6 +416,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
       _entityDatabaseMock.VerifyNoOtherCalls();
+      _mapperMock.VerifyNoOtherCalls();
     }
 
     #region Test Classes
