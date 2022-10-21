@@ -340,5 +340,39 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Mapping
       Assert.AreEqual(updateTodoListPeriodTaskRequestDto.Begin, todoListPeriodTaskEntity.Begin);
       Assert.AreEqual(updateTodoListPeriodTaskRequestDto.End, todoListPeriodTaskEntity.End);
     }
+
+    [TestMethod]
+    public void Map_Should_Create_TodoListPeriodTaskEntity_From_UpdateTodoListPeriodTaskRequestDto()
+    {
+      var todoListId = Guid.NewGuid();
+      var todoListTaskId = Guid.NewGuid();
+
+      var updateTodoListPeriodTaskRequestDto = new UpdateTodoListPeriodTaskRequestDto
+      {
+        TodoListTaskId = todoListTaskId,
+        TodoListId = todoListId,
+        Title = Guid.NewGuid().ToString(),
+        Description = Guid.NewGuid().ToString(),
+        Begin = new DateTime(2022, 9, 1, 12, 15, 0).Ticks,
+        End = new DateTime(2022, 9, 1, 12, 45, 0).Ticks,
+      };
+      UpdateTodoListTaskRequestDtoBase updateTodoListTaskRequestDto = updateTodoListPeriodTaskRequestDto;
+
+      var todoListTaskEntity =_mapper.Map<TodoListTaskEntityBase>(updateTodoListTaskRequestDto);
+
+      Assert.IsNotNull(todoListTaskEntity);
+
+      var todoListPeriodTaskEntity = todoListTaskEntity as TodoListPeriodTaskEntity;
+
+      Assert.IsNotNull(todoListPeriodTaskEntity);
+
+      Assert.AreEqual(updateTodoListPeriodTaskRequestDto.TodoListTaskId, todoListPeriodTaskEntity.Id);
+      Assert.AreEqual(updateTodoListPeriodTaskRequestDto.TodoListId, todoListPeriodTaskEntity.TodoListId);
+      Assert.AreEqual(updateTodoListPeriodTaskRequestDto.Title, todoListPeriodTaskEntity.Title);
+      Assert.AreEqual(updateTodoListPeriodTaskRequestDto.Description, todoListPeriodTaskEntity.Description);
+      Assert.IsFalse(todoListPeriodTaskEntity.Completed);
+      Assert.AreEqual(updateTodoListPeriodTaskRequestDto.Begin, todoListPeriodTaskEntity.Begin);
+      Assert.AreEqual(updateTodoListPeriodTaskRequestDto.End, todoListPeriodTaskEntity.End);
+    }
   }
 }
