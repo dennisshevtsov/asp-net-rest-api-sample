@@ -99,7 +99,22 @@ namespace AspNetRestApiSample.Api.Services
       TodoListTaskEntityBase todoListTaskEntity,
       CancellationToken cancellationToken)
     {
-      _mapper.Map(command, todoListTaskEntity);
+      if (command is UpdateTodoListDayTaskRequestDto    && todoListTaskEntity is TodoListDayTaskEntity ||
+          command is UpdateTodoListPeriodTaskRequestDto && todoListTaskEntity is TodoListPeriodTaskEntity)
+      {
+        _mapper.Map(command, todoListTaskEntity);
+      }
+      else
+      {
+        _entityDatabase.TodoListTasks.Delete(todoListTaskEntity);
+        var deleteTodoListTaskEntityTask = _entityDatabase.CommitAsync(cancellationToken);
+
+        var newTodoListTaskEntity = _mapper.Map<TodoListTaskEntityBase>(command);
+
+        await deleteTodoListTaskEntityTask;
+
+        _entityDatabase.TodoListTasks.Add(newTodoListTaskEntity);
+      }
 
       await _entityDatabase.CommitAsync(cancellationToken);
     }
@@ -108,11 +123,11 @@ namespace AspNetRestApiSample.Api.Services
     /// <param name="todoListTaskEntity">An object that represents data of a todo list task.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
-    public async Task DeleteTodoListTaskAsync(TodoListTaskEntityBase todoListTaskEntity, CancellationToken cancellationToken)
+    public Task DeleteTodoListTaskAsync(TodoListTaskEntityBase todoListTaskEntity, CancellationToken cancellationToken)
     {
       _entityDatabase.TodoListTasks.Delete(todoListTaskEntity);
 
-      await _entityDatabase.CommitAsync(cancellationToken);
+      return _entityDatabase.CommitAsync(cancellationToken);
     }
 
     /// <summary>Makes a task completed.</summary>

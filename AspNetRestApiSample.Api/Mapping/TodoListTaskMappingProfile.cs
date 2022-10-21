@@ -65,7 +65,18 @@ namespace AspNetRestApiSample.Api.Mapping
       expression.CreateMap<UpdateTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
                 .Include<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
                 .Include<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>()
-                .ForMember(dst => dst.TodoListId, opt => opt.Ignore());
+                .ForMember(dst => dst.TodoListId,
+                           opt =>
+                           {
+                             opt.Condition((src, dst) => dst.TodoListId == default);
+                             opt.MapFrom(src => src.TodoListId);
+                           })
+                .ForMember(dst => dst.Id,
+                           opt =>
+                           {
+                             opt.Condition((src, dst) => dst.Id == default);
+                             opt.MapFrom(src => src.TodoListTaskId);
+                           });
 
       expression.CreateMap<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
       expression.CreateMap<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
