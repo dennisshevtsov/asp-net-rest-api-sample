@@ -46,9 +46,22 @@ namespace AspNetRestApiSample.Api.Storage
                    .Where(entity => entity.Id == id)
                    .FirstOrDefaultAsync(cancellationToken);
 
-    /// <summary>Enqueues an entity to be added.</summary>
+    /// <summary>Enqueues an entity to be added or modified.</summary>
     /// <param name="entity">An instance of an entity.</param>
-    public void Add(TEntity entity) => _dbContext.Entry(entity).State = EntityState.Added;
+    public void Attache(TEntity entity)
+    {
+      var dbEntity = _dbContext.Find<TEntity>(new object[] { entity.Id });
+
+      if (dbEntity != null)
+      {
+        _dbContext.Entry(dbEntity).State = EntityState.Detached;
+        _dbContext.Entry(entity).State = EntityState.Modified;
+      }
+      else
+      {
+        _dbContext.Entry(entity).State = EntityState.Added;
+      }
+    }
 
     /// <summary>Enqueues an entity to be deleted.</summary>
     /// <param name="entity">An instance of an entity.</param>

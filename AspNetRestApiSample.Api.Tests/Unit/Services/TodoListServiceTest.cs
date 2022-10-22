@@ -210,7 +210,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
                  .Returns(todoListEntity)
                  .Verifiable();
 
-      _todoListEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListEntity>()))
+      _todoListEntityCollectionMock.Setup(collection => collection.Attache(It.IsAny<TodoListEntity>()))
                                    .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -230,7 +230,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       _mapperMock.Verify(mapper => mapper.Map<TodoListEntity>(command));
       _mapperMock.VerifyNoOtherCalls();
 
-      _todoListEntityCollectionMock.Verify(collection => collection.Add(todoListEntity));
+      _todoListEntityCollectionMock.Verify(collection => collection.Attache(todoListEntity));
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();

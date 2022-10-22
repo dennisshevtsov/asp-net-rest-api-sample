@@ -83,7 +83,7 @@ namespace AspNetRestApiSample.Api.Services
     {
       var todoListTaskEntity = _mapper.Map<TodoListTaskEntityBase>(command);
 
-      _entityDatabase.TodoListTasks.Add(todoListTaskEntity);
+      _entityDatabase.TodoListTasks.Attache(todoListTaskEntity);
       await _entityDatabase.CommitAsync(cancellationToken);
 
       return _mapper.Map<AddTodoListTaskResponseDto>(todoListTaskEntity);
@@ -106,14 +106,9 @@ namespace AspNetRestApiSample.Api.Services
       }
       else
       {
-        _entityDatabase.TodoListTasks.Delete(todoListTaskEntity);
-        var deleteTodoListTaskEntityTask = _entityDatabase.CommitAsync(cancellationToken);
-
         var newTodoListTaskEntity = _mapper.Map<TodoListTaskEntityBase>(command);
 
-        await deleteTodoListTaskEntityTask;
-
-        _entityDatabase.TodoListTasks.Add(newTodoListTaskEntity);
+        _entityDatabase.TodoListTasks.Attache(newTodoListTaskEntity);
       }
 
       await _entityDatabase.CommitAsync(cancellationToken);

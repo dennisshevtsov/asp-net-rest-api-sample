@@ -59,7 +59,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         Description = Guid.NewGuid().ToString(),
       };
 
-      _entityDatabase.TodoLists.Add(todoListEntity);
+      _entityDatabase.TodoLists.Attache(todoListEntity);
       await _entityDatabase.CommitAsync(_cancellationToken);
 
       Assert.IsTrue(todoListEntity.Id != default);
@@ -184,8 +184,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         End = new DateTime(2022, 9, 1, 13, 30, 0).Ticks,
       };
 
-      _entityDatabase.TodoListTasks.Add(todoListDayTaskEntity);
-      _entityDatabase.TodoListTasks.Add(todoListPeriodTaskEntity);
+      _entityDatabase.TodoListTasks.Attache(todoListDayTaskEntity);
+      _entityDatabase.TodoListTasks.Attache(todoListPeriodTaskEntity);
       await _entityDatabase.CommitAsync(_cancellationToken);
 
       Assert.IsTrue(todoListDayTaskEntity.Id != default);
@@ -269,8 +269,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         End = new DateTime(2022, 9, 1, 13, 30, 0).Ticks,
       };
 
-      _entityDatabase.TodoListTasks.Add(todoListDayTaskEntity);
-      _entityDatabase.TodoListTasks.Add(todoListPeriodTaskEntity);
+      _entityDatabase.TodoListTasks.Attache(todoListDayTaskEntity);
+      _entityDatabase.TodoListTasks.Attache(todoListPeriodTaskEntity);
       await _entityDatabase.CommitAsync(_cancellationToken);
 
       Assert.IsTrue(todoListDayTaskEntity.Id != default);
@@ -321,7 +321,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
         Date = new DateTime(2022, 9, 1).Ticks,
       };
 
-      _entityDatabase.TodoListTasks.Add(todoListTaskEntity);
+      _entityDatabase.TodoListTasks.Attache(todoListTaskEntity);
       await _entityDatabase.CommitAsync(_cancellationToken);
 
       Assert.IsTrue(todoListTaskEntity.Id != default);

@@ -72,7 +72,7 @@ namespace AspNetRestApiSample.Api.Services
     {
       var todoListEntity = _mapper.Map<TodoListEntity>(command);
 
-      _entityDatabase.TodoLists.Add(todoListEntity);
+      _entityDatabase.TodoLists.Attache(todoListEntity);
       await _entityDatabase.CommitAsync(cancellationToken);
 
       return new AddTodoListResponseDto

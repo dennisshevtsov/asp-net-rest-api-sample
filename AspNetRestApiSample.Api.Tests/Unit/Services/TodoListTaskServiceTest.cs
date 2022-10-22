@@ -188,7 +188,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
                  .Returns(new AddTodoListTaskResponseDto())
                  .Verifiable();
 
-      _todoListTaskEntityCollectionMock.Setup(collection => collection.Add(It.IsAny<TodoListTaskEntityBase>()))
+      _todoListTaskEntityCollectionMock.Setup(collection => collection.Attache(It.IsAny<TodoListTaskEntityBase>()))
                                        .Verifiable();
 
       _entityDatabaseMock.Setup(database => database.CommitAsync(It.IsAny<CancellationToken>()))
@@ -208,7 +208,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
 
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
-      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListTaskEntity));
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Attache(todoListTaskEntity));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _entityDatabaseMock.Verify(database => database.CommitAsync(_cancellationToken));
@@ -264,7 +264,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
       _todoListTaskEntityCollectionMock.Verify(collection => collection.Delete(todoListTaskEntity));
-      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListPeriodTaskEntity));
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Attache(todoListPeriodTaskEntity));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _mapperMock.Verify(mapper => mapper.Map<TodoListTaskEntityBase>(command));
@@ -296,7 +296,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
       _todoListEntityCollectionMock.VerifyNoOtherCalls();
 
       _todoListTaskEntityCollectionMock.Verify(collection => collection.Delete(todoListTaskEntity));
-      _todoListTaskEntityCollectionMock.Verify(collection => collection.Add(todoListDayTaskEntity));
+      _todoListTaskEntityCollectionMock.Verify(collection => collection.Attache(todoListDayTaskEntity));
       _todoListTaskEntityCollectionMock.VerifyNoOtherCalls();
 
       _mapperMock.Verify(mapper => mapper.Map<TodoListTaskEntityBase>(command));
