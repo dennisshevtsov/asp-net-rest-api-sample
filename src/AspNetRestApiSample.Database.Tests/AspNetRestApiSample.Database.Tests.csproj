@@ -9,9 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
-    <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="coverlet.collector" Version="3.2.0">
@@ -21,11 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Functional\" />
+    <Folder Include="Integration\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetRestApiSample.Api\AspNetRestApiSample.Api.csproj" />
+    <ProjectReference Include="..\AspNetRestApiSample.Database\AspNetRestApiSample.Database.csproj" />
   </ItemGroup>
 
 </Project>

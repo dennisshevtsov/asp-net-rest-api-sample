@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspNetRestApiSample.Dtos\AspNetRestApiSample.Dtos.csproj" />
-    <ProjectReference Include="..\AspNetRestApiSample.Storage\AspNetRestApiSample.Storage.csproj" />
+    <ProjectReference Include="..\AspNetRestApiSample.Database\AspNetRestApiSample.Database.csproj" />
   </ItemGroup>
 
 </Project>

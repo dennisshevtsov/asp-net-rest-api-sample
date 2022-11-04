@@ -7,19 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Api", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Api.Tests", "src\AspNetRestApiSample.Api.Tests\AspNetRestApiSample.Api.Tests.csproj", "{24F8FFB2-8EFA-4F39-BEB3-63A8C09DBE6A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Database", "src\AspNetRestApiSample.Database\AspNetRestApiSample.Database.csproj", "{2744F24E-BEEE-49A9-8C3B-B9CB56784459}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Database.Entities", "src\AspNetRestApiSample.Database.Entities\AspNetRestApiSample.Database.Entities.csproj", "{ABCEE993-3816-4CC3-8498-4393538F6BFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetRestApiSample.Database.Tests", "src\AspNetRestApiSample.Database.Tests\AspNetRestApiSample.Database.Tests.csproj", "{4A5EA294-ED9C-4953-866A-BCB770974B29}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Dtos", "src\AspNetRestApiSample.Dtos\AspNetRestApiSample.Dtos.csproj", "{447B90C0-6219-4A98-AA4A-1AE6D2495F51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetRestApiSample.Indentities", "src\AspNetRestApiSample.Indentities\AspNetRestApiSample.Indentities.csproj", "{CA745EF0-27EA-4C60-A406-F0638437F9D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Indentities", "src\AspNetRestApiSample.Indentities\AspNetRestApiSample.Indentities.csproj", "{CA745EF0-27EA-4C60-A406-F0638437F9D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetRestApiSample.Storage", "src\AspNetRestApiSample.Storage\AspNetRestApiSample.Storage.csproj", "{2744F24E-BEEE-49A9-8C3B-B9CB56784459}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetRestApiSample.Services", "src\AspNetRestApiSample.Services\AspNetRestApiSample.Services.csproj", "{7395FF42-5581-44EA-981A-CC8A7095473D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetRestApiSample.Entities", "src\AspNetRestApiSample.Entities\AspNetRestApiSample.Entities.csproj", "{ABCEE993-3816-4CC3-8498-4393538F6BFD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetRestApiSample.Configurations", "src\AspNetRestApiSample.Configurations\AspNetRestApiSample.Configurations.csproj", "{EC58DA79-0C85-4D04-9CFB-4CECEDDD4D14}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetRestApiSample.ValueGeneration", "src\AspNetRestApiSample.ValueGeneration\AspNetRestApiSample.ValueGeneration.csproj", "{CE55DD93-0A68-4208-BFB8-FF75930E0A5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Services", "src\AspNetRestApiSample.Services\AspNetRestApiSample.Services.csproj", "{7395FF42-5581-44EA-981A-CC8A7095473D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +33,10 @@ Global
 		{24F8FFB2-8EFA-4F39-BEB3-63A8C09DBE6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24F8FFB2-8EFA-4F39-BEB3-63A8C09DBE6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24F8FFB2-8EFA-4F39-BEB3-63A8C09DBE6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2744F24E-BEEE-49A9-8C3B-B9CB56784459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2744F24E-BEEE-49A9-8C3B-B9CB56784459}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2744F24E-BEEE-49A9-8C3B-B9CB56784459}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2744F24E-BEEE-49A9-8C3B-B9CB56784459}.Release|Any CPU.Build.0 = Release|Any CPU
 		{447B90C0-6219-4A98-AA4A-1AE6D2495F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{447B90C0-6219-4A98-AA4A-1AE6D2495F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{447B90C0-6219-4A98-AA4A-1AE6D2495F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -43,10 +45,6 @@ Global
 		{CA745EF0-27EA-4C60-A406-F0638437F9D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA745EF0-27EA-4C60-A406-F0638437F9D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA745EF0-27EA-4C60-A406-F0638437F9D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2744F24E-BEEE-49A9-8C3B-B9CB56784459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2744F24E-BEEE-49A9-8C3B-B9CB56784459}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2744F24E-BEEE-49A9-8C3B-B9CB56784459}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2744F24E-BEEE-49A9-8C3B-B9CB56784459}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7395FF42-5581-44EA-981A-CC8A7095473D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7395FF42-5581-44EA-981A-CC8A7095473D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7395FF42-5581-44EA-981A-CC8A7095473D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,14 +53,10 @@ Global
 		{ABCEE993-3816-4CC3-8498-4393538F6BFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABCEE993-3816-4CC3-8498-4393538F6BFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABCEE993-3816-4CC3-8498-4393538F6BFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC58DA79-0C85-4D04-9CFB-4CECEDDD4D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC58DA79-0C85-4D04-9CFB-4CECEDDD4D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC58DA79-0C85-4D04-9CFB-4CECEDDD4D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC58DA79-0C85-4D04-9CFB-4CECEDDD4D14}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE55DD93-0A68-4208-BFB8-FF75930E0A5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE55DD93-0A68-4208-BFB8-FF75930E0A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE55DD93-0A68-4208-BFB8-FF75930E0A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE55DD93-0A68-4208-BFB8-FF75930E0A5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A5EA294-ED9C-4953-866A-BCB770974B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A5EA294-ED9C-4953-866A-BCB770974B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A5EA294-ED9C-4953-866A-BCB770974B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A5EA294-ED9C-4953-866A-BCB770974B29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

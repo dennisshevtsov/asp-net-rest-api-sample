@@ -7,11 +7,11 @@ namespace AspNetRestApiSample.Services
   using AutoMapper;
 
   using AspNetRestApiSample.Dtos;
-  using AspNetRestApiSample.Entities;
+  using AspNetRestApiSample.Database.Entities;
   using AspNetRestApiSample.Indentities;
-  using AspNetRestApiSample.Storage;
+  using AspNetRestApiSample.Database;
 
-  /// <summary>Provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Entities.TodoListEntity"/> class.</summary>
+  /// <summary>Provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Database.Entities.TodoListEntity"/> class.</summary>
   public sealed class TodoListService : ITodoListService
   {
     private readonly IMapper _mapper;

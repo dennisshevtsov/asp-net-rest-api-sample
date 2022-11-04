@@ -5,15 +5,15 @@
 namespace AspNetRestApiSample.Services
 {
   using AspNetRestApiSample.Dtos;
-  using AspNetRestApiSample.Entities;
+  using AspNetRestApiSample.Database.Entities;
   using AspNetRestApiSample.Indentities;
 
-  /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.Entities.TodoListTaskEntityBase"/> class.</summary>
+  /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.Database.Entities.TodoListTaskEntityBase"/> class.</summary>
   public interface ITodoListTaskService
   {
     /// <summary>Gets a attached todo list task entity.</summary>
     /// <typeparam name="TQuery">A type of a query.</typeparam>
-    /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Entities.TodoListTaskEntityBase"/> class.</param>
+    /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Database.Entities.TodoListTaskEntityBase"/> class.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public Task<TodoListTaskEntityBase?> GetAttachedTodoListTaskEntityAsync<TQuery>(
@@ -22,7 +22,7 @@ namespace AspNetRestApiSample.Services
 
     /// <summary>Gets a detached todo list task entity.</summary>
     /// <typeparam name="TQuery">A type of a query.</typeparam>
-    /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Entities.TodoListTaskEntityBase"/> class.</param>
+    /// <param name="query">An object that represents conditions to query an instance of the <see cref="AspNetRestApiSample.Database.Entities.TodoListTaskEntityBase"/> class.</param>
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public Task<TodoListTaskEntityBase?> GetDetachedTodoListTaskEntityAsync<TQuery>(

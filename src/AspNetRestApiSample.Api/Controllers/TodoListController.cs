@@ -21,7 +21,7 @@ namespace AspNetRestApiSample.Api.Controllers
     private readonly ITodoListService _todoListService;
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Controllers.TodoListController"/> class.</summary>
-    /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Entities.TodoListEntity"/> class.</param>
+    /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Database.Entities.TodoListEntity"/> class.</param>
     public TodoListController(ITodoListService todoListService)
     {
       _todoListService = todoListService ??

@@ -7,7 +7,7 @@ namespace AspNetRestApiSample.Api.Mapping
   using AutoMapper;
 
   using AspNetRestApiSample.Dtos;
-  using AspNetRestApiSample.Entities;
+  using AspNetRestApiSample.Database.Entities;
 
   /// <summary>Provides a named configuration for maps.</summary>
   public sealed class TodoListMappingProfile : Profile

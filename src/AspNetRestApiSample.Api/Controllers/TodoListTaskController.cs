@@ -22,8 +22,8 @@ namespace AspNetRestApiSample.Api.Controllers
     private readonly ITodoListTaskService _todoListTaskService;
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Controllers.TodoListTaskController"/> class.</summary>
-    /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Entities.TodoListEntity"/> class.</param>
-    /// <param name="todoListTaskService">An object that provides a simple API to a storage of the <see cref="AspNetRestApiSample.Entities.TodoListTaskEntityBase"/> class.</param>
+    /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Database.Entities.TodoListEntity"/> class.</param>
+    /// <param name="todoListTaskService">An object that provides a simple API to a storage of the <see cref="AspNetRestApiSample.Database.Entities.TodoListTaskEntityBase"/> class.</param>
     public TodoListTaskController(ITodoListService todoListService, ITodoListTaskService todoListTaskService)
     {
       _todoListService = todoListService ?? throw new ArgumentNullException(nameof(todoListService));

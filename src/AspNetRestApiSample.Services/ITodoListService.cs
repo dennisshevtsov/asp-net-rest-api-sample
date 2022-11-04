@@ -5,10 +5,10 @@
 namespace AspNetRestApiSample.Services
 {
   using AspNetRestApiSample.Dtos;
-  using AspNetRestApiSample.Entities;
+  using AspNetRestApiSample.Database.Entities;
   using AspNetRestApiSample.Indentities;
 
-  /// <summary>Provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Entities.TodoListEntity"/> class.</summary>
+  /// <summary>Provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Database.Entities.TodoListEntity"/> class.</summary>
   public interface ITodoListService
   {
     /// <summary>Gets a detached todo list entity.</summary>
