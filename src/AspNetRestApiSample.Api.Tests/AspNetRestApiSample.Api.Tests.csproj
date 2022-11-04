@@ -29,11 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetRestApiSample.Api\AspNetRestApiSample.Api.csproj" />
+    <Folder Include="Functional\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Functional\" />
+    <ProjectReference Include="..\AspNetRestApiSample.Api\AspNetRestApiSample.Api.csproj" />
   </ItemGroup>
 
 </Project>
