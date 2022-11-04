@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
   using Microsoft.EntityFrameworkCore;
 
-  using AspNetRestApiSample.Api.Dtos;
+  using AspNetRestApiSample.Dtos;
   using AspNetRestApiSample.Api.Serialization;
 
   /// <summary>Provides a simple API to register application services.</summary>

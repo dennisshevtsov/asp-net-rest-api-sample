@@ -8,8 +8,8 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
   using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
 
-  using AspNetRestApiSample.Api.Storage;
-  using AspNetRestApiSample.Api.Entities;
+  using AspNetRestApiSample.Storage;
+  using AspNetRestApiSample.Entities;
 
   [TestClass]
   public sealed class EntityDatabaseTest

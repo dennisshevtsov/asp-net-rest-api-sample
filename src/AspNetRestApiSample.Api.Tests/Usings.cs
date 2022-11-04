@@ -1,5 +1,5 @@
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-global using AspNetRestApiSample.Api.Dtos;
-global using AspNetRestApiSample.Api.Entities;
-global using AspNetRestApiSample.Api.Services;
+global using AspNetRestApiSample.Dtos;
+global using AspNetRestApiSample.Entities;
+global using AspNetRestApiSample.Services;

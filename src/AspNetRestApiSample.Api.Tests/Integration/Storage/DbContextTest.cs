@@ -10,7 +10,7 @@ namespace AspNetRestApiSample.Api.Tests.Integration.Storage
   using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
 
-  using AspNetRestApiSample.Api.Entities;
+  using AspNetRestApiSample.Entities;
 
   [TestClass]
   public sealed class DbContextTest

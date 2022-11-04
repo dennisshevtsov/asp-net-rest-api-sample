@@ -7,7 +7,7 @@ namespace AspNetRestApiSample.Api.Serialization
   using System.Text.Json;
   using System.Text.Json.Serialization;
 
-  using AspNetRestApiSample.Api.Dtos;
+  using AspNetRestApiSample.Dtos;
 
   /// <summary>Converts an object or value to or from JSON.</summary>
   public sealed class TodoListTaskWriterJsonConverter<T> : JsonConverter<T> where T : TodoListTaskDtoBase

@@ -10,7 +10,7 @@ namespace AspNetRestApiSample.Api.Binding
   using Microsoft.AspNetCore.Mvc.ModelBinding;
   using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
-  using AspNetRestApiSample.Api.Dtos;
+  using AspNetRestApiSample.Dtos;
 
   /// <summary>Provides a simple API to create an instance of the <see cref="Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinder"/> class.</summary>
   public sealed class RequestDtoBinderProvider : IModelBinderProvider

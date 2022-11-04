@@ -7,7 +7,7 @@ namespace AspNetRestApiSample.Api.Tests.Unit.Services
   using AutoMapper;
   using Moq;
 
-  using AspNetRestApiSample.Api.Storage;
+  using AspNetRestApiSample.Storage;
 
   [TestClass]
   public sealed class TodoListTaskServiceTest

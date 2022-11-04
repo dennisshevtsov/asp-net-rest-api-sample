@@ -9,8 +9,8 @@ namespace AspNetRestApiSample.Api.Controllers
   using Microsoft.AspNetCore.Mvc;
 
   using AspNetRestApiSample.Api.Defaults;
-  using AspNetRestApiSample.Api.Dtos;
-  using AspNetRestApiSample.Api.Services;
+  using AspNetRestApiSample.Dtos;
+  using AspNetRestApiSample.Services;
 
   /// <summary>Provides a simple API to handle HTTP requests.</summary>
   [ApiController]
@@ -22,8 +22,8 @@ namespace AspNetRestApiSample.Api.Controllers
     private readonly ITodoListTaskService _todoListTaskService;
 
     /// <summary>Initializes a new instance of the <see cref="AspNetRestApiSample.Api.Controllers.TodoListTaskController"/> class.</summary>
-    /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Api.Entities.TodoListEntity"/> class.</param>
-    /// <param name="todoListTaskService">An object that provides a simple API to a storage of the <see cref="AspNetRestApiSample.Api.Entities.TodoListTaskEntityBase"/> class.</param>
+    /// <param name="todoListService">An object that provides a simple API to a storage of instances of the <see cref="AspNetRestApiSample.Entities.TodoListEntity"/> class.</param>
+    /// <param name="todoListTaskService">An object that provides a simple API to a storage of the <see cref="AspNetRestApiSample.Entities.TodoListTaskEntityBase"/> class.</param>
     public TodoListTaskController(ITodoListService todoListService, ITodoListTaskService todoListTaskService)
     {
       _todoListService = todoListService ?? throw new ArgumentNullException(nameof(todoListService));

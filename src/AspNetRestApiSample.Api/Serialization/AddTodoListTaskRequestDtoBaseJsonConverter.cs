@@ -4,7 +4,7 @@
 
 namespace AspNetRestApiSample.Api.Serialization
 {
-  using AspNetRestApiSample.Api.Dtos;
+  using AspNetRestApiSample.Dtos;
 
   /// <summary>Converts an object or value to or from JSON.</summary>
   public sealed class AddTodoListTaskRequestDtoBaseJsonConverter
