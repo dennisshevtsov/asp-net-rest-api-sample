@@ -4,6 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Copyright>
+      <![CDATA[Copyright (c) Dennis Shevtsov. All rights reserved.
+Licensed under the MIT License.
+See LICENSE in the project root for license information.]]>
+    </Copyright>
+    <Description>The project contains the business model.</Description>
   </PropertyGroup>
 
   <ItemGroup>
