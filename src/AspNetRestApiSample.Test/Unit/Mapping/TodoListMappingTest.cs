@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.WebApi.Mapping.Test.Unit
+namespace AspNetRestApiSample.ApplicationCore.Mapping.Test.Unit
 {
   using AutoMapper;
   using Microsoft.Extensions.DependencyInjection;

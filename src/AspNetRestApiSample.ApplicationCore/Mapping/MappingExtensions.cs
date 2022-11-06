@@ -4,7 +4,7 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-  using AspNetRestApiSample.WebApi.Mapping;
+  using AspNetRestApiSample.ApplicationCore.Mapping;
 
   /// <summary>Provides a simple API to register application services.</summary>
   public static class MappingExtensions

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.WebApi.Mapping
+namespace AspNetRestApiSample.ApplicationCore.Mapping
 {
   using AutoMapper;
 
