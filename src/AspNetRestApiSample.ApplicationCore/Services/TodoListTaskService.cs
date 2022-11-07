@@ -6,10 +6,10 @@ namespace AspNetRestApiSample.ApplicationCore.Services
 {
   using AutoMapper;
 
+  using AspNetRestApiSample.ApplicationCore.Database;
   using AspNetRestApiSample.ApplicationCore.Dtos;
   using AspNetRestApiSample.ApplicationCore.Entities;
   using AspNetRestApiSample.ApplicationCore.Indentities;
-  using AspNetRestApiSample.ApplicationCore.Database;
 
   /// <summary>Provides a simple API to a storage of the <see cref="AspNetRestApiSample.ApplicationCore.Entities.TodoListTaskEntityBase"/> class.</summary>
   public sealed class TodoListTaskService : ITodoListTaskService
