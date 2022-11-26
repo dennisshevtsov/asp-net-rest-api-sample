@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Applica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Infrastructure", "src\AspNetRestApiSample.Infrastructure\AspNetRestApiSample.Infrastructure.csproj", "{FF9B161C-9E5F-415D-85D7-8A0808B8897B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Test", "src\AspNetRestApiSample.Test\AspNetRestApiSample.Test.csproj", "{24F8FFB2-8EFA-4F39-BEB3-63A8C09DBE6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.Test", "test\AspNetRestApiSample.Test\AspNetRestApiSample.Test.csproj", "{24F8FFB2-8EFA-4F39-BEB3-63A8C09DBE6A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetRestApiSample.WebApi", "src\AspNetRestApiSample.WebApi\AspNetRestApiSample.WebApi.csproj", "{594EF189-7903-4254-A8C8-7606022FD97E}"
 EndProject
