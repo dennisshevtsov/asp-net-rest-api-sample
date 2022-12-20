@@ -6,8 +6,6 @@ namespace Microsoft.Extensions.DependencyInjection
 {
   using System.Text.Json;
 
-  using Microsoft.EntityFrameworkCore;
-
   using AspNetRestApiSample.ApplicationCore.Dtos;
   using AspNetRestApiSample.WebApi.Serialization;
 
@@ -29,16 +27,6 @@ namespace Microsoft.Extensions.DependencyInjection
                options.JsonSerializerOptions.Converters.Add(new AddTodoListTaskRequestDtoBaseJsonConverter());
                options.JsonSerializerOptions.Converters.Add(new UpdateTodoListTaskRequestDtoBaseJsonConverter());
              });
-    }
-
-    /// <summary>Initializes a database.</summary>
-    /// <param name="app">An object that defines a class that provides the mechanisms to configure an application's request pipeline.</param>
-    public static void InitializeDatabase(this IApplicationBuilder app)
-    {
-      using (var scope = app.ApplicationServices.CreateScope())
-      {
-        scope.ServiceProvider.GetRequiredService<DbContext>().Database.EnsureCreated();
-      }
     }
   }
 }
