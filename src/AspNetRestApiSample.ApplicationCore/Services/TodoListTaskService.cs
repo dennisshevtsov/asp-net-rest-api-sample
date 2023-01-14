@@ -95,12 +95,12 @@ namespace AspNetRestApiSample.ApplicationCore.Services
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
     public async Task UpdateTodoListTaskAsync(
-      UpdateTodoListTaskRequestDtoBase command,
+      IUpdateTodoListTaskRequestDto command,
       TodoListTaskEntityBase todoListTaskEntity,
       CancellationToken cancellationToken)
     {
-      if (command is UpdateTodoListDayTaskRequestDto    && todoListTaskEntity is TodoListDayTaskEntity ||
-          command is UpdateTodoListPeriodTaskRequestDto && todoListTaskEntity is TodoListPeriodTaskEntity)
+      if (command is IUpdateTodoListDayTaskRequestDto    && todoListTaskEntity is TodoListDayTaskEntity ||
+          command is IUpdateTodoListPeriodTaskRequestDto && todoListTaskEntity is TodoListPeriodTaskEntity)
       {
         _mapper.Map(command, todoListTaskEntity);
       }

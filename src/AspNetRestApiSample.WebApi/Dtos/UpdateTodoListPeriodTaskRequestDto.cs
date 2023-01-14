@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-namespace AspNetRestApiSample.ApplicationCore.Dtos
+namespace AspNetRestApiSample.WebApi.Dtos
 {
+  using AspNetRestApiSample.ApplicationCore.Dtos;
+
   /// <summary>Represents data to update todo list task.</summary>
-  public sealed class UpdateTodoListPeriodTaskRequestDto : UpdateTodoListTaskRequestDtoBase
+  public sealed class UpdateTodoListPeriodTaskRequestDto : UpdateTodoListTaskRequestDtoBase, IUpdateTodoListPeriodTaskRequestDto
   {
     /// <summary>Gets/sets an object that represents a begin of a task.</summary>
     public long Begin { get; set; }

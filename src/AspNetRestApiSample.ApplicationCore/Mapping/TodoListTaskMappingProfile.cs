@@ -62,9 +62,9 @@ namespace AspNetRestApiSample.ApplicationCore.Mapping
 
     private static void ConfigureUpdateTodoListMapping(IProfileExpression expression)
     {
-      expression.CreateMap<UpdateTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
-                .Include<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
-                .Include<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>()
+      expression.CreateMap<IUpdateTodoListTaskRequestDto, TodoListTaskEntityBase>()
+                .Include<IUpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
+                .Include<IUpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>()
                 .ForMember(dst => dst.TodoListId,
                            opt =>
                            {
@@ -78,8 +78,8 @@ namespace AspNetRestApiSample.ApplicationCore.Mapping
                              opt.MapFrom(src => src.TodoListTaskId);
                            });
 
-      expression.CreateMap<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
-      expression.CreateMap<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<IUpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
+      expression.CreateMap<IUpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
     }
   }
 }
