@@ -42,7 +42,7 @@ namespace AspNetRestApiSample.ApplicationCore.Services
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public Task<AddTodoListResponseDto> AddTodoListAsync(
-      AddTodoListRequestDto command, CancellationToken cancellationToken);
+      IAddTodoListRequestDto command, CancellationToken cancellationToken);
 
     /// <summary>Updates an existing todo list.</summary>
     /// <param name="command">An object that represents data to update a todo list.</param>
@@ -50,7 +50,7 @@ namespace AspNetRestApiSample.ApplicationCore.Services
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation.</returns>
     public Task UpdateTodoListAsync(
-      UpdateTodoListRequestDto command,
+      IUpdateTodoListRequestDto command,
       TodoListEntity todoListEntity,
       CancellationToken cancellationToken);
 

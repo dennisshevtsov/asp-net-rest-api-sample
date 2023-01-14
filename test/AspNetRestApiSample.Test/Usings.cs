@@ -5,3 +5,5 @@ global using AspNetRestApiSample.ApplicationCore.Dtos;
 global using AspNetRestApiSample.ApplicationCore.Entities;
 global using AspNetRestApiSample.ApplicationCore.Indentities;
 global using AspNetRestApiSample.ApplicationCore.Services;
+
+global using AspNetRestApiSample.WebApi.Dtos;
