@@ -49,12 +49,12 @@ namespace AspNetRestApiSample.ApplicationCore.Mapping
 
     private static void ConfigureAddTodoListMapping(IProfileExpression expression)
     {
-      expression.CreateMap<AddTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
-                .Include<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
-                .Include<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<IAddTodoListTaskRequestDto, TodoListTaskEntityBase>()
+                .Include<IAddTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
+                .Include<IAddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
 
-      expression.CreateMap<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
-      expression.CreateMap<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<IAddTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
+      expression.CreateMap<IAddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
 
       expression.CreateMap<TodoListTaskEntityBase, AddTodoListTaskResponseDto>()
                 .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));

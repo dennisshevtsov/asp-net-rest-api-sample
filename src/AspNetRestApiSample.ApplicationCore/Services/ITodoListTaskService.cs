@@ -47,7 +47,7 @@ namespace AspNetRestApiSample.ApplicationCore.Services
     /// <param name="cancellationToken">An object that propagates notification that operations should be canceled.</param>
     /// <returns>An object that represents an asynchronous operation that can return a value.</returns>
     public Task<AddTodoListTaskResponseDto> AddTodoListTaskAsync(
-      AddTodoListTaskRequestDtoBase command, CancellationToken cancellationToken);
+      IAddTodoListTaskRequestDto command, CancellationToken cancellationToken);
 
     /// <summary>Updates an existing TODO list task.</summary>
     /// <param name="command">An object that represents data to update todo list task.</param>

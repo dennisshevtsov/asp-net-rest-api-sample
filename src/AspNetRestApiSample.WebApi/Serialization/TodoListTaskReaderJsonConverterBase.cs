@@ -8,9 +8,10 @@ namespace AspNetRestApiSample.WebApi.Serialization
   using System.Text.Json.Serialization;
 
   using AspNetRestApiSample.ApplicationCore.Dtos;
+  using AspNetRestApiSample.WebApi.Dtos;
 
   /// <summary>Converts an object or value to or from JSON.</summary>
-  public abstract class TodoListTaskReaderJsonConverterBase<T> : JsonConverter<T> where T : TodoListTaskDtoBase
+  public abstract class TodoListTaskReaderJsonConverterBase<T> : JsonConverter<T> where T : class, ITodoListTaskDto
   {
     /// <summary>Reads and converts the JSON to type <see cref="AspNetRestApiSample.ApplicationCore.Dtos.SearchTodoListTasksRecordResponseDtoBase"/>.</summary>
     /// <param name="reader">The <see cref="System.Text.Json.Utf8JsonReader"/> to read from.</param>
