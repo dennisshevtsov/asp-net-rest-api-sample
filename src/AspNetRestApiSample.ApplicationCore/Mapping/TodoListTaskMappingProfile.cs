@@ -49,12 +49,12 @@ namespace AspNetRestApiSample.ApplicationCore.Mapping
 
     private static void ConfigureAddTodoListMapping(IProfileExpression expression)
     {
-      expression.CreateMap<AddTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
-                .Include<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
-                .Include<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<IAddTodoListTaskRequestDto, TodoListTaskEntityBase>()
+                .Include<IAddTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
+                .Include<IAddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
 
-      expression.CreateMap<AddTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
-      expression.CreateMap<AddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<IAddTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
+      expression.CreateMap<IAddTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
 
       expression.CreateMap<TodoListTaskEntityBase, AddTodoListTaskResponseDto>()
                 .ForMember(dst => dst.TodoListTaskId, opt => opt.MapFrom(src => src.Id));
@@ -62,9 +62,9 @@ namespace AspNetRestApiSample.ApplicationCore.Mapping
 
     private static void ConfigureUpdateTodoListMapping(IProfileExpression expression)
     {
-      expression.CreateMap<UpdateTodoListTaskRequestDtoBase, TodoListTaskEntityBase>()
-                .Include<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
-                .Include<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>()
+      expression.CreateMap<IUpdateTodoListTaskRequestDto, TodoListTaskEntityBase>()
+                .Include<IUpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>()
+                .Include<IUpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>()
                 .ForMember(dst => dst.TodoListId,
                            opt =>
                            {
@@ -78,8 +78,8 @@ namespace AspNetRestApiSample.ApplicationCore.Mapping
                              opt.MapFrom(src => src.TodoListTaskId);
                            });
 
-      expression.CreateMap<UpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
-      expression.CreateMap<UpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
+      expression.CreateMap<IUpdateTodoListDayTaskRequestDto, TodoListDayTaskEntity>();
+      expression.CreateMap<IUpdateTodoListPeriodTaskRequestDto, TodoListPeriodTaskEntity>();
     }
   }
 }

@@ -4,8 +4,8 @@
 
 namespace AspNetRestApiSample.ApplicationCore.Dtos
 {
-  /// <summary>Represents data to create a new todo list.</summary>
-  public sealed class AddTodoListRequestDto : TodoListDtoBase, IRequestDto
+  /// <summary>Represents data to add a task to a todo list.</summary>
+  public interface IAddTodoListTaskRequestDto : ITodoListTaskDto, IRequestDto
   {
   }
 }

@@ -91,7 +91,7 @@ namespace AspNetRestApiSample.WebApi.Serialization.Test.Unit
 
       Assert.IsNotNull(addTodoListTaskRequestDto);
 
-      var actualAddTodoListPeriodTaskRequestDto = addTodoListTaskRequestDto as AddTodoListPeriodTaskRequestDto;
+      var actualAddTodoListPeriodTaskRequestDto = addTodoListTaskRequestDto as IAddTodoListPeriodTaskRequestDto;
 
       Assert.IsNotNull(actualAddTodoListPeriodTaskRequestDto);
       Assert.AreEqual(expetedAddTodoListPeriodTaskRequestDto.TodoListId,

@@ -7,9 +7,7 @@ namespace AspNetRestApiSample.ApplicationCore.Dtos
   using AspNetRestApiSample.ApplicationCore.Indentities;
 
   /// <summary>Represents base data to update todo list task.</summary>
-  public abstract class UpdateTodoListTaskRequestDtoBase : TodoListTaskDtoBase, ITodoListTaskIdentity, IRequestDto
+  public interface IUpdateTodoListTaskRequestDto : ITodoListTaskDto, ITodoListTaskIdentity, IRequestDto
   {
-    /// <summary>Gets/sets an object that represents an ID of a todo list task.</summary>
-    public Guid TodoListTaskId { get; set; }
   }
 }

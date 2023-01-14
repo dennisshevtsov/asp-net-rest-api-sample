@@ -242,7 +242,7 @@ namespace AspNetRestApiSample.ApplicationCore.Services.Test.Unit
     {
       var todoListEntity = new TodoListEntity();
 
-      _mapperMock.Setup(mapper => mapper.Map(It.IsAny<UpdateTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
+      _mapperMock.Setup(mapper => mapper.Map(It.IsAny<IUpdateTodoListRequestDto>(), It.IsAny<TodoListEntity>()))
                  .Returns(todoListEntity)
                  .Verifiable();
 
@@ -250,7 +250,7 @@ namespace AspNetRestApiSample.ApplicationCore.Services.Test.Unit
                          .Returns(Task.CompletedTask)
                          .Verifiable();
 
-      var command = new UpdateTodoListRequestDto();
+      IUpdateTodoListRequestDto command = new UpdateTodoListRequestDto();
 
       await _todoListService.UpdateTodoListAsync(command, todoListEntity, CancellationToken.None);
 

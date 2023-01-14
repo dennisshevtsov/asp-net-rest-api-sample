@@ -33,13 +33,13 @@ namespace AspNetRestApiSample.ApplicationCore.Mapping
 
     private static void ConfigureAddTodoListMapping(IProfileExpression expression)
     {
-      expression.CreateMap<AddTodoListRequestDto, TodoListEntity>();
+      expression.CreateMap<IAddTodoListRequestDto, TodoListEntity>();
       expression.CreateMap<TodoListEntity, AddTodoListResponseDto>();
     }
 
     private static void ConfigureUpdateTodoListMapping(IProfileExpression expression)
     {
-      expression.CreateMap<UpdateTodoListRequestDto, TodoListEntity>()
+      expression.CreateMap<IUpdateTodoListRequestDto, TodoListEntity>()
                 .ForMember(dst => dst.TodoListId, opt => opt.Ignore());
     }
   }

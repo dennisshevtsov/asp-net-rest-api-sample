@@ -11,6 +11,7 @@ namespace AspNetRestApiSample.WebApi.Controllers
   using AspNetRestApiSample.ApplicationCore.Dtos;
   using AspNetRestApiSample.ApplicationCore.Services;
   using AspNetRestApiSample.WebApi.Defaults;
+  using AspNetRestApiSample.WebApi.Dtos;
 
   /// <summary>Provides a simple API to handle HTTP requests.</summary>
   [ApiController]
